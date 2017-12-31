@@ -1,0 +1,147 @@
+/*
+ DejaLu
+ Copyright (c) 2015 Hoa V. DINH. All rights reserved.
+ */
+
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Helvetica Neue";
+    font-size: 20px;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    -webkit-user-select: none;
+    cursor: default;
+}
+
+#main {
+    height: 100%;
+}
+
+#main.hidden {
+    display: none;
+}
+
+#no-conversation, #has-conversations {
+    position: relative;
+    top: 30%;
+    /*transform: translateY(-50%);*/
+}
+
+#no-conversation.hidden, #has-conversations.hidden {
+    display: none;
+}
+
+.text-count {
+    color: #ccc;
+    text-align: center;
+}
+
+.actions {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.actions-container {
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    display: inline-block;
+}
+
+.action-button {
+    border-right: 1px solid #ccc;
+    display: inline-block;
+}
+
+.action-button:last-child {
+    border-right: none;
+}
+
+.action {
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 10px;
+    background-size: 30px 30px;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+}
+
+.action {
+    opacity: 0.4;
+}
+
+.action:active {
+    opacity: 1.0;
+}
+
+#archive {
+    background-image: url("DejaLu_Archive_24.png");
+    background-size: 23px 24px;
+    background-repeat: no-repeat;
+    background-position: center;
+    top: -1px;
+}
+
+#trash {
+    background-image: url("DejaLu_Trash_24.png");
+    background-size: 21px 24px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#toggle-read {
+    background-image: url("DejaLu_UnreadDotOff_24.png");
+    background-size: 24px 24px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#toggle-star {
+    background-image: url("DejaLu_StarOff_24.png");
+    background-size: 24px 24px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#label {
+    background-image: url("DejaLu_TagOff_24.png");
+    background-size: 23px 24px;
+    background-repeat: no-repeat;
+    background-position: center;
+    top: -1px;
+}
+
+@media
+(-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+
+#archive {
+    background-image: url("DejaLu_Archive_24@2x.png");
+}
+
+#trash {
+    background-image: url("DejaLu_Trash_24@2x.png");
+}
+
+#toggle-read {
+    background-image: url("DejaLu_UnreadDotOff_24@2x.png");
+}
+
+#toggle-star {
+    background-image: url("DejaLu_StarOff_24@2x.png");
+}
+
+#label {
+    background-image: url("DejaLu_TagOff_24@2x.png");
+}
+
+}

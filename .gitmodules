@@ -1,0 +1,15 @@
+[submodule "third-party/mailcore2"]
+	path = third-party/mailcore2
+	url = https://github.com/MailCore/mailcore2
+[submodule "third-party/kvdb"]
+	path = third-party/kvdb
+	url = https://github.com/dinhviethoa/kvdb
+[submodule "third-party/SparkleSandbox"]
+	path = third-party/SparkleSandbox
+	url = https://github.com/dinhviethoa/Sparkle
+[submodule "third-party/PXSourceList"]
+	path = third-party/PXSourceList
+	url = https://github.com/dinhviethoa/PXSourceList
+[submodule "third-party/Google-Analytics-for-OS-X"]
+	path = third-party/Google-Analytics-for-OS-X
+	url = https://github.com/dinhviethoa/Google-Analytics-for-OS-X

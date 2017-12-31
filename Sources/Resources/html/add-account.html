@@ -1,0 +1,294 @@
+<!--
+ DejaLu
+ Copyright (c) 2015 Hoa V. DINH. All rights reserved.
+ -->
+
+<html>
+    <head>
+        <meta charset="utf-8">
+            <script src="objc-glue.min.js"></script>
+            <script src="uuid.min.js"></script>
+            <script src="spin.min.js"></script>
+            <script src="add-account.min.js"></script>
+            <link href="add-account.min.css" rel="stylesheet" type="text/css">
+                </head>
+    <body>
+        <div id="main">
+        </div>
+
+        <div id="templates">
+            <div id="email-password-template">
+                <div class="container">
+                    <div class="title">Add an Email Account</div>
+
+                    <div class="main-text">
+                        <div class="left">
+                            <div class="icon appicon"></div>
+                        </div>
+                        <div class="right">
+                            <div class="general-form">
+                                <table>
+                                    <tr>
+                                        <td><div class="form-label">Your Name:</div></td>
+                                        <td><input type="text" id="display-name" placeholder="John Doe"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="form-label">Email:</div></td>
+                                        <td><input type="email" id="email" placeholder="email@dejalu.com"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="form-label">Password:</div></td>
+                                        <td><input type="password" id="password" placeholder="Required"/></td>
+                                    </tr>
+                                </table>
+                                <div id="error-message" class="hidden"></div>
+                                <div id="server-error" class="hidden">
+                                    <div class="error-title">Server error:</div>
+                                    <div class="error-details">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-container">
+                        <button class="button" id="custom">Custom</button>
+                        <button class="button" id="previous">Previous</button>
+                        <button class="button" id="continue">Continue</button>
+                        <button class="button hidden" id="cancel">Cancel</button>
+                        <div id="button-spinner"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="update-email-password-template">
+                <div class="container">
+                    <div class="title">Settings of Account</div>
+
+                    <div class="main-text">
+                        <div class="left">
+                            <div class="icon appicon"></div>
+                        </div>
+                        <div class="right">
+                            <div class="general-form">
+                                <table>
+                                    <tr>
+                                        <td><div class="form-label">Email:</div></td>
+                                        <td><input type="email" id="email" placeholder="email@dejalu.com" disabled/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="form-label">Password:</div></td>
+                                        <td><input type="password" id="password" placeholder="Required"/></td>
+                                    </tr>
+                                </table>
+                                <div id="error-message" class="hidden"></div>
+                                <div id="server-error" class="hidden">
+                                    <div class="error-title">Server error:</div>
+                                    <div class="error-details">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-container">
+                        <button class="button" id="continue">Continue</button>
+                        <button class="button hidden" id="cancel">Cancel</button>
+                        <div id="button-spinner"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="account-type-chooser-template">
+                <div class="container">
+                    <div class="title">Add an Email Account</div>
+
+                    <div class="main-text">
+                        <div class="left">
+                            <div class="icon appicon"></div>
+                        </div>
+                        <div class="right">
+                            <div class="right-container">
+                                <div class="right-title">
+                                    Choose the type of account.
+                                </div>
+                                <div class="buttons-container">
+                                    <button class="account-type-button" id="gmail">Gmail / Google Apps</button>
+                                    <button class="account-type-button" id="outlook">Outlook.com / Hotmail</button>
+                                    <button class="account-type-button" id="other-imap">Other IMAP Account</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="email-template">
+                <div class="container">
+                    <div class="title">Add an Email Account</div>
+
+                    <div class="main-text">
+                        <div class="left">
+                            <div class="icon appicon"></div>
+                        </div>
+                        <div class="right">
+                            <div>
+                                Please enter your email address below.
+                            </div>
+                            <div class="general-form">
+                                <div class="general-form-field">
+                                    <input type="email" id="email" placeholder="john@dejalu.com" autofocus/>
+                                </div>
+                                <div id="error-message" class="hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-container">
+                        <button class="button" id="custom">Custom</button>
+                        <button class="button" id="continue">Continue</button>
+                        <button class="button hidden" id="cancel">Cancel</button>
+                        <div id="button-spinner"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="imap-template">
+                <div class="container">
+                    <div class="title"></div>
+
+                    <div class="main-text">
+                        <div class="left">
+                            <div class="icon appicon"></div>
+                        </div>
+                        <div class="right">
+                            <div class="general-form">
+                                <table>
+                                    <tr>
+                                        <td><div class="form-label">IMAP server:</div></td>
+                                        <td><input type="text" id="hostname" placeholder="imap.dejalu.me"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="form-label">Login:</div></td>
+                                        <td><input type="text" id="login" placeholder="john@dejalu.me"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="form-label">Password:</div></td>
+                                        <td><input type="password" id="password" placeholder="Required"/></td>
+                                    </tr>
+                                </table>
+                                <div id="error-message" class="hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="button-container">
+                        <button class="button" id="previous">Previous</button>
+                        <button class="button" id="continue">Continue</button>
+                        <button class="button hidden" id="cancel">Cancel</button>
+                        <div id="button-spinner"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="smtp-template">
+                <div class="container">
+                    <div class="title"></div>
+
+                    <div class="main-text">
+                        <div class="left">
+                            <div class="icon appicon"></div>
+                        </div>
+                        <div class="right">
+                            <div class="general-form">
+                                <table>
+                                    <tr>
+                                        <td><div class="form-label">SMTP server:</div></td>
+                                        <td><input type="text" id="hostname" placeholder="smtp.dejalu.me"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="form-label">Login:</div></td>
+                                        <td><input type="text" id="login" placeholder="john@dejalu.me"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="form-label">Password:</div></td>
+                                        <td><input type="password" id="password" placeholder="Required"/></td>
+                                    </tr>
+                                </table>
+                                <div id="error-message" class="hidden"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="button-container">
+                        <button class="button" id="previous">Previous</button>
+                        <button class="button" id="continue">Continue</button>
+                        <button class="button hidden" id="cancel">Cancel</button>
+                        <div id="button-spinner"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="failure-template">
+                <div class="container">
+                    <div class="title">Add an Email Account</div>
+
+                    <div class="main-text">
+                        <div class="left">
+                            <div class="icon failed"></div>
+                        </div>
+                        <div class="right">
+                            <div id="failed-error-message">
+                            </div>
+                            <div id="server-error" class="hidden">
+                                <div class="error-title">Server error:</div>
+                                <div class="error-details">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="button-container">
+                        <button class="button" id="close">Close</button>
+                        <div id="button-spinner"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="success-template">
+                <div class="container">
+                    <div class="title">Add an Email Account</div>
+
+                    <div class="main-text">
+                        <div class="left">
+                            <div class="icon success"></div>
+                        </div>
+                        <div class="right">
+                            <div id="success-message">
+                            </div>
+                            <span id="register"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="button-container">
+                        <button class="button" id="close">Close</button>
+                        <div id="button-spinner"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="progress-template">
+                <div class="container">
+                    <div class="title">Add an Email Account</div>
+
+                    <div class="main-text">
+                        <div class="left">
+                            <div class="icon appicon"></div>
+                        </div>
+                        <div class="right">
+                            <div id="progress-description">Adding your account...</div>
+                            <div id="spinner"></div>
+                        </div>
+                    </div>
+
+                    <div class="button-container">
+                        <button class="button" id="cancel">Cancel</button>
+                        <div id="button-spinner"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

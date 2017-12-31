@@ -1,0 +1,494 @@
+html {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family: "Helvetica Neue";
+    font-size: 15px;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#replied-text table {
+    line-height: normal;
+}
+
+#templates {
+    display: none;
+}
+
+#reply-header-container {
+    display: none;
+    position: relative;
+}
+
+#reply-header-container:hover .edit-button {
+    opacity: 1;
+    -webkit-transition: none;
+}
+
+#reply-header-container .edit-button {
+    position: absolute;
+    font-size: 14px;
+    font-weight: bold;
+    color: #444;
+    bottom: 0;
+    right: 0;
+    padding: 3px 12px;
+    /*border: 1px solid #ddd;*/
+    border-radius: 3px;
+    opacity: 0;
+    -webkit-transition: opacity 0.25s;
+    background-color: white;
+    cursor: default;
+    margin-right: -10px;
+}
+
+#reply-header-container .edit-button:hover {
+    background-color: #ddd;
+}
+
+#reply-header-container .edit-button:active {
+    background-color: #bbb;
+}
+
+#reply-header {
+    padding: 20px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    margin: 0 auto;
+    max-width: 580px;
+}
+
+#reply-header .recipient {
+    /*color: #080;*/
+    color: #000;
+}
+
+/*
+#reply-header .recipient-container.hidden, #reply-header .suject.hidden {
+    display: none;
+}
+ */
+
+.recipient-container {
+    font-size: 20px;
+    position: relative;
+}
+
+#reply-header .to-label {
+    /*font-weight: bold;*/
+    color: #bbbbbb;
+}
+
+a {
+    cursor: text;
+}
+
+#editor-container {
+}
+
+#editor {
+    outline: none;
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 580px;
+    min-height: calc(100% - 190px);
+    padding-bottom: 150px;
+    line-height: 1.3;
+}
+
+#editor.search-result {
+    -webkit-user-select: none;
+}
+
+#editor a {
+    color: #2E6AFF;
+}
+
+#replied-text {
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 580px;
+    /*color: #888;*/
+}
+
+#replied-text .content {
+    line-height: 1.3;
+}
+
+#replied-text .content a {
+    color: #2E6AFF;
+}
+
+#reply-container {
+    background-color: #fcfcfc;
+    border-top: 1px solid #ccc;
+    display: none;
+    position: relative;
+}
+
+#reply-container .quoted-head {
+    display: none;
+}
+
+#reply-container .overlay {
+    background-color: rgba(255, 255, 255, 0.5);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+}
+
+.reply #editor {
+    min-height: 40px;
+    padding-top: 10px;
+    padding-bottom: 30px;
+}
+
+.reply #reply-container {
+    display: block;
+}
+
+.reply:not(.forward) #reply-header-container {
+    display: block;
+}
+
+.reply #reply-header-container.hidden {
+    display: none;
+}
+
+.forward #reply-header-container {
+    display: none;
+}
+
+.sender-line {
+    max-width: 600px;
+    margin: 0 auto;
+    display: -webkit-flex;
+    margin-bottom: 10px;
+}
+
+.sender {
+    font-size: 20px;
+    /*color: #080;*/
+    color: #000;
+    display: inline;
+    -webkit-flex: 1 1 auto;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.message.bubble.me .sender {
+    color: blue;
+}
+
+/*
+.sender:hover {
+    text-decoration: underline;
+    cursor: default;
+}
+ */
+
+.date {
+    position: relative;
+    top: 7px;
+    right: 0;
+    -webkit-flex: 0 1 auto;
+    color: #888;
+    font-size: 13px;
+}
+
+.subject {
+    font-size: 30px;
+    font-weight: 300;
+    padding-bottom: 41px;
+    /*
+    padding-left: 50px;
+    padding-right: 50px;
+     */
+    /*font-weight: bold;*/
+    color: #bbb;
+    /*text-align: center;*/
+    -webkit-user-select: text;
+    max-height: 29px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+blockquote[type=cite] {
+    border-left: 1px solid #ccc;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 10px;
+}
+
+blockquote {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 10px;
+}
+
+#message-reply-generator {
+    display: none;
+}
+
+.-dejalu-image {
+    max-width: 600px;
+    max-height: 400px;
+    width: auto;
+    height: auto;
+}
+
+.container .attachment-name {
+    display: none;
+}
+
+.embedded-image-container img.bigger {
+    max-width: 580px;
+    max-height: 400px;
+    width: auto;
+    height: auto;
+}
+
+/*
+.images-container {
+    margin-top: 20px;
+    display: block;
+}
+
+.image-container {
+    display: inline-block;
+    width: 190px;
+    height: 190px;
+    position: relative;
+    left: -10px;
+}
+
+.container .image-wrapper {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.container .image-wrapper.has-border {
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+.container .selection-wrapper {
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.container.selected .selection-wrapper {
+    background-color: #e0e0e0;
+}
+
+.image-container, .attachment-container {
+    -webkit-user-select: none;
+}
+
+.image-container img {
+    position: absolute;
+    left: -100%;
+    right: -100%;
+    margin: auto;
+    background-color: #fff;
+}
+
+.image-container .overlay {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 0.0;
+}
+
+.image-container:hover .overlay {
+    opacity: 1.0;
+}
+
+.image-container.selected .overlay {
+    opacity: 1.0;
+}
+
+.image-container .attachment-name {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #ccc;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    height: 20px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.image-container.selected .attachment-name {
+    color: #eee;
+    background-color: #0069d9;
+}
+
+.image-container img.portrait {
+    max-width: 100%;
+}
+
+.image-container img.landscape {
+    max-height: 100%;
+}
+
+.image-container img.smaller-height {
+    top: -100%;
+    bottom: -100%;
+}
+
+.embedded-image-container {
+    display: inline-block;
+    position: relative;
+    left: -10px;
+}
+
+.embedded-image-container.hidden {
+    display: none;
+}
+
+.embedded-image-container img {
+    position: relative;
+}
+
+.embedded-image-container img.bigger {
+    max-width: 580px;
+    max-height: 400px;
+    width: auto;
+    height: auto;
+}
+
+.embedded-image-container .overlay {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 0.0;
+}
+
+.embedded-image-container:hover .overlay {
+    opacity: 1.0;
+}
+
+.embedded-image-container.selected .overlay {
+    opacity: 1.0;
+}
+
+.embedded-image-container .attachment-name {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #ccc;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    height: 20px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.embedded-image-container.selected .attachment-name {
+    color: #eee;
+    background-color: #0069d9;
+}
+
+.attachments-container {
+    margin-top: 20px;
+    display: block;
+}
+
+.attachment-container {
+    width: 180px;
+    height: 120px;
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.attachment-container .selection-wrapper {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto;
+}
+
+.attachment-container img {
+    margin: auto;
+    display: block;
+    width: 64px;
+    height: 64px;
+}
+
+.attachment-container .attachment-name-container {
+    text-align: center;
+    height: 21px;
+    color: #888;
+    margin-top: 5px;
+    padding-top: 2px;
+}
+
+.attachment-container .attachment-name {
+    display: inline-block;
+    border-radius: 5px;
+    padding-top: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 170px;
+}
+
+.attachment-container.selected .attachment-name {
+    color: #eee;
+    background-color: #0069d9;
+}
+
+.container.loading img {
+    opacity: 0;
+}
+
+.container .placeholder {
+    background-color: #eee;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.0;
+}
+
+.container.loading .placeholder {
+    opacity: 1.0;
+}
+*/
+
+.-dejalu-highlighted {
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(244, 234, 38, 0.7)), to(rgba(237, 206, 0, 0.7)) );
+}
+
+.-dejalu-search-result-focus {
+    -webkit-box-sizing: border-box;
+    box-shadow: 0 0 2px #444;
+}

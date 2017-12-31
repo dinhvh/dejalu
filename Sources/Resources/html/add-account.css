@@ -1,0 +1,257 @@
+/*
+ DejaLu
+ Copyright (c) 2015 Hoa V. DINH. All rights reserved.
+ */
+
+html {
+    padding: 0;
+    margin: 0;
+    user-select: none;
+    cursor: default;
+}
+
+body {
+    font-family: "Helvetica Neue";
+    font-size: 15px;
+    padding: 30px;
+    margin: 0;
+    -webkit-user-select: none;
+}
+
+#templates {
+    display: none;
+}
+
+.container {
+    position: relative;
+    /*top: 200px;*/
+    height: 100%;
+}
+
+.title {
+    font-size: 20px;
+    color: #888;
+    margin-bottom: 20px;
+}
+
+.button-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: right;
+}
+
+.button {
+    display: inline-block;
+    font-size: 16px;
+    color: #444;
+    padding: 5px;
+    width: 100px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    text-align: center;
+    /*margin: 0 auto;*/
+    margin-left: 10px;
+    background-color: transparent;
+}
+
+.button.hidden {
+    display: none;
+}
+
+#failed-error-message {
+    height: 64px;
+    display: flex;
+    align-items: center;
+}
+
+#success-message {
+    height: 64px;
+    display: flex;
+    align-items: center;
+}
+
+#error-message {
+    color: #f33;
+}
+
+#error-message.hidden {
+    display: none;
+}
+
+.button:active {
+    background-color: #ddd;
+    color: #000;
+}
+
+#custom.button[disabled], .button[disabled], .button[disabled]:active {
+    background-color: transparent;
+    color: #ccc;
+}
+
+.main-text {
+    margin-bottom: 20px;
+}
+
+.left {
+    padding-top: 20px;
+    margin-right: 16px;
+    display: inline-block;
+}
+
+.icon {
+    display: inline-block;
+}
+
+.icon.success {
+    background-image: url("DejaLu_CheckmarkOff_32.png");
+    background-size: 32px 32px;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 64px;
+    height: 64px;
+}
+
+.icon.failed {
+    background-image: url("DejaLu_FailedOff_32.png");
+    background-size: 28px 32px;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 64px;
+    height: 64px;
+}
+
+.icon.appicon {
+    background-image: url("DejaLu_AppIcon_128.png");
+    background-size: 96px 96px;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 96px;
+    height: 96px;
+}
+
+.right {
+    display: inline-block;
+    padding-top: 20px;
+    width: 400px;
+    vertical-align: top;
+}
+
+#imap-template .right, #smtp-template .right {
+    width: 450px;
+}
+
+#updated, #added {
+    display: none;
+}
+
+#server-error {
+    margin-top: 20px;
+}
+
+#server-error .error-title {
+    font-weight: bold;
+}
+
+#server-error.hidden {
+    display: none;
+}
+
+input {
+    font-family: "Helvetica Neue";
+    font-size: 15px;
+    padding: 3px;
+    width: 300px;
+}
+
+input#email:focus {
+    outline: none;
+}
+
+.general-form {
+}
+
+.general-form-field {
+    margin: 10 0;
+}
+
+#general .right {
+    margin-left: 50px;
+}
+
+#spinner {
+    position: relative;
+    height: 32px;
+    margin-top: 20px;
+}
+
+#button-spinner {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    margin-left: 10px;
+    height: 24px;
+    width: 24px;
+    top: -2px;
+}
+
+.right-container {
+    margin: 0 auto;
+    width: 302px;
+}
+
+.right-title {
+    text-align: center;
+}
+
+.buttons-container {
+    margin-top: 20px;
+}
+
+.account-type-button {
+    border: 1px solid #ccc;
+    border-bottom: none;
+    border-radius: 0;
+    padding: 10px;
+    margin: 0;
+    display: block;
+    background: none;
+    font-family: Helvetica;
+    font-size: 15px;
+    width: 300px;
+}
+
+.account-type-button:active {
+    background: #eee;
+    color: #000;
+}
+
+.account-type-button:first-child {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.account-type-button:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+@media
+(-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+
+
+.icon.success {
+    background-image: url("DejaLu_CheckmarkOff_64@2x.png");
+}
+
+.icon.failed {
+    background-image: url("DejaLu_FailedOff_64@2x.png");
+}
+
+.icon.appicon {
+    background-image: url("DejaLu_AppIcon_128@2x.png");
+}
+
+}

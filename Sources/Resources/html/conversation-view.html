@@ -1,0 +1,148 @@
+<!--
+ DejaLu
+ Copyright (c) 2015 Hoa V. DINH. All rights reserved.
+ -->
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+            <script src="objc-glue.min.js"></script>
+            <script src="conversation-view2.min.js"></script>
+            <script src="html-cleaning.min.js"></script>
+            <script src="highlighter.min.js"></script>
+            <script src="uuid.min.js"></script>
+            <script src="Autolinker.min.js"></script>
+            <link href="conversation-view.min.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <div id="templates">
+            <div id="message-not-loaded-template">
+                <div class="message-placeholder">
+                    Message not loaded
+                </div>
+            </div>
+
+            <div id="message-template">
+                <div class="message bubble">
+                    <div class="sender-line">
+                        <div class="sender">
+                            <div class="hover hidden"><div class="arrow-down"></div></div>
+                            <div class="ellipsis"><span class="text"></span><span class="recipient-text"></span></div>
+                        </div>
+                        <div class="debug-msg-rowid"></div>
+                        <div class="date"></div>
+                    </div>
+                    <div class="message-container">
+                        <div class="content-container setup">
+                            <div class="headers hidden">
+                                <div class="headers-content">
+                                    <table>
+                                        <tr class="header-replyto-container header-container"><td class="header-name"><b>Reply-To:</b></td><td class="header-replyto header-value selectable"></td></tr>
+                                        <tr class="header-from-container header-container"><td class="header-name"><b>From:</b></td><td class="header-from header-value selectable"></td></tr>
+                                        <tr class="header-to-container header-container"><td class="header-name"><b>To:</b></td><td class="header-to header-value selectable"></td></tr>
+                                        <tr class="header-cc-container header-container"><td class="header-name"><b>Cc:</b></td><td class="header-cc header-value selectable"></td></tr>
+                                        <tr class="header-bcc-container header-container"><td class="header-name"><b>Bcc:</b></td><td class="header-bcc header-value selectable"></td></tr>
+                                        <tr class="header-date-container header-container"><td class="header-name"><b>Date:</b></td><td class="header-date header-value selectable"></td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="content selectable">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-footer">
+                    </div>
+                    <div class="read-overlay">
+                    </div>
+                </div>
+            </div>
+
+            <div id="address-template">
+                <span class="address">
+                    <span class="display-name"></span>
+                    <span class="mailbox"></span>
+                </span>
+            </div>
+
+            <div id="images-container-template">
+                <div class="images-container"></div>
+            </div>
+            <div id="image-container-template">
+                <div class="image-container container loading">
+                    <div class="selection-wrapper">
+                        <div class="image-wrapper has-border">
+                            <img></img>
+                            <div class="placeholder"></div>
+                            <div class="overlay">
+                                <div class="attachment-name"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="embedded-image-container-template">
+                <div class="embedded-image-container container loading">
+                    <div class="selection-wrapper">
+                        <div class="image-wrapper">
+                            <img></img>
+                            <div class="overlay">
+                                <div class="attachment-name"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="attachments-container-template">
+                <div class="attachments-container"></div>
+            </div>
+            <div id="attachment-container-template">
+                <div class="attachment-container container loading">
+                    <div class="selection-wrapper">
+                        <div class="image-wrapper">
+                            <img></img>
+                        </div>
+                    </div>
+                    <div class="attachment-name-container">
+                        <span class="attachment-name"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="subject-container">
+            <div class="subject">
+                <div class="subject-text selectable"></div>
+                <div class="conversation-has-attachment"></div>
+                <div class="conversation-reply"></div>
+            </div>
+            <div class="recipient"></div>
+        </div>
+        <div id="messages">
+        </div>
+        <div id="more-messages" class="hidden">
+            <div id="more-messages-text">
+                Show earlier messages...
+            </div>
+        </div>
+        <div id="update-button" class="hidden">
+            <div class="content">
+                More messages have been received.
+            </div>
+        </div>
+
+        <div id="reply-container" class="hidden">
+            <div class="reply-content-container">
+                <div contenteditable="true" class="reply-content"></div>
+            </div>
+            <div class="reply-button-container">
+                <button class="send-submit">Send</button>
+                <button class="send-cancel">Cancel</button>
+            </div>
+        </div>
+
+        <div id="link" class="hidden"></div>
+        
+    </body>
+</html>

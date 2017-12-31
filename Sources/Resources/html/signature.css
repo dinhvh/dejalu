@@ -1,0 +1,33 @@
+/*
+ DejaLu
+ Copyright (c) 2015 Hoa V. DINH. All rights reserved.
+ */
+
+html {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family: "Helvetica Neue";
+    font-size: 15px;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+a {
+    cursor: text;
+    color: #2E6AFF;
+}
+
+#editor {
+    outline: none;
+    padding: 10px;
+    margin: 0 auto;
+    min-height: calc(100% - 40px);
+    line-height: 19px;
+}

@@ -1,0 +1,50 @@
+<!--
+ DejaLu
+ Copyright (c) 2015 Hoa V. DINH. All rights reserved.
+ -->
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+            <script src="uuid.min.js"></script>
+            <script src="objc-glue.min.js"></script>
+            <script src="html-cleaning.min.js"></script>
+            <script src="conversation-selection-view.min.js"></script>
+            <link href="conversation-selection-view.min.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <div id="main" class="hidden">
+            <div id="has-conversations">
+                <div class="text-count"><span id="count"></span> conversations selected</div>
+                <div class="actions">
+                    <div class="actions-container">
+                        <div class="action-button">
+                            <div class="action" id="archive">
+                            </div>
+                        </div><!--
+                        --><div class="action-button">
+                            <div class="action" id="trash">
+                            </div>
+                        </div><!--
+                        --><div class="action-button">
+                            <div class="action" id="toggle-read">
+                            </div>
+                        </div><!--
+                        --><div class="action-button">
+                            <div class="action" id="toggle-star">
+                            </div>
+                        </div><!--
+                        --><div class="action-button">
+                            <div class="action" id="label">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="no-conversation">
+                <div class="text-count">No conversation selected</div>
+            </div>
+        </div>
+    </body>
+</html>

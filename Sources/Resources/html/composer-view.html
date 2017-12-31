@@ -1,0 +1,96 @@
+<!--
+ DejaLu
+ Copyright (c) 2015 Hoa V. DINH. All rights reserved.
+ -->
+
+<html>
+    <head>
+        <link href="composer-view.min.css" rel="stylesheet" type="text/css">
+        <script src="Autolinker.min.js"></script>
+        <script src="objc-glue.min.js"></script>
+        <script src="composer-view.min.js"></script>
+        <script src="html-cleaning.min.js"></script>
+        <script src="highlighter.min.js"></script>
+        <script src="uuid.min.js"></script>
+        <script src="create-link.min.js"></script>
+    </head>
+    <body>
+        <div id="templates">
+
+            <div id="images-container-template">
+                <div class="images-container"></div>
+            </div>
+            <div id="image-container-template">
+                <div class="image-container container loading">
+                            <img></img>
+                            <div class="attachment-name"></div>
+                </div>
+            </div>
+            <div id="embedded-image-container-template">
+                <div class="embedded-image-container container loading">
+                            <img></img>
+                            <div class="attachment-name"></div>
+                </div>
+            </div>
+            <div id="attachments-container-template">
+                <div class="attachments-container"></div>
+            </div>
+            <div id="attachment-container-template">
+                <div class="attachment-container container loading">
+                            <img></img>
+                            <div class="attachment-name"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="reply-header-container">
+            <div id="reply-header">
+                <div class="subject selectable">
+                    It's the subject of my email
+                </div>
+                <div class="recipient-container">
+                    <span class="to-label">To:</span> <span class="recipient">recipient1, recipient2, recipient3</span>
+                    <div class="edit-button">Edit</div>
+                </div>
+            </div>
+        </div>
+        <div id="editor-container">
+            <div contenteditable id="editor" class="selectable">
+                <div id="signature">
+                </div>
+            </div>
+        </div>
+        <div id="reply-container">
+            <div id="replied-text">
+                <div class="sender-line">
+                    <div class="sender"></div>
+                    <div class="date"></div>
+                </div>
+                <div class="content selectable">
+                </div>
+                <div class="quoted-head">
+                </div>
+            </div>
+            <div class="overlay">
+            </div>
+        </div>
+        <div id="message-reply-generator">
+            <div class="message">
+            </div>
+            <div><br/></div>
+            <div class="quote-header" style="color: #aaa;"></div>
+            <blockquote type="cite" class="quoted-message" style="border-left-color:#ccc;border-left-style:solid;border-width:1px;margin-left:0px;padding-left:10px;">
+                <div class="headers">
+                    <div><b>From:</b> <span class="from"></span></div>
+                    <div><b>Date:</b> <span class="date"></span></div>
+                    <div><b>To:</b> <span class="to"></span></div>
+                    <div><b>Subject:</b> <span class="subject"></span></div>
+                    <div><br></div>
+                </div>
+                <div class="content"></div>
+            </blockquote>
+        </div>
+    </body>
+    <script>
+    </script>
+</html>

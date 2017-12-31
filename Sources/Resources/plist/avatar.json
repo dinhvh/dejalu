@@ -1,0 +1,124 @@
+[
+    {
+        "email-match": [
+            ".*@(.*\\.)?wordpress\\.com"
+        ],
+        "image": "AvatarWordpress.png"
+    },
+    {
+        "email-match": [
+            ".*@(.*\\.)?tumblr\\.com"
+        ],
+        "image": "AvatarTumblr.png"
+    },
+    {
+        "email-match": [
+            ".*@(.*\\.)?craigslist.org"
+        ],
+        "image": "AvatarCraigslist.png"
+    },
+    {
+        "email-match": [
+            "calendar\\-notification@google\\.com"
+        ],
+        "image": "AvatarGCalendar.png"
+    },
+    {
+        "email-match": [
+            ".*@plus\\.google\\.com"
+        ],
+        "image": "AvatarGoogleplus.png"
+    },
+    {
+        "email-match": [
+            ".*@(.*\\.)?google\\.com"
+        ],
+        "image": "AvatarGoogle.png"
+    },
+    {
+        "email-match": [
+            ".*@(.*\\.)?github\\.com"
+        ],
+        "image": "AvatarGithub.png"
+    },
+    {
+        "email-match": [
+            ".*@flickr\\.com"
+        ],
+        "image": "AvatarFlickr.png"
+    },
+    {
+        "email-match": [
+            ".*@(.*\\.)?twitter\\.com"
+        ],
+        "image": "AvatarTwitter.png"
+    },
+    {
+        "email-match": [
+            ".*@quora\\.com"
+        ],
+        "image": "AvatarQuora.png"
+    },
+    {
+        "email-match": [
+            ".*@fb\\.com",
+            ".*@facebook\\.com",
+            ".*@facebookmail\\.com"
+        ],
+        "image": "AvatarFacebook.png"
+    },
+    {
+        "email-match": [
+            ".*@youtube\\.com"
+        ],
+        "image": "AvatarYoutube.png"
+    },
+    {
+        "email-match": [
+            ".*@(.*\\.)?linkedin\\.com"
+        ],
+        "image": "AvatarLinkedin.png"
+    },
+    {
+        "email-match": [
+            ".*@(.*\\.)?paypal\\..*"
+        ],
+        "image": "AvatarPaypal.png"
+    },
+    {
+        "email-match": [
+            ".*@amazon\\..*"
+        ],
+        "image": "AvatarAmazon.png"
+    },
+    {
+        "email-match": [
+            ".*@dribbble\\.com"
+        ],
+        "image": "AvatarDribbble.png"
+    },
+    {
+        "email-match": [
+            ".*@foursquare\\..*"
+        ],
+        "image": "AvatarFoursquare.png"
+    },
+    {
+        "email-match": [
+            ".*@dropbox\\.com"
+        ],
+        "image": "AvatarDropbox.png"
+    },
+    {
+        "email-match": [
+            ".*@(.*\\.)?vimeo\\.com"
+        ],
+        "image": "AvatarVimeo.png"
+    },
+    {
+        "email-match": [
+            ".*@(.*\\.)?uber\\.com"
+        ],
+        "image": "AvatarUber.png"
+    },
+]

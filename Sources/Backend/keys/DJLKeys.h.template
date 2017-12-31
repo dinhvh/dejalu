@@ -1,0 +1,27 @@
+// DejaLu
+// Copyright (c) 2015 Hoa V. DINH. All rights reserved.
+
+#ifndef DJLKEYS_H
+
+#define DJLKEYS_H
+
+#error You need to define those keys properly for the app to work properly.
+
+// google
+#define CLIENT_ID @"xxxxxxxxxxxxx.apps.googleusercontent.com"
+#define CLIENT_SECRET @"xxxxxxxxxxxxx-xxxxxxxxxxxxx"
+
+// microsoft live
+#define MICROSOFT_CLIENT_ID @"xxxxxxxxxxxxx"
+#define MICROSOFT_CLIENT_SECRET @"xxxxxxxxxxxxx"
+
+// HockeyApp
+#define BITHOCKEYMANAGER_APP_ID @"xxxxxxxxxxxxx"
+
+// Google Analytics
+#define DJL_GOOGLE_ANALYTICS_ID @"UA-xxxxxxxxxxxxx"
+
+// Giphy
+#define GIPHY_KEY @"xxxxxxxxxxxxx"
+
+#endif
