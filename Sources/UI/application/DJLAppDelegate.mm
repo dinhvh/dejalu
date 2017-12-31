@@ -328,9 +328,11 @@ private:
 
 - (void) _setupAutoUpdate
 {
+#if DJL_PRODUCTION
     [SUUpdater sharedUpdater];
     [[SUUpdater sharedUpdater] setAutomaticallyDownloadsUpdates:YES];
     [[SUUpdater sharedUpdater] checkForUpdatesInBackground];
+#endif
 }
 
 - (IBAction) checkForUpdates:(id)sender
