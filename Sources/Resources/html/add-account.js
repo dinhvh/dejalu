@@ -1,19 +1,19 @@
 // DejaLu
 // Copyright (c) 2015 Hoa V. DINH. All rights reserved.
 
-const SCREEN_EMAIL = 0;
-const SCREEN_IMAP = 1;
-const SCREEN_SMTP = 2;
-const SCREEN_PROGRESS = 3;
-const SCREEN_SUCCESS = 4;
-const SCREEN_FAILURE = 5;
-const SCREEN_ACCOUNT_TYPE = 6;
-const SCREEN_EMAIL_PASSWORD = 7;
-const SCREEN_CUSTOM_IMAP = 8;
-const SCREEN_CUSTOM_SMTP = 9;
-const SCREEN_UPDATE_EMAIL_PASSWORD = 10;
+var SCREEN_EMAIL = 0;
+var SCREEN_IMAP = 1;
+var SCREEN_SMTP = 2;
+var SCREEN_PROGRESS = 3;
+var SCREEN_SUCCESS = 4;
+var SCREEN_FAILURE = 5;
+var SCREEN_ACCOUNT_TYPE = 6;
+var SCREEN_EMAIL_PASSWORD = 7;
+var SCREEN_CUSTOM_IMAP = 8;
+var SCREEN_CUSTOM_SMTP = 9;
+var SCREEN_UPDATE_EMAIL_PASSWORD = 10;
 
-const screenIdTable = [
+var screenIdTable = [
     'email-template',
     'imap-template',
     'smtp-template',

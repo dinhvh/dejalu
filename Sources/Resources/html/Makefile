@@ -11,7 +11,7 @@ minified-css: add-account.min.css conversation-view.min.css \
 	conversation-selection-view.min.css signature.min.css
 
 %.min.js: %.js
-	/usr/local/bin/uglifyjs $< -m -c -o $@ --source-map $<.map
+	/usr/local/bin/uglifyjs $< -m -c -o $@ --source-map filename=$<.map
 
 %.min.css: %.css
 	/usr/local/bin/cleancss -o $@ $<
