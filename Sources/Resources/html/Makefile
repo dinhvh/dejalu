@@ -1,4 +1,4 @@
-all: minified-js minified-css
+all: minified-js minified-css font-awesome-css
 
 minified-js: composer-view.min.js highlighter.min.js html-cleaning.min.js \
 	conversation-selection-view.min.js objc-glue.min.js \
@@ -9,6 +9,8 @@ minified-js: composer-view.min.js highlighter.min.js html-cleaning.min.js \
 minified-css: add-account.min.css conversation-view.min.css \
 	composer-view.min.css print-message-view.min.css \
 	conversation-selection-view.min.css signature.min.css
+
+font-awesome-css: font-awesome-4.0.3/css/font-awesome.min.css
 
 %.min.js: %.js
 	/usr/local/bin/uglifyjs $< -m -c -o $@ --source-map filename=$<.map
