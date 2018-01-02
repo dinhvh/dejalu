@@ -13,3 +13,15 @@
 [submodule "third-party/Google-Analytics-for-OS-X"]
 	path = third-party/Google-Analytics-for-OS-X
 	url = https://github.com/dinhviethoa/Google-Analytics-for-OS-X
+[submodule "third-party/HockeySDK-Mac"]
+	path = third-party/HockeySDK-Mac
+	url = https://github.com/bitstadium/HockeySDK-Mac
+[submodule "third-party/LetsMove"]
+	path = third-party/LetsMove
+	url = https://github.com/potionfactory/LetsMove
+[submodule "third-party/NPReachability"]
+	path = third-party/NPReachability
+	url = https://github.com/Abizern/NPReachability
+[submodule "third-party/KVOController"]
+	path = third-party/KVOController
+	url = https://github.com/facebook/KVOController
