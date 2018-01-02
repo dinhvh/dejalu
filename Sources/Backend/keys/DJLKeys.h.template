@@ -5,7 +5,7 @@
 
 #define DJLKEYS_H
 
-#error You need to define those keys properly for the app to work properly.
+#error You need to define those keys properly for the app to work properly. Then remove this #error.
 
 // google
 #define CLIENT_ID @"xxxxxxxxxxxxx.apps.googleusercontent.com"
