@@ -4,6 +4,8 @@
 
 Fast and Simple Email Client.
 
+[You can download it on the website.](https://dejalu.me)
+
 # Dependencies
 
 ```
