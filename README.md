@@ -1,8 +1,8 @@
+<img src="screenshot.jpg" width="350" align="right" />
+
 # dejalu
 
 Fast and Simple Email Client.
-
-![screenshot.jpg](screenshot.jpg)
 
 # Dependencies
 
