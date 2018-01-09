@@ -2,6 +2,8 @@
 
 Fast and Simple Email Client.
 
+![screenshot.jpg](screenshot.jpg)
+
 # Dependencies
 
 ```
