@@ -771,6 +771,7 @@ private:
 - (void) _reflectSelectionForCellView:(DJLConversationCellContentView *)cellView index:(NSInteger)idx selectedRows:(NSIndexSet *)selectedRows
 {
     [cellView setSelected:[selectedRows containsIndex:idx]];
+    [cellView setNextCellSelected:[selectedRows containsIndex:idx + 1]];
 }
 
 - (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex
