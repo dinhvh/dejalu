@@ -556,7 +556,7 @@ using namespace mailcore;
             NSString * senderFirstLetter = [[senders substringToIndex:1] uppercaseString];
             NSDictionary * avatarAttr = @{NSFontAttributeName: avatarFont, NSForegroundColorAttributeName: [NSColor colorWithWhite:0.4 alpha:1.0]};
             NSSize size = [senderFirstLetter sizeWithAttributes:avatarAttr];
-            NSPoint position = NSMakePoint((avatarSize - size.width) / 2, (avatarSize - size.height) / 2);
+            NSPoint position = NSMakePoint((avatarSize - size.width) / 2, (avatarSize - size.height) / 2 + 0.5);
             [senderFirstLetter drawAtPoint:NSMakePoint(8 + statusMargin + position.x, (int) ((bounds.size.height - avatarSize) / 2) + position.y) withAttributes:avatarAttr];
         }
     }
