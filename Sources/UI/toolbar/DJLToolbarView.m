@@ -40,13 +40,14 @@ static NSTimeInterval s_startTime = 0;
 {
     self = [super initWithFrame:frame];
 
-    _vibrancy = 1.0;
+    BOOL enableVibrancy = [[NSUserDefaults standardUserDefaults] boolForKey:@"DJLEnableVibrancy"];
+    _vibrancy = enableVibrancy ? 1.0 : 0.0;
 
     _validation = [[NSMutableDictionary alloc] init];
 
     _opaqueView = [[DJLColoredView alloc] initWithFrame:[self bounds]];
     [_opaqueView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-    [_opaqueView setAlphaValue:0.0];
+    [_opaqueView setAlphaValue:enableVibrancy ? 0.0 : 1.0];
     [self addSubview:_opaqueView];
 
     NSRect separatorFrame = [self bounds];
@@ -248,6 +249,9 @@ static NSTimeInterval s_startTime = 0;
 
 - (void) setVibrancy:(CGFloat)vibrancy
 {
+    BOOL enableVibrancy = [[NSUserDefaults standardUserDefaults] boolForKey:@"DJLEnableVibrancy"];
+    vibrancy = enableVibrancy ? vibrancy : 0.0;
+    
     _vibrancy = vibrancy;
     [_opaqueView setAlphaValue:1.0 - _vibrancy];
     //[self setNeedsDisplay:YES];

@@ -84,6 +84,11 @@ private:
     MC_SAFE_RELEASE(_callback);
 }
 
+- (void) toggleEnableVibrancy
+{
+    [_mainWindowController toggleEnableVibrancy];
+}
+
 - (void) _receiveWakeNote
 {
     [[SUUpdater sharedUpdater] checkForUpdatesInBackground];

@@ -28,4 +28,6 @@
 
 - (void) addAccount;
 
+- (void) toggleEnableVibrancy;
+
 @end

@@ -4,6 +4,7 @@
 #import "DJLPrefsGeneralViewController.h"
 
 #import "DJLURLHandler.h"
+#import "DJLAppDelegate.h"
 
 @interface DJLCheckboxButtonCell  : NSButtonCell
 
@@ -30,6 +31,7 @@
 @implementation DJLPrefsGeneralViewController {
     NSButton * _makeDefaultButton;
     NSButton * _playSoundButton;
+    NSButton * _enableVibrancyButton;
     NSButton * _zenNotificationsButton;
     NSTextField * _zenDescription;
 }
@@ -69,6 +71,16 @@
     [_playSoundButton setAction:@selector(_playSoundChanged:)];
     [[self view] addSubview:_playSoundButton];
 
+    _enableVibrancyButton = [[NSButton alloc] initWithFrame:NSZeroRect];
+    [_enableVibrancyButton setCell:[[DJLCheckboxButtonCell alloc] init]];
+    [_enableVibrancyButton setButtonType:NSSwitchButton];
+    [_enableVibrancyButton setTitle:@"Enable vibrancy in conversation list"];
+    [_enableVibrancyButton setFont:[NSFont systemFontOfSize:12]];
+    [_enableVibrancyButton sizeToFit];
+    [_enableVibrancyButton setTarget:self];
+    [_enableVibrancyButton setAction:@selector(_enableVibrancyChanged:)];
+    [[self view] addSubview:_enableVibrancyButton];
+    
     _zenNotificationsButton = [[NSButton alloc] initWithFrame:NSZeroRect];
     [_zenNotificationsButton setCell:[[DJLCheckboxButtonCell alloc] init]];
     [_zenNotificationsButton setButtonType:NSSwitchButton];
@@ -100,6 +112,8 @@
 {
     BOOL enabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"SoundEnabled"];
     [_playSoundButton setState:enabled ? NSOnState : NSOffState];
+    BOOL enableVibrancy = [[NSUserDefaults standardUserDefaults] boolForKey:@"DJLEnableVibrancy"];
+    [_enableVibrancyButton setState:enableVibrancy ? NSOnState : NSOffState];
     [_makeDefaultButton setState:[[DJLURLHandler sharedManager] isRegisteredAsDefault] ? NSOnState : NSOffState];
     enabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"ZenNotifications"];
     [_zenNotificationsButton setState:enabled ? NSOnState : NSOffState];
@@ -111,6 +125,9 @@
     width = [_makeDefaultButton frame].size.width;
     if ([_playSoundButton frame].size.width > width) {
         width = [_playSoundButton frame].size.width;
+    }
+    if ([_enableVibrancyButton frame].size.width > width) {
+        width = [_enableVibrancyButton frame].size.width;
     }
     if ([_zenNotificationsButton frame].size.width > width) {
         width = [_zenNotificationsButton frame].size.width;
@@ -127,24 +144,36 @@
     frame.origin.x = (int) x;
     frame.origin.y = [[self view] bounds].size.height - 70;
     [_playSoundButton setFrame:frame];
-    frame = [_zenNotificationsButton frame];
+    frame = [_enableVibrancyButton frame];
     frame.origin.x = (int) x;
     frame.origin.y = [[self view] bounds].size.height - 100;
+    [_enableVibrancyButton setFrame:frame];
+    frame = [_zenNotificationsButton frame];
+    frame.origin.x = (int) x;
+    frame.origin.y = [[self view] bounds].size.height - 130;
     [_zenNotificationsButton setFrame:frame];
     frame = [_zenDescription frame];
     frame.origin.x = (int) x + 10;
-    frame.origin.y = [[self view] bounds].size.height - 105 - frame.size.height;
+    frame.origin.y = [[self view] bounds].size.height - 135 - frame.size.height;
     [_zenDescription setFrame:frame];
 }
 
 - (CGFloat) height
 {
-    return 130 + [_zenDescription frame].size.height;
+    return 160 + [_zenDescription frame].size.height;
 }
 
 - (void) _playSoundChanged:(id)sender
 {
     [[NSUserDefaults standardUserDefaults] setBool:([_playSoundButton state] == NSOnState) forKey:@"SoundEnabled"];
+}
+
+- (void) _enableVibrancyChanged:(id)sender
+{
+    [[NSUserDefaults standardUserDefaults] setBool:([_enableVibrancyButton state] == NSOnState) forKey:@"DJLEnableVibrancy"];
+    
+    DJLAppDelegate *appDelegate = [NSApp delegate];
+    [appDelegate toggleEnableVibrancy];
 }
 
 - (void) _makeDefaultChanged:(id)sender

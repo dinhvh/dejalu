@@ -11,6 +11,7 @@
     NSVisualEffectView * _effectView;
     DJLColoredView * _opaqueView;
     BOOL _selected;
+    BOOL _nextCellSelected;
     CGFloat _vibrancy;
     NSString * _folderPath;
 }
@@ -29,9 +30,10 @@
     [_effectView addSubview:_opaqueView];
     [_effectView addSubview:_mainView];
     [self addSubview:_effectView];
-    _vibrancy = 1.0;
-    [_mainView setVibrancy:1.0];
-    [_opaqueView setAlphaValue:0.0];
+    BOOL enableVibrancy = [[NSUserDefaults standardUserDefaults] boolForKey:@"DJLEnableVibrancy"];
+    _vibrancy = enableVibrancy ? 1.0 : 0.0;
+    [_mainView setVibrancy:enableVibrancy ? 1.0 : 0.0];
+    [_opaqueView setAlphaValue:enableVibrancy ? 0.0 : 1.0];
     return self;
 }
 
@@ -80,6 +82,20 @@
     return _selected;
 }
 
+- (void) setNextCellSelected:(BOOL)nextCellSelected
+{
+    if (_nextCellSelected == nextCellSelected) {
+        return;
+    }
+    _nextCellSelected = nextCellSelected;
+    [_mainView setNextCellSelected:_nextCellSelected];
+}
+
+- (BOOL) isNextCellSelected
+{
+    return _nextCellSelected;
+}
+
 - (CGFloat) vibrancy
 {
     return _vibrancy;
@@ -87,6 +103,9 @@
 
 - (void) setVibrancy:(CGFloat)vibrancy
 {
+    BOOL enableVibrancy = [[NSUserDefaults standardUserDefaults] boolForKey:@"DJLEnableVibrancy"];
+    vibrancy = enableVibrancy ? vibrancy : 0.0;
+    
     if (_vibrancy == vibrancy) {
         return;
     }
@@ -100,13 +119,11 @@
         [_mainView setVibrancy:_vibrancy];
         [_opaqueView setAlphaValue:1.0];
         [_effectView setMaterial:NSVisualEffectMaterialTitlebar];
-        [_opaqueView setBackgroundColor:[NSColor colorWithCalibratedWhite:0.9 alpha:1.0]];
     }
     else {
         [_mainView setVibrancy:_vibrancy];
         [_opaqueView setAlphaValue:1.0 - _vibrancy];
         [_effectView setMaterial:NSVisualEffectMaterialLight];
-        [_opaqueView setBackgroundColor:[NSColor whiteColor]];
     }
     [self update];
 }

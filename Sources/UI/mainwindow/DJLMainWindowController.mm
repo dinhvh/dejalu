@@ -651,6 +651,20 @@ public:
     }
 }
 
+- (void) toggleEnableVibrancy
+{
+    BOOL enableVibrancy = [[NSUserDefaults standardUserDefaults] boolForKey:@"DJLEnableVibrancy"];
+    
+    CGFloat targetVibrancy = enableVibrancy ? 1.0 : 0.0;
+    
+    if (![self _hasConversationPanel]) {
+        targetVibrancy = 0.0;
+    }
+    
+    [_toolbarView setVibrancy:targetVibrancy];
+    [_conversationListViewController setVibrancy:targetVibrancy];
+}
+
 - (void) toggleDetails:(id)sender
 {
     [self _setDetailsVisible:![self _hasConversationPanel] animated:YES];
