@@ -233,6 +233,7 @@ using namespace mailcore;
     __weak id <DJLConversationCellViewDelegate> _delegate;
     FBKVOController * _kvoController;
     BOOL _selected;
+    BOOL _nextCellSelected;
     CGFloat _vibrancy;
 }
 
@@ -573,11 +574,14 @@ using namespace mailcore;
         [str drawAtPoint:NSMakePoint(0, bounds.size.height - 30) withAttributes:attr];
     }
 
-    path = [[NSBezierPath alloc] init];
-    [path moveToPoint:NSMakePoint(60, 0)];
-    [path lineToPoint:NSMakePoint(bounds.size.width, 0)];
-    [[NSColor colorWithCalibratedWhite:0.0 alpha:0.15] setStroke];
-    [path stroke];
+    // Separator line. Do not draw it above or below selection highlight.
+    if (!_nextCellSelected && !_selected) {
+        path = [[NSBezierPath alloc] init];
+        [path moveToPoint:NSMakePoint(60, 0)];
+        [path lineToPoint:NSMakePoint(bounds.size.width, 0)];
+        [[NSColor colorWithCalibratedWhite:0.0 alpha:0.15] setStroke];
+        [path stroke];
+    }
 }
 
 - (void) setConversation:(NSDictionary *)conversation
@@ -617,6 +621,20 @@ using namespace mailcore;
     }
     _selected = selected;
     [_snippetView setSelected:_selected];
+    [self setNeedsDisplay:YES];
+}
+
+- (BOOL) isNextCellSelected
+{
+    return _nextCellSelected;
+}
+
+- (void) setNextCellSelected:(BOOL)nextCellSelected
+{
+    if (_nextCellSelected == nextCellSelected) {
+        return;
+    }
+    _nextCellSelected = nextCellSelected;
     [self setNeedsDisplay:YES];
 }
 

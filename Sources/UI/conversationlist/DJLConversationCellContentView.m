@@ -11,6 +11,7 @@
     NSVisualEffectView * _effectView;
     DJLColoredView * _opaqueView;
     BOOL _selected;
+    BOOL _nextCellSelected;
     CGFloat _vibrancy;
     NSString * _folderPath;
 }
@@ -78,6 +79,20 @@
 - (BOOL) isSelected
 {
     return _selected;
+}
+
+- (void) setNextCellSelected:(BOOL)nextCellSelected
+{
+    if (_nextCellSelected == nextCellSelected) {
+        return;
+    }
+    _nextCellSelected = nextCellSelected;
+    [_mainView setNextCellSelected:_nextCellSelected];
+}
+
+- (BOOL) isNextCellSelected
+{
+    return _nextCellSelected;
 }
 
 - (CGFloat) vibrancy
