@@ -16,7 +16,8 @@ int main(int argc, const char * argv[])
                                        @"DJLConversationViewWidth": @600,
                                        @"DJLMainWindowHasFolderView": @NO,
                                        @"DJLMainWindowHasConversationView": @YES,
-                                       @"SoundEnabled": @YES};
+                                       @"SoundEnabled": @YES,
+                                       @"DJLEnableVibrancy": @YES};
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaultSettings];
 
     DJLLogInit();

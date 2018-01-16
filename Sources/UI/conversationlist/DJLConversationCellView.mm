@@ -37,6 +37,9 @@ using namespace mailcore;
 
 - (void) setVibrancy:(CGFloat)vibrancy
 {
+    BOOL enableVibrancy = [[NSUserDefaults standardUserDefaults] boolForKey:@"DJLEnableVibrancy"];
+    vibrancy = enableVibrancy ? vibrancy : 0.0;
+    
     _vibrancy = vibrancy;
     [self setNeedsDisplay:YES];
 }
@@ -640,6 +643,9 @@ using namespace mailcore;
 
 - (void) setVibrancy:(CGFloat)vibrancy
 {
+    BOOL enableVibrancy = [[NSUserDefaults standardUserDefaults] boolForKey:@"DJLEnableVibrancy"];
+    vibrancy = enableVibrancy ? vibrancy : 0.0;
+    
     if (_vibrancy == vibrancy) {
         return;
     }

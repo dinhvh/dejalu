@@ -156,7 +156,8 @@ private:
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     _folderToReset = [[NSMutableSet alloc] init];
     _callback = new DJLConversationListViewControllerCallback(self);
-    _vibrancy = 1.0;
+    BOOL enableVibrancy = [[NSUserDefaults standardUserDefaults] boolForKey:@"DJLEnableVibrancy"];
+    _vibrancy = enableVibrancy ? 1.0 : 0.0;
     return self;
 }
 
@@ -445,6 +446,9 @@ private:
 
 - (void) setVibrancy:(CGFloat)vibrancy
 {
+    BOOL enableVibrancy = [[NSUserDefaults standardUserDefaults] boolForKey:@"DJLEnableVibrancy"];
+    vibrancy = enableVibrancy ? vibrancy : 0.0;
+    
     _vibrancy = vibrancy;
     [_tableView setBackgroundColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1 - vibrancy]];
     NSRange range = [_tableView rowsInRect:[_tableView visibleRect]];
