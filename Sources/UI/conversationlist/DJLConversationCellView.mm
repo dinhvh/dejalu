@@ -183,10 +183,14 @@ using namespace mailcore;
 
         rect.origin.x = x + 5;
         rect.origin.y = 50 + 12;
-        rect.size.width = size.width;
+        rect.size.width = self.bounds.size.width - statusMargin - rect.origin.x;
         rect.size.height = size.height;
 
-        [attachmentString drawWithRect:rect options:0 attributes:labelAttr];
+        NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingMiddle];
+        NSMutableDictionary * attr = [labelAttr mutableCopy];
+        attr[NSParagraphStyleAttributeName] = paragraphStyle;
+        [attachmentString drawWithRect:rect options:0 attributes:attr];
 
         x += (int) size.width + 10;
     }
