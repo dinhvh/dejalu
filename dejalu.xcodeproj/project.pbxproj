@@ -238,6 +238,7 @@
 		C68ACAFC1FCBE51700C9097D /* DJLWebHTMLView.m in Sources */ = {isa = PBXBuildFile; fileRef = C68ACAAA1FCBE51700C9097D /* DJLWebHTMLView.m */; };
 		C696909D1A9C14C000627D8D /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C696909C1A9C14C000627D8D /* Carbon.framework */; };
 		C69690E31AB00CFE00627D8D /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C69690E21AB00CFE00627D8D /* libresolv.dylib */; };
+		C6A9EB1020107FB90030AC4D /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = C6A9EAF320107FB90030AC4D /* dsa_pub.pem */; };
 		C6BEC1CF1B31663100546519 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6BEC1CE1B31663100546519 /* Quartz.framework */; };
 		C6D3453A1C73076F00703898 /* PFMoveApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = C6D345391C73076F00703898 /* PFMoveApplication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C6D93A221BFC3A9300E3D4F8 /* BSHTTPCookieStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = C6D93A211BFC3A9300E3D4F8 /* BSHTTPCookieStorage.m */; };
@@ -1708,6 +1709,7 @@
 		C68ACAAB1FCBE51700C9097D /* WebHTMLViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebHTMLViewPrivate.h; sourceTree = "<group>"; };
 		C696909C1A9C14C000627D8D /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		C69690E21AB00CFE00627D8D /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
+		C6A9EAF320107FB90030AC4D /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		C6BEC1CE1B31663100546519 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		C6D345381C73076F00703898 /* PFMoveApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PFMoveApplication.h; path = LetsMove/PFMoveApplication.h; sourceTree = "<group>"; };
 		C6D345391C73076F00703898 /* PFMoveApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PFMoveApplication.m; path = LetsMove/PFMoveApplication.m; sourceTree = "<group>"; };
@@ -3449,6 +3451,14 @@
 			path = webview;
 			sourceTree = "<group>";
 		};
+		C6A9EAF220107FB90030AC4D /* sparkle */ = {
+			isa = PBXGroup;
+			children = (
+				C6A9EAF320107FB90030AC4D /* dsa_pub.pem */,
+			);
+			path = sparkle;
+			sourceTree = "<group>";
+		};
 		C6D345371C73075F00703898 /* LetsMove */ = {
 			isa = PBXGroup;
 			children = (
@@ -3507,19 +3517,20 @@
 		C6EC01C81FF61DCA006B96EA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C6EC01C91FF61DCA006B96EA /* plist */,
-				C6EC01CB1FF61DCA006B96EA /* ServiceIcons */,
+				C6EC04591FF61DCB006B96EA /* AppIcon */,
+				C6EC047B1FF61DCB006B96EA /* avatar */,
+				C6EC03EF1FF61DCB006B96EA /* Credits.rtf */,
+				C6EC03F31FF61DCB006B96EA /* Giphy */,
 				C6EC01E21FF61DCA006B96EA /* Glyphs */,
+				C6EC03F61FF61DCB006B96EA /* html */,
+				C6EC045B1FF61DCB006B96EA /* icons */,
 				C6EC03EB1FF61DCB006B96EA /* icudata */,
 				C6EC03ED1FF61DCB006B96EA /* InfoPlist.strings */,
-				C6EC03EF1FF61DCB006B96EA /* Credits.rtf */,
 				C6EC03F11FF61DCB006B96EA /* MainMenu.xib */,
-				C6EC03F31FF61DCB006B96EA /* Giphy */,
-				C6EC03F61FF61DCB006B96EA /* html */,
+				C6EC01C91FF61DCA006B96EA /* plist */,
+				C6EC01CB1FF61DCA006B96EA /* ServiceIcons */,
 				C6EC04541FF61DCB006B96EA /* sounds */,
-				C6EC04591FF61DCB006B96EA /* AppIcon */,
-				C6EC045B1FF61DCB006B96EA /* icons */,
-				C6EC047B1FF61DCB006B96EA /* avatar */,
+				C6A9EAF220107FB90030AC4D /* sparkle */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -5178,6 +5189,7 @@
 				C6EC05171FF61DCC006B96EA /* DejaLu_StarOff_256.png in Resources */,
 				C6EC05641FF61DCC006B96EA /* DejaLu_ArrowRight_48@2x.png in Resources */,
 				C6EC05DC1FF61DCC006B96EA /* DejaLu_ArrowLeft_48@2x.png in Resources */,
+				C6A9EB1020107FB90030AC4D /* dsa_pub.pem in Resources */,
 				C6EC05FB1FF61DCC006B96EA /* DejaLu_CheckmarkOff_48.png in Resources */,
 				C6EC061D1FF61DCC006B96EA /* DejaLu_GeneralSettings_32.png in Resources */,
 				C6EC075C1FF61DCD006B96EA /* Avatar37Signals.png in Resources */,
