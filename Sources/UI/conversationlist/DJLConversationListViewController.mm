@@ -917,7 +917,8 @@ private:
 
 - (NSMenu *) djl_tableView:(NSTableView *)tableView menuForEvent:(NSEvent *)event row:(NSInteger)row
 {
-    if ([[_tableView selectedRowIndexes] count] == 0) {
+    // Select right-clicked row if it isn't already in the selection.
+    if (![[_tableView selectedRowIndexes] containsIndex:row]) {
         if (row != -1) {
             [_tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
         }
