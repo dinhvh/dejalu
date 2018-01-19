@@ -1883,6 +1883,14 @@ static int compareAddresses(void * a, void * b, void * context)
 #pragma mark -
 #pragma mark textfield delegate
 
+- (void)controlTextDidBeginEditing:(NSNotification *)notification
+{
+    if (_subjectField == [notification object]) {
+        NSTextView *textView = (NSTextView *)[self.window firstResponder];
+        [textView setContinuousSpellCheckingEnabled:YES];
+    }
+}
+
 - (void)controlTextDidChange:(NSNotification *)aNotification
 {
     if (_toField == [aNotification object]) {
