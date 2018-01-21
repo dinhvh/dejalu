@@ -19,6 +19,8 @@
 
 - (void) refresh;
 
+- (void) toggleShowSenderAvatar;
+
 - (IBAction) toggleSidebar:(id)sender;
 - (IBAction) toggleDetails:(id)sender;
 - (IBAction) showLabelsPanel:(id)sender;

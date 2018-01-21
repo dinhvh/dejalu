@@ -4,6 +4,7 @@
 #import "DJLPrefsGeneralViewController.h"
 
 #import "DJLURLHandler.h"
+#import "DJLAppDelegate.h"
 
 @interface DJLCheckboxButtonCell  : NSButtonCell
 
@@ -31,6 +32,7 @@
     NSButton * _makeDefaultButton;
     NSButton * _playSoundButton;
     NSButton * _zenNotificationsButton;
+    NSButton * _showSenderAvatarButton;
     NSTextField * _zenDescription;
 }
 
@@ -79,6 +81,16 @@
     [_zenNotificationsButton setAction:@selector(_zenNotificationsChanged:)];
     [[self view] addSubview:_zenNotificationsButton];
 
+    _showSenderAvatarButton = [[NSButton alloc] initWithFrame:NSZeroRect];
+    [_showSenderAvatarButton setCell:[[DJLCheckboxButtonCell alloc] init]];
+    [_showSenderAvatarButton setButtonType:NSSwitchButton];
+    [_showSenderAvatarButton setTitle:@"Show sender avatar"];
+    [_showSenderAvatarButton setFont:[NSFont systemFontOfSize:12]];
+    [_showSenderAvatarButton sizeToFit];
+    [_showSenderAvatarButton setTarget:self];
+    [_showSenderAvatarButton setAction:@selector(_showSenderAvatarChanged:)];
+    [[self view] addSubview:_showSenderAvatarButton];
+
     _zenDescription = [[NSTextField alloc] initWithFrame:NSZeroRect];
     [_zenDescription setBordered:NO];
     [_zenDescription setEditable:NO];
@@ -103,6 +115,8 @@
     [_makeDefaultButton setState:[[DJLURLHandler sharedManager] isRegisteredAsDefault] ? NSOnState : NSOffState];
     enabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"ZenNotifications"];
     [_zenNotificationsButton setState:enabled ? NSOnState : NSOffState];
+    BOOL showSenderAvatar = [[NSUserDefaults standardUserDefaults] boolForKey:@"DJLShowSenderAvatar"];
+    [_showSenderAvatarButton setState:showSenderAvatar ? NSOnState : NSOffState];
 }
 
 - (void) viewDidLayout
@@ -114,6 +128,9 @@
     }
     if ([_zenNotificationsButton frame].size.width > width) {
         width = [_zenNotificationsButton frame].size.width;
+    }
+    if ([_showSenderAvatarButton frame].size.width > width) {
+        width = [_showSenderAvatarButton frame].size.width;
     }
     if ([_zenDescription frame].size.width > width) {
         width = [_zenDescription frame].size.width;
@@ -127,19 +144,23 @@
     frame.origin.x = (int) x;
     frame.origin.y = [[self view] bounds].size.height - 70;
     [_playSoundButton setFrame:frame];
-    frame = [_zenNotificationsButton frame];
+    frame = [_showSenderAvatarButton frame];
     frame.origin.x = (int) x;
     frame.origin.y = [[self view] bounds].size.height - 100;
+    [_showSenderAvatarButton setFrame:frame];
+    frame = [_zenNotificationsButton frame];
+    frame.origin.x = (int) x;
+    frame.origin.y = [[self view] bounds].size.height - 130;
     [_zenNotificationsButton setFrame:frame];
     frame = [_zenDescription frame];
     frame.origin.x = (int) x + 10;
-    frame.origin.y = [[self view] bounds].size.height - 105 - frame.size.height;
+    frame.origin.y = [[self view] bounds].size.height - 135 - frame.size.height;
     [_zenDescription setFrame:frame];
 }
 
 - (CGFloat) height
 {
-    return 130 + [_zenDescription frame].size.height;
+    return 160 + [_zenDescription frame].size.height;
 }
 
 - (void) _playSoundChanged:(id)sender
@@ -160,6 +181,13 @@
 - (void) _zenNotificationsChanged:(id)sender
 {
     [[NSUserDefaults standardUserDefaults] setBool:([_zenNotificationsButton state] == NSOnState) forKey:@"ZenNotifications"];
+}
+
+- (void) _showSenderAvatarChanged:(id)sender
+{
+    [[NSUserDefaults standardUserDefaults] setBool:([_showSenderAvatarButton state] == NSOnState) forKey:@"DJLShowSenderAvatar"];
+    DJLAppDelegate *appDelegate = [NSApp delegate];
+    [appDelegate toggleShowSenderAvatar];
 }
 
 @end

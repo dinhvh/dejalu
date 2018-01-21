@@ -16,6 +16,7 @@ int main(int argc, const char * argv[])
                                        @"DJLConversationViewWidth": @600,
                                        @"DJLMainWindowHasFolderView": @NO,
                                        @"DJLMainWindowHasConversationView": @YES,
+                                       @"DJLShowSenderAvatar": @YES,
                                        @"SoundEnabled": @YES};
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaultSettings];
 

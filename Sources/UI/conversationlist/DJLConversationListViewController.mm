@@ -519,6 +519,11 @@ private:
     [self refresh];
 }
 
+- (void) toggleShowSenderAvatar
+{
+    [_tableView reloadData];
+}
+
 - (NSDictionary *) _infoForConversationID:(int64_t)conversationID accountIndex:(unsigned int)accountIndex
 {
     HashMap * info = [self _currentUnifiedStorageView]->conversationsInfoForConversationID(accountIndex, conversationID);
