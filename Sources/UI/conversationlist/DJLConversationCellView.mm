@@ -80,7 +80,8 @@ using namespace mailcore;
         [filteredLabels addObject:label];
     }
 
-    CGFloat avatarSize = 30;
+    BOOL showSenderAvatar = [[NSUserDefaults standardUserDefaults] boolForKey:@"DJLShowSenderAvatar"];
+    CGFloat avatarSize = showSenderAvatar ? 30 : 0;
     CGFloat statusMargin = 15;
     NSColor * previewColor = [NSColor colorWithCalibratedWhite:0.5 alpha:1.0];
     if (_selected) {
@@ -362,7 +363,8 @@ using namespace mailcore;
     BOOL isRead = ![nbUnread boolValue];
     //NSNumber * nbStarred = [_conversation objectForKey:@"starred"];
     
-    CGFloat avatarSize = 30;
+    BOOL showSenderAvatar = [[NSUserDefaults standardUserDefaults] boolForKey:@"DJLShowSenderAvatar"];
+    CGFloat avatarSize = showSenderAvatar ? 30 : 0;
     CGFloat statusMargin = 15;
     NSString * avatarEmail = [_conversation objectForKey:@"sender"];
     NSImage * image = nil;
@@ -548,26 +550,29 @@ using namespace mailcore;
     [snippetAttr setObject:snippetFont forKey:NSFontAttributeName];
     [snippetAttr setObject:previewColor forKey:NSForegroundColorAttributeName];
 
-    [NSGraphicsContext saveGraphicsState];
     NSBezierPath * path = [[NSBezierPath alloc] init];
-    [path appendBezierPathWithArcWithCenter:NSMakePoint(8 + statusMargin + avatarSize / 2., (int) ((bounds.size.height - avatarSize) / 2.) + avatarSize / 2.) radius:avatarSize / 2. startAngle:0 endAngle:360];
-    [path addClip];
-    if (image == nil) {
-        [[NSColor colorWithCalibratedWhite:0.8 alpha:1.0] setFill];
-        NSRectFill(NSMakeRect(8 + statusMargin, /*bounds.size.height - 24 - 6 */ (int) ((bounds.size.height - avatarSize) / 2), avatarSize, avatarSize));
-        if ([senders length] > 0) {
-            NSFont * avatarFont = [NSFont systemFontOfSize:18];
-            NSString * senderFirstLetter = [[senders substringToIndex:1] uppercaseString];
-            NSDictionary * avatarAttr = @{NSFontAttributeName: avatarFont, NSForegroundColorAttributeName: [NSColor colorWithWhite:0.4 alpha:1.0]};
-            NSSize size = [senderFirstLetter sizeWithAttributes:avatarAttr];
-            NSPoint position = NSMakePoint((avatarSize - size.width) / 2, (avatarSize - size.height) / 2);
-            [senderFirstLetter drawAtPoint:NSMakePoint(8 + statusMargin + position.x, (int) ((bounds.size.height - avatarSize) / 2) + position.y) withAttributes:avatarAttr];
+
+    if (showSenderAvatar) {
+        [NSGraphicsContext saveGraphicsState];
+        [path appendBezierPathWithArcWithCenter:NSMakePoint(8 + statusMargin + avatarSize / 2., (int) ((bounds.size.height - avatarSize) / 2.) + avatarSize / 2.) radius:avatarSize / 2. startAngle:0 endAngle:360];
+        [path addClip];
+        if (image == nil) {
+            [[NSColor colorWithCalibratedWhite:0.8 alpha:1.0] setFill];
+            NSRectFill(NSMakeRect(8 + statusMargin, /*bounds.size.height - 24 - 6 */ (int) ((bounds.size.height - avatarSize) / 2), avatarSize, avatarSize));
+            if ([senders length] > 0) {
+                NSFont * avatarFont = [NSFont systemFontOfSize:18];
+                NSString * senderFirstLetter = [[senders substringToIndex:1] uppercaseString];
+                NSDictionary * avatarAttr = @{NSFontAttributeName: avatarFont, NSForegroundColorAttributeName: [NSColor colorWithWhite:0.4 alpha:1.0]};
+                NSSize size = [senderFirstLetter sizeWithAttributes:avatarAttr];
+                NSPoint position = NSMakePoint((avatarSize - size.width) / 2, (avatarSize - size.height) / 2);
+                [senderFirstLetter drawAtPoint:NSMakePoint(8 + statusMargin + position.x, (int) ((bounds.size.height - avatarSize) / 2) + position.y) withAttributes:avatarAttr];
+            }
         }
+        else {
+            [image drawAtPoint:NSMakePoint(8 + statusMargin, (int) ((bounds.size.height - avatarSize) / 2)) fromRect:NSMakeRect(0, 0, avatarSize, avatarSize) operation:NSCompositeSourceOver fraction:1.0];
+        }
+        [NSGraphicsContext restoreGraphicsState];
     }
-    else {
-        [image drawAtPoint:NSMakePoint(8 + statusMargin, (int) ((bounds.size.height - avatarSize) / 2)) fromRect:NSMakeRect(0, 0, avatarSize, avatarSize) operation:NSCompositeSourceOver fraction:1.0];
-    }
-    [NSGraphicsContext restoreGraphicsState];
 
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"ShowCellDebugInfo"]) {
         NSFont * font = [NSFont boldSystemFontOfSize:20];
@@ -581,7 +586,7 @@ using namespace mailcore;
     // Separator line. Do not draw it above or below selection highlight.
     if (!_nextCellSelected && !_selected) {
         path = [[NSBezierPath alloc] init];
-        [path moveToPoint:NSMakePoint(60, 0)];
+        [path moveToPoint:NSMakePoint(avatarSize + 30, 0)];
         [path lineToPoint:NSMakePoint(bounds.size.width, 0)];
         [[NSColor colorWithCalibratedWhite:0.0 alpha:0.15] setStroke];
         [path stroke];

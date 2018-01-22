@@ -24,6 +24,8 @@
 #import "DJLConversationListPlaceholderView.h"
 #import "DJLLabelsViewController.h"
 
+#import "FBKVOController.h"
+
 #include "Hermes.h"
 
 #define LOG_IDLE(...) DJLLogWithID("idle", __VA_ARGS__)
@@ -149,6 +151,7 @@ private:
     DJLConversationListPlaceholderView * _placeholderView;
     BOOL _hasPlaceholderUpdateScheduled;
     NSPopover * _labelsPopOver;
+    FBKVOController * _kvoController;
 }
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -157,6 +160,16 @@ private:
     _folderToReset = [[NSMutableSet alloc] init];
     _callback = new DJLConversationListViewControllerCallback(self);
     _vibrancy = 1.0;
+
+    _kvoController = [FBKVOController controllerWithObserver:self];
+    __weak typeof(self) weakSelf = self;
+    [_kvoController observe:[NSUserDefaults standardUserDefaults] keyPath:@"DJLShowSenderAvatar" options:0 block:^(id observer, id object, NSDictionary * change) {
+        typeof(self) strongSelf = weakSelf;
+        if (strongSelf) {
+            [strongSelf->_tableView reloadData];
+        }
+    }];
+
     return self;
 }
 
