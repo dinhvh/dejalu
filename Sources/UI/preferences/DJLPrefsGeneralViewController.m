@@ -4,7 +4,6 @@
 #import "DJLPrefsGeneralViewController.h"
 
 #import "DJLURLHandler.h"
-#import "DJLAppDelegate.h"
 
 @interface DJLCheckboxButtonCell  : NSButtonCell
 
@@ -186,8 +185,6 @@
 - (void) _showSenderAvatarChanged:(id)sender
 {
     [[NSUserDefaults standardUserDefaults] setBool:([_showSenderAvatarButton state] == NSOnState) forKey:@"DJLShowSenderAvatar"];
-    DJLAppDelegate *appDelegate = [NSApp delegate];
-    [appDelegate toggleShowSenderAvatar];
 }
 
 @end

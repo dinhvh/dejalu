@@ -1107,11 +1107,6 @@ public:
     [_conversationListViewController refresh];
 }
 
-- (void) toggleShowSenderAvatar
-{
-    [_conversationListViewController toggleShowSenderAvatar];
-}
-
 - (IBAction)saveAllAttachments:(id)sender
 {
     [_conversationViewController saveAllAttachments:sender];

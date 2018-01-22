@@ -65,8 +65,6 @@
 
 - (void) refreshAndScrollToTop;
 
-- (void) toggleShowSenderAvatar;
-
 - (hermes::UnifiedMailStorageView *) currentUnifiedStorageView;
 
 @end

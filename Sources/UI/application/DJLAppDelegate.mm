@@ -185,11 +185,6 @@ private:
     }
 }
 
-- (void) toggleShowSenderAvatar
-{
-    [_mainWindowController toggleShowSenderAvatar];
-}
-
 - (void) _accountClosed
 {
     _closePendingCount --;

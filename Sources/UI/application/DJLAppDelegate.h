@@ -28,6 +28,4 @@
 
 - (void) addAccount;
 
-- (void) toggleShowSenderAvatar;
-
 @end
