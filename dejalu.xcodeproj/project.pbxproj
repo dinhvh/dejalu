@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		92D2C2A62018261100CC64DB /* statusitem.png in Resources */ = {isa = PBXBuildFile; fileRef = 92D2C2892018261000CC64DB /* statusitem.png */; };
+		92D2C2A8201826CA00CC64DB /* statusitem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92D2C2A7201826CA00CC64DB /* statusitem@2x.png */; };
 		C602E3441C6B247100BF728E /* GoogleAnalyticsTracker.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C602E33C1C6B21D900BF728E /* GoogleAnalyticsTracker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C602E3451C6B264000BF728E /* GoogleAnalyticsTracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C602E33C1C6B21D900BF728E /* GoogleAnalyticsTracker.framework */; };
 		C60B45831E17397A006D5115 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C60B45531E1736FF006D5115 /* Sparkle.framework */; };
@@ -1240,6 +1242,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		92D2C2892018261000CC64DB /* statusitem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = statusitem.png; sourceTree = "<group>"; };
+		92D2C2A7201826CA00CC64DB /* statusitem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "statusitem@2x.png"; sourceTree = "<group>"; };
 		C602E3361C6B21D900BF728E /* GoogleAnalyticsTracker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GoogleAnalyticsTracker.xcodeproj; path = "Google-Analytics-for-OS-X/GoogleAnalyticsTracker.xcodeproj"; sourceTree = "<group>"; };
 		C60B45311E1736FE006D5115 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = SparkleSandbox/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		C61E770C18053A78009CF7C1 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -4308,6 +4312,8 @@
 		C6EC045B1FF61DCB006B96EA /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				92D2C2A7201826CA00CC64DB /* statusitem@2x.png */,
+				92D2C2892018261000CC64DB /* statusitem.png */,
 				C6EC045C1FF61DCB006B96EA /* plus.png */,
 				C6EC045D1FF61DCB006B96EA /* network-error.png */,
 				C6EC045E1FF61DCB006B96EA /* icon.png */,
@@ -5104,6 +5110,7 @@
 				C6EC05271FF61DCC006B96EA /* DejaLu_Spam_48@2x.png in Resources */,
 				C6EC06D11FF61DCD006B96EA /* signature.html in Resources */,
 				C6EC076F1FF61DCD006B96EA /* container-migration.plist in Resources */,
+				92D2C2A62018261100CC64DB /* statusitem.png in Resources */,
 				C6EC06611FF61DCC006B96EA /* DejaLu_FailedOn_32.png in Resources */,
 				C6EC07611FF61DCD006B96EA /* aol.png in Resources */,
 				C6EC05B51FF61DCC006B96EA /* DejaLu_MailSent_16@2x.png in Resources */,
@@ -5306,6 +5313,7 @@
 				C6EC06C61FF61DCD006B96EA /* DejaLu_Empty_128.png in Resources */,
 				C6EC05521FF61DCC006B96EA /* DejaLu_ArrowRightButton_48@2x.png in Resources */,
 				C6EC069B1FF61DCC006B96EA /* DejaLu_StarOff_20.png in Resources */,
+				92D2C2A8201826CA00CC64DB /* statusitem@2x.png in Resources */,
 				C6EC05CC1FF61DCC006B96EA /* DejaLu_FailedOff_48@2x.png in Resources */,
 				C6EC04C51FF61DCC006B96EA /* AvatarVimeo.png in Resources */,
 				C6EC058C1FF61DCC006B96EA /* DejaLu_Settings_64@2x.png in Resources */,
