@@ -90,6 +90,7 @@ private:
     Account * _account;
     BOOL _pendingNotify;
     NSTimeInterval _lastSoundDate;
+    NSStatusItem * _statusItem;
 }
 
 #import "DJLSingleton.h"
@@ -111,12 +112,19 @@ private:
     _pendingOps = new Array();
     _account = NULL;
 
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"DJLShowStatusItem"]) {
+        [self _createStatusItem];
+    }
+
     [self _updateBadge];
 
     _kvoController = [FBKVOController controllerWithObserver:self];
     __weak typeof(self) weakSelf = self;
     [_kvoController observe:[NSUserDefaults standardUserDefaults] keyPath:@"ZenNotifications" options:0 block:^(id observer, id object, NSDictionary * change) {
         [weakSelf _updateBadge];
+    }];
+    [_kvoController observe:[NSUserDefaults standardUserDefaults] keyPath:@"DJLShowStatusItem" options:0 block:^(id observer, id object, NSDictionary * change) {
+        [weakSelf _toggleStatusItem];
     }];
 
     _userNotificationCenter = [NSUserNotificationCenter defaultUserNotificationCenter];
@@ -133,6 +141,54 @@ private:
     MC_SAFE_RELEASE(_registeredViews);
     AccountManager::sharedManager()->removeObserver(_callback);
     MC_SAFE_RELEASE(_callback);
+}
+
+- (void) _createStatusItem
+{
+    if (_statusItem) {
+        return;
+    }
+    NSImage * icon = [NSImage imageNamed:@"statusitem"];
+    [icon setTemplate:YES];
+    _statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+    _statusItem.button.target = self;
+    _statusItem.button.action = @selector(_statusItemClicked:);
+    _statusItem.highlightMode = NO;
+    _statusItem.button.imagePosition = NSImageOnly;
+    _statusItem.button.image = icon;
+    _statusItem.autosaveName = @"DJLStatusItem";
+}
+
+- (void) _destroyStatusItem
+{
+    if (!_statusItem) {
+        return;
+    }
+    [[NSStatusBar systemStatusBar] removeStatusItem:_statusItem];
+    _statusItem = nil;
+}
+
+- (void) _toggleStatusItem
+{
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"DJLShowStatusItem"]) {
+        [self _createStatusItem];
+        [self _updateBadge];
+    }
+    else {
+        [self _destroyStatusItem];
+    }
+}
+
+- (void) _statusItemClicked:(id)sender
+{
+    [NSApp activateIgnoringOtherApps:YES];
+    [NSApp arrangeInFront:self];
+    for (NSWindow * window in NSApp.orderedWindows) {
+        if ([window.identifier isEqualToString:@"DejaLu Main Window"]) {
+            [window makeKeyAndOrderFront:self];
+            break;
+        }
+    }
 }
 
 - (void) _accountUnseenChanged
@@ -219,6 +275,7 @@ private:
 
 - (void) _updateNewEmailsBadge
 {
+    BOOL showStatusItem = [[NSUserDefaults standardUserDefaults] boolForKey:@"DJLShowStatusItem"];
     BOOL hasUnseen = NO;
     mc_foreacharray(Account, account, AccountManager::sharedManager()->accounts()) {
         if (account->isFolderUnseen(account->folderIDForPath(account->inboxFolderPath()))) {
@@ -227,14 +284,23 @@ private:
     }
     if (hasUnseen) {
         [[NSApp dockTile] setBadgeLabel:@" "];
+        if (showStatusItem) {
+            _statusItem.button.imagePosition = NSImageLeft;
+            _statusItem.button.title = @"!";
+        }
     }
     else {
         [[NSApp dockTile] setBadgeLabel:nil];
+        if (showStatusItem) {
+            _statusItem.button.imagePosition = NSImageOnly;
+            _statusItem.button.title = @"";
+        }
     }
 }
 
 - (void) _updateUnreadEmailsBadge
 {
+    BOOL showStatusItem = [[NSUserDefaults standardUserDefaults] boolForKey:@"DJLShowStatusItem"];
     int total = 0;
     mc_foreacharray(Account, account, AccountManager::sharedManager()->accounts()) {
         if (account->inboxFolderPath() != NULL) {
@@ -246,10 +312,18 @@ private:
     }
     if (total == 0) {
         [[NSApp dockTile] setBadgeLabel:nil];
+        if (showStatusItem) {
+            _statusItem.button.imagePosition = NSImageOnly;
+            _statusItem.button.title = @"";
+        }
     }
     else {
         NSString * label = [NSString stringWithFormat:@"%u", total];
         [[NSApp dockTile] setBadgeLabel:label];
+        if (showStatusItem) {
+            _statusItem.button.imagePosition = NSImageLeft;
+            _statusItem.button.title = label;
+        }
     }
 }
 

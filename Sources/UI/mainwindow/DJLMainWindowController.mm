@@ -290,6 +290,7 @@ public:
     [window setTitleVisibility:NSWindowTitleHidden];
     [window center];
     [window setAnimationBehavior:NSWindowAnimationBehaviorDocumentWindow];
+    [window setIdentifier:@"DejaLu Main Window"];
     
     NSRect frame = [window frame];
     frame.origin = CGPointZero;
