@@ -28,6 +28,7 @@
 
 #include "Hermes.h"
 
+#define LOG(...) DJLLogWithID("conversationlist", __VA_ARGS__)
 #define LOG_IDLE(...) DJLLogWithID("idle", __VA_ARGS__)
 #define LOG_STORAGE(...) DJLLogWithID("storage", __VA_ARGS__)
 #define LOG_STACK_STORAGE(...) DJLLogStackWithID("storage", __VA_ARGS__)
@@ -2223,6 +2224,9 @@ private:
 
     DJLLabelsViewController * labelsViewController = [[DJLLabelsViewController alloc] init];
     [labelsViewController setArchiveEnabled:archive];
+    LOG("%s", MCUTF8([self uniqueAccountForSelection]));
+    LOG("%s", MCUTF8([self uniqueAccountForSelection]->accountInfo()));
+    LOG("%s", MCUTF8([self uniqueAccountForSelection]->accountInfo()->providerIdentifier()));
     if (![self uniqueAccountForSelection]->accountInfo()->providerIdentifier()->isEqual(MCSTR("gmail"))) {
         [labelsViewController setArchiveEnabled:YES];
     }

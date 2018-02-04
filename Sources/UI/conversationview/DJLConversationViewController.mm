@@ -1628,6 +1628,9 @@ static NSDictionary * GetImageInfo(NSData * data, BOOL allowResize)
 - (BOOL) _isInbox
 {
     HashMap * info = _storageView->conversationsInfoForConversationID(_convID);
+    if (info == NULL) {
+      return NO;
+    }
     Array * labels = (Array *) info->objectForKey(MCSTR("labels"));
     if (labels == NULL) {
         return NO;
