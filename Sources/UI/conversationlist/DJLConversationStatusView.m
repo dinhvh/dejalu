@@ -119,8 +119,8 @@ static BOOL s_interactionEnabled = NO;
     NSNumber * nbStarred = [_conversation objectForKey:@"starred"];
     
     if (![self isStar]) {
+        NSRect rect = NSMakeRect(7, 9, 10, 10);
         if ([nbUnread boolValue]) {
-            NSRect rect = NSMakeRect(8, 8, 9, 9);
             NSColor * color = nil;
             if (_tracking) {
                 if (_clickingInside) {
@@ -149,7 +149,6 @@ static BOOL s_interactionEnabled = NO;
             }
         }
         else {
-            NSRect rect = NSMakeRect(8, 9, 9, 9);
             NSColor * color = nil;
             if (_clickingInside) {
                 color = [NSColor colorWithCalibratedRed:0.6 green:0.6 blue:1.0 alpha:1.0];
