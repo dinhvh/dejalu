@@ -2292,14 +2292,17 @@ private:
     }
     else if ([item action] == @selector(archiveMessage:)) {
         if ([[_tableView selectedRowIndexes] count] == 0) {
+            NSLog(@"archiveMessage disabled: list is empty");
             return NO;
         }
         if (_unifiedSearchStorageView != NULL) {
+            NSLog(@"archiveMessage disabled: search in progress");
             return NO;
         }
         else if ([_folderPath isEqualToString:MCO_TO_OBJC(_unifiedAccount->allMailFolderPath())] ||
                  [_folderPath isEqualToString:MCO_TO_OBJC(_unifiedAccount->archiveFolderPath())] ||
                  [_folderPath isEqualToString:MCO_TO_OBJC(_unifiedAccount->sentFolderPath())]) {
+            NSLog(@"archiveMessage disabled: folder is %@", _folderPath);
             return NO;
         }
         else {
