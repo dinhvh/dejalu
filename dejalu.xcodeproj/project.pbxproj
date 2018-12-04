@@ -250,28 +250,6 @@
 		C6E5F588190E2817008D7C52 /* FBKVOController.m in Sources */ = {isa = PBXBuildFile; fileRef = C6E5F587190E2817008D7C52 /* FBKVOController.m */; };
 		C6E5F58A190E2939008D7C52 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6E5F589190E2939008D7C52 /* SystemConfiguration.framework */; };
 		C6EC04AF1FF61DCC006B96EA /* avatar.json in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01CA1FF61DCA006B96EA /* avatar.json */; };
-		C6EC04B01FF61DCC006B96EA /* AvatarYahoo.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01CC1FF61DCA006B96EA /* AvatarYahoo.png */; };
-		C6EC04B11FF61DCC006B96EA /* AvatarFacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01CD1FF61DCA006B96EA /* AvatarFacebook.png */; };
-		C6EC04B21FF61DCC006B96EA /* AvatarFlickr.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01CE1FF61DCA006B96EA /* AvatarFlickr.png */; };
-		C6EC04B31FF61DCC006B96EA /* AvatarQuora.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01CF1FF61DCA006B96EA /* AvatarQuora.png */; };
-		C6EC04B41FF61DCC006B96EA /* AvatarLinkedin.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01D01FF61DCA006B96EA /* AvatarLinkedin.png */; };
-		C6EC04B51FF61DCC006B96EA /* AvatarPaypal.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01D11FF61DCA006B96EA /* AvatarPaypal.png */; };
-		C6EC04B61FF61DCC006B96EA /* AvatarAmazon.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01D21FF61DCA006B96EA /* AvatarAmazon.png */; };
-		C6EC04B71FF61DCC006B96EA /* AvatarGCalendar.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01D31FF61DCA006B96EA /* AvatarGCalendar.png */; };
-		C6EC04B81FF61DCC006B96EA /* AvatarApple.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01D41FF61DCA006B96EA /* AvatarApple.png */; };
-		C6EC04B91FF61DCC006B96EA /* AvatarDribbble.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01D51FF61DCA006B96EA /* AvatarDribbble.png */; };
-		C6EC04BA1FF61DCC006B96EA /* AvatarGoogle.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01D61FF61DCA006B96EA /* AvatarGoogle.png */; };
-		C6EC04BB1FF61DCC006B96EA /* AvatarDropbox.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01D71FF61DCA006B96EA /* AvatarDropbox.png */; };
-		C6EC04BC1FF61DCC006B96EA /* AvatarWordpress.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01D81FF61DCA006B96EA /* AvatarWordpress.png */; };
-		C6EC04BD1FF61DCC006B96EA /* AvatarFoursquare.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01D91FF61DCA006B96EA /* AvatarFoursquare.png */; };
-		C6EC04BE1FF61DCC006B96EA /* AvatarTwitter.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01DA1FF61DCA006B96EA /* AvatarTwitter.png */; };
-		C6EC04BF1FF61DCC006B96EA /* AvatarYoutube.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01DB1FF61DCA006B96EA /* AvatarYoutube.png */; };
-		C6EC04C01FF61DCC006B96EA /* AvatarTumblr.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01DC1FF61DCA006B96EA /* AvatarTumblr.png */; };
-		C6EC04C11FF61DCC006B96EA /* AvatarCraigslist.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01DD1FF61DCA006B96EA /* AvatarCraigslist.png */; };
-		C6EC04C21FF61DCC006B96EA /* AvatarGoogleplus.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01DE1FF61DCA006B96EA /* AvatarGoogleplus.png */; };
-		C6EC04C31FF61DCC006B96EA /* AvatarUber.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01DF1FF61DCA006B96EA /* AvatarUber.png */; };
-		C6EC04C41FF61DCC006B96EA /* AvatarGithub.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01E01FF61DCA006B96EA /* AvatarGithub.png */; };
-		C6EC04C51FF61DCC006B96EA /* AvatarVimeo.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01E11FF61DCA006B96EA /* AvatarVimeo.png */; };
 		C6EC04C61FF61DCC006B96EA /* DejaLu_AppIcon_128@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01E41FF61DCA006B96EA /* DejaLu_AppIcon_128@2x.png */; };
 		C6EC04C71FF61DCC006B96EA /* DejaLu_Search_128@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01E51FF61DCA006B96EA /* DejaLu_Search_128@2x.png */; };
 		C6EC04C81FF61DCC006B96EA /* DejaLu_NetworkErrorOff_128@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC01E61FF61DCA006B96EA /* DejaLu_NetworkErrorOff_128@2x.png */; };
@@ -1727,28 +1705,6 @@
 		C6E5F589190E2939008D7C52 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C6EC01A11FF609D0006B96EA /* DJLKeys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DJLKeys.h; sourceTree = "<group>"; };
 		C6EC01CA1FF61DCA006B96EA /* avatar.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = avatar.json; sourceTree = "<group>"; };
-		C6EC01CC1FF61DCA006B96EA /* AvatarYahoo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarYahoo.png; sourceTree = "<group>"; };
-		C6EC01CD1FF61DCA006B96EA /* AvatarFacebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarFacebook.png; sourceTree = "<group>"; };
-		C6EC01CE1FF61DCA006B96EA /* AvatarFlickr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarFlickr.png; sourceTree = "<group>"; };
-		C6EC01CF1FF61DCA006B96EA /* AvatarQuora.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarQuora.png; sourceTree = "<group>"; };
-		C6EC01D01FF61DCA006B96EA /* AvatarLinkedin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarLinkedin.png; sourceTree = "<group>"; };
-		C6EC01D11FF61DCA006B96EA /* AvatarPaypal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarPaypal.png; sourceTree = "<group>"; };
-		C6EC01D21FF61DCA006B96EA /* AvatarAmazon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarAmazon.png; sourceTree = "<group>"; };
-		C6EC01D31FF61DCA006B96EA /* AvatarGCalendar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarGCalendar.png; sourceTree = "<group>"; };
-		C6EC01D41FF61DCA006B96EA /* AvatarApple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarApple.png; sourceTree = "<group>"; };
-		C6EC01D51FF61DCA006B96EA /* AvatarDribbble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarDribbble.png; sourceTree = "<group>"; };
-		C6EC01D61FF61DCA006B96EA /* AvatarGoogle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarGoogle.png; sourceTree = "<group>"; };
-		C6EC01D71FF61DCA006B96EA /* AvatarDropbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarDropbox.png; sourceTree = "<group>"; };
-		C6EC01D81FF61DCA006B96EA /* AvatarWordpress.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarWordpress.png; sourceTree = "<group>"; };
-		C6EC01D91FF61DCA006B96EA /* AvatarFoursquare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarFoursquare.png; sourceTree = "<group>"; };
-		C6EC01DA1FF61DCA006B96EA /* AvatarTwitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarTwitter.png; sourceTree = "<group>"; };
-		C6EC01DB1FF61DCA006B96EA /* AvatarYoutube.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarYoutube.png; sourceTree = "<group>"; };
-		C6EC01DC1FF61DCA006B96EA /* AvatarTumblr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarTumblr.png; sourceTree = "<group>"; };
-		C6EC01DD1FF61DCA006B96EA /* AvatarCraigslist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarCraigslist.png; sourceTree = "<group>"; };
-		C6EC01DE1FF61DCA006B96EA /* AvatarGoogleplus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarGoogleplus.png; sourceTree = "<group>"; };
-		C6EC01DF1FF61DCA006B96EA /* AvatarUber.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarUber.png; sourceTree = "<group>"; };
-		C6EC01E01FF61DCA006B96EA /* AvatarGithub.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarGithub.png; sourceTree = "<group>"; };
-		C6EC01E11FF61DCA006B96EA /* AvatarVimeo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AvatarVimeo.png; sourceTree = "<group>"; };
 		C6EC01E41FF61DCA006B96EA /* DejaLu_AppIcon_128@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DejaLu_AppIcon_128@2x.png"; sourceTree = "<group>"; };
 		C6EC01E51FF61DCA006B96EA /* DejaLu_Search_128@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DejaLu_Search_128@2x.png"; sourceTree = "<group>"; };
 		C6EC01E61FF61DCA006B96EA /* DejaLu_NetworkErrorOff_128@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DejaLu_NetworkErrorOff_128@2x.png"; sourceTree = "<group>"; };
@@ -3532,7 +3488,6 @@
 				C6EC03ED1FF61DCB006B96EA /* InfoPlist.strings */,
 				C6EC03F11FF61DCB006B96EA /* MainMenu.xib */,
 				C6EC01C91FF61DCA006B96EA /* plist */,
-				C6EC01CB1FF61DCA006B96EA /* ServiceIcons */,
 				C6EC04541FF61DCB006B96EA /* sounds */,
 				C6A9EAF220107FB90030AC4D /* sparkle */,
 			);
@@ -3545,35 +3500,6 @@
 				C6EC01CA1FF61DCA006B96EA /* avatar.json */,
 			);
 			path = plist;
-			sourceTree = "<group>";
-		};
-		C6EC01CB1FF61DCA006B96EA /* ServiceIcons */ = {
-			isa = PBXGroup;
-			children = (
-				C6EC01CC1FF61DCA006B96EA /* AvatarYahoo.png */,
-				C6EC01CD1FF61DCA006B96EA /* AvatarFacebook.png */,
-				C6EC01CE1FF61DCA006B96EA /* AvatarFlickr.png */,
-				C6EC01CF1FF61DCA006B96EA /* AvatarQuora.png */,
-				C6EC01D01FF61DCA006B96EA /* AvatarLinkedin.png */,
-				C6EC01D11FF61DCA006B96EA /* AvatarPaypal.png */,
-				C6EC01D21FF61DCA006B96EA /* AvatarAmazon.png */,
-				C6EC01D31FF61DCA006B96EA /* AvatarGCalendar.png */,
-				C6EC01D41FF61DCA006B96EA /* AvatarApple.png */,
-				C6EC01D51FF61DCA006B96EA /* AvatarDribbble.png */,
-				C6EC01D61FF61DCA006B96EA /* AvatarGoogle.png */,
-				C6EC01D71FF61DCA006B96EA /* AvatarDropbox.png */,
-				C6EC01D81FF61DCA006B96EA /* AvatarWordpress.png */,
-				C6EC01D91FF61DCA006B96EA /* AvatarFoursquare.png */,
-				C6EC01DA1FF61DCA006B96EA /* AvatarTwitter.png */,
-				C6EC01DB1FF61DCA006B96EA /* AvatarYoutube.png */,
-				C6EC01DC1FF61DCA006B96EA /* AvatarTumblr.png */,
-				C6EC01DD1FF61DCA006B96EA /* AvatarCraigslist.png */,
-				C6EC01DE1FF61DCA006B96EA /* AvatarGoogleplus.png */,
-				C6EC01DF1FF61DCA006B96EA /* AvatarUber.png */,
-				C6EC01E01FF61DCA006B96EA /* AvatarGithub.png */,
-				C6EC01E11FF61DCA006B96EA /* AvatarVimeo.png */,
-			);
-			path = ServiceIcons;
 			sourceTree = "<group>";
 		};
 		C6EC01E21FF61DCA006B96EA /* Glyphs */ = {
@@ -4767,7 +4693,6 @@
 				C6EC05561FF61DCC006B96EA /* DejaLu_Plus_12@2x.png in Resources */,
 				C6EC06691FF61DCC006B96EA /* DejaLu_GeneralSettings_48.png in Resources */,
 				C6EC052A1FF61DCC006B96EA /* DejaLu_ArrowDown_20@2x.png in Resources */,
-				C6EC04BC1FF61DCC006B96EA /* AvatarWordpress.png in Resources */,
 				C6EC060E1FF61DCC006B96EA /* DejaLu_Settings_16.png in Resources */,
 				C6EC06E11FF61DCD006B96EA /* font-awesome.less in Resources */,
 				C6EC05D21FF61DCC006B96EA /* DejaLu_ArrowDown_48@2x.png in Resources */,
@@ -4853,7 +4778,6 @@
 				C6EC06471FF61DCC006B96EA /* DejaLu_TagOn_16.png in Resources */,
 				C6EC05951FF61DCC006B96EA /* DejaLu_Composer_32@2x.png in Resources */,
 				C6EC05A51FF61DCC006B96EA /* DejaLu_Attachment_32@2x.png in Resources */,
-				C6EC04C31FF61DCC006B96EA /* AvatarUber.png in Resources */,
 				C6EC04DA1FF61DCC006B96EA /* DejaLu_Search_512.png in Resources */,
 				C6EC06141FF61DCC006B96EA /* DejaLu_ArrowLeft_48.png in Resources */,
 				C6EC07211FF61DCD006B96EA /* plus.png in Resources */,
@@ -4921,7 +4845,6 @@
 				C6EC068E1FF61DCC006B96EA /* DejaLu_Trash_20.png in Resources */,
 				C6EC04CC1FF61DCC006B96EA /* DejaLu_Signature_512.png in Resources */,
 				C6EC05711FF61DCC006B96EA /* DejaLu_GettingEmail_32@2x.png in Resources */,
-				C6EC04B51FF61DCC006B96EA /* AvatarPaypal.png in Resources */,
 				C6EC04EF1FF61DCC006B96EA /* DejaLu_ArrowRightButton_256.png in Resources */,
 				C6EC06E61FF61DCD006B96EA /* larger.less in Resources */,
 				C6EC06EC1FF61DCD006B96EA /* _path.scss in Resources */,
@@ -5037,7 +4960,6 @@
 				C6EC04D01FF61DCC006B96EA /* DejaLu_FailedOff_512.png in Resources */,
 				C6EC07121FF61DCD006B96EA /* composer-view.html in Resources */,
 				C6EC04CE1FF61DCC006B96EA /* DejaLu_Attachment_512.png in Resources */,
-				C6EC04BD1FF61DCC006B96EA /* AvatarFoursquare.png in Resources */,
 				C6EC06371FF61DCC006B96EA /* DejaLu_UnreadDotOff_32.png in Resources */,
 				C6EC07491FF61DCD006B96EA /* AvatarPaypal.png in Resources */,
 				C6EC07051FF61DCD006B96EA /* conversation-selection-view.html in Resources */,
@@ -5045,7 +4967,6 @@
 				C6EC06EA1FF61DCD006B96EA /* font-awesome.scss in Resources */,
 				C6EC07081FF61DCD006B96EA /* print-message-view.html in Resources */,
 				C6EC059D1FF61DCC006B96EA /* DejaLu_TagOff_48@2x.png in Resources */,
-				C6EC04B91FF61DCC006B96EA /* AvatarDribbble.png in Resources */,
 				C6EC066F1FF61DCC006B96EA /* DejaLu_ArrowLeft_32.png in Resources */,
 				C6EC05311FF61DCC006B96EA /* DejaLu_NetworkErrorOff_64@2x.png in Resources */,
 				C6EC056A1FF61DCC006B96EA /* DejaLu_Attachment_48@2x.png in Resources */,
@@ -5066,7 +4987,6 @@
 				C6EC06991FF61DCC006B96EA /* DejaLu_Forward_16.png in Resources */,
 				C6EC06761FF61DCC006B96EA /* DejaLu_Archive_48.png in Resources */,
 				C6EC06881FF61DCC006B96EA /* DejaLu_ArrowLeft_20.png in Resources */,
-				C6EC04BA1FF61DCC006B96EA /* AvatarGoogle.png in Resources */,
 				C6EC04C71FF61DCC006B96EA /* DejaLu_Search_128@2x.png in Resources */,
 				C6EC069D1FF61DCC006B96EA /* DejaLu_Signature_20.png in Resources */,
 				C6EC05C81FF61DCC006B96EA /* DejaLu_Accounts_32@2x.png in Resources */,
@@ -5083,7 +5003,6 @@
 				C6EC06301FF61DCC006B96EA /* DejaLu_NetworkErrorOn_48.png in Resources */,
 				C6EC061B1FF61DCC006B96EA /* DejaLu_TagOff_Light_64.png in Resources */,
 				C6EC04C61FF61DCC006B96EA /* DejaLu_AppIcon_128@2x.png in Resources */,
-				C6EC04BF1FF61DCC006B96EA /* AvatarYoutube.png in Resources */,
 				C6EC05D81FF61DCC006B96EA /* DejaLu_GeneralSettings_Light_32@2x.png in Resources */,
 				C6EC061F1FF61DCC006B96EA /* DejaLu_Reply_48.png in Resources */,
 				C6EC04E41FF61DCC006B96EA /* DejaLu_Settings_256.png in Resources */,
@@ -5093,10 +5012,7 @@
 				C6EC06BC1FF61DCD006B96EA /* DejaLu_Settings_20.png in Resources */,
 				C6EC06591FF61DCC006B96EA /* DejaLu_Accounts_20.png in Resources */,
 				C6EC05611FF61DCC006B96EA /* DejaLu_TagOff_32@2x.png in Resources */,
-				C6EC04C11FF61DCC006B96EA /* AvatarCraigslist.png in Resources */,
 				C6EC05EA1FF61DCC006B96EA /* DejaLu_Attachment_24@2x.png in Resources */,
-				C6EC04B21FF61DCC006B96EA /* AvatarFlickr.png in Resources */,
-				C6EC04BE1FF61DCC006B96EA /* AvatarTwitter.png in Resources */,
 				C6EC06F61FF61DCD006B96EA /* FontAwesome.otf in Resources */,
 				C6EC07571FF61DCD006B96EA /* AvatarFoursquare.png in Resources */,
 				C6EC056C1FF61DCC006B96EA /* DejaLu_GettingEmail_16@2x.png in Resources */,
@@ -5138,7 +5054,6 @@
 				C6EC06391FF61DCC006B96EA /* DejaLu_NetworkErrorOff_32.png in Resources */,
 				C6EC05EF1FF61DCC006B96EA /* DejaLu_CheckmarkOff_16@2x.png in Resources */,
 				C6EC05E81FF61DCC006B96EA /* DejaLu_TagOff_Light_32@2x.png in Resources */,
-				C6EC04B61FF61DCC006B96EA /* AvatarAmazon.png in Resources */,
 				C6EC06D91FF61DCD006B96EA /* font-awesome.css in Resources */,
 				C6EC05B01FF61DCC006B96EA /* DejaLu_GeneralSettings_48@2x.png in Resources */,
 				C6EC06D51FF61DCD006B96EA /* conversation-view2.min.js in Resources */,
@@ -5157,7 +5072,6 @@
 				C6EC06491FF61DCC006B96EA /* DejaLu_ArrowRight_64.png in Resources */,
 				C6EC07311FF61DCD006B96EA /* inbox-zero.png in Resources */,
 				C6EC065F1FF61DCC006B96EA /* DejaLu_Search_32.png in Resources */,
-				C6EC04B71FF61DCC006B96EA /* AvatarGCalendar.png in Resources */,
 				C6EC05AC1FF61DCC006B96EA /* DejaLu_StarOff_48@2x.png in Resources */,
 				C6EC06BE1FF61DCD006B96EA /* DejaLu_TagOff_64.png in Resources */,
 				C6EC04F41FF61DCC006B96EA /* DejaLu_NetworkErrorOn_256.png in Resources */,
@@ -5170,7 +5084,6 @@
 				C6EC07521FF61DCD006B96EA /* AvatarSourceforge.png in Resources */,
 				C6EC075F1FF61DCD006B96EA /* AvatarGmail.png in Resources */,
 				C6EC05051FF61DCC006B96EA /* DejaLu_NetworkErrorOn_512.png in Resources */,
-				C6EC04BB1FF61DCC006B96EA /* AvatarDropbox.png in Resources */,
 				C6EC05781FF61DCC006B96EA /* DejaLu_StarOn_64@2x.png in Resources */,
 				C6EC06DF1FF61DCD006B96EA /* variables.less in Resources */,
 				C6EC069C1FF61DCC006B96EA /* DejaLu_CheckmarkOn_20.png in Resources */,
@@ -5213,7 +5126,6 @@
 				C6EC06A61FF61DCC006B96EA /* DejaLu_Empty_16.png in Resources */,
 				C6EC050D1FF61DCC006B96EA /* DejaLu_Attachment_256.png in Resources */,
 				C6EC07361FF61DCD006B96EA /* accounts.png in Resources */,
-				C6EC04B41FF61DCC006B96EA /* AvatarLinkedin.png in Resources */,
 				C6EC04EB1FF61DCC006B96EA /* DejaLu_GeneralSettings_256.png in Resources */,
 				C6EC06ED1FF61DCD006B96EA /* _list.scss in Resources */,
 				C6EC067B1FF61DCC006B96EA /* DejaLu_ArrowDown_20.png in Resources */,
@@ -5279,7 +5191,6 @@
 				C6EC05B11FF61DCC006B96EA /* DejaLu_NetworkErrorOn_20@2x.png in Resources */,
 				C6EC06741FF61DCC006B96EA /* DejaLu_StarOn_32.png in Resources */,
 				C6EC05451FF61DCC006B96EA /* DejaLu_Archive_32@2x.png in Resources */,
-				C6EC04C41FF61DCC006B96EA /* AvatarGithub.png in Resources */,
 				C6EC06CC1FF61DCD006B96EA /* MainMenu.xib in Resources */,
 				C6EC06851FF61DCC006B96EA /* DejaLu_Attachment_16.png in Resources */,
 				C6EC04C81FF61DCC006B96EA /* DejaLu_NetworkErrorOff_128@2x.png in Resources */,
@@ -5315,9 +5226,7 @@
 				C6EC069B1FF61DCC006B96EA /* DejaLu_StarOff_20.png in Resources */,
 				92D2C2A8201826CA00CC64DB /* statusitem@2x.png in Resources */,
 				C6EC05CC1FF61DCC006B96EA /* DejaLu_FailedOff_48@2x.png in Resources */,
-				C6EC04C51FF61DCC006B96EA /* AvatarVimeo.png in Resources */,
 				C6EC058C1FF61DCC006B96EA /* DejaLu_Settings_64@2x.png in Resources */,
-				C6EC04B31FF61DCC006B96EA /* AvatarQuora.png in Resources */,
 				C6EC051E1FF61DCC006B96EA /* DejaLu_ReplyAll_32@2x.png in Resources */,
 				C6EC058F1FF61DCC006B96EA /* DejaLu_Aliases_16@2x.png in Resources */,
 				C6EC064D1FF61DCC006B96EA /* DejaLu_Trash_16.png in Resources */,
@@ -5330,7 +5239,6 @@
 				C6EC06B31FF61DCC006B96EA /* DejaLu_StarOff_32.png in Resources */,
 				C6EC066A1FF61DCC006B96EA /* DejaLu_Spam_32.png in Resources */,
 				C6EC06811FF61DCC006B96EA /* DejaLu_Spam_20.png in Resources */,
-				C6EC04B81FF61DCC006B96EA /* AvatarApple.png in Resources */,
 				C6EC06C11FF61DCD006B96EA /* DejaLu_Composer_20.png in Resources */,
 				C6EC06571FF61DCC006B96EA /* DejaLu_ArrowDown_16.png in Resources */,
 				C6EC05B31FF61DCC006B96EA /* DejaLu_ArrowDown_64@2x.png in Resources */,
@@ -5379,7 +5287,6 @@
 				C6EC076B1FF61DCD006B96EA /* AvatarGowalla.png in Resources */,
 				C6EC07271FF61DCD006B96EA /* failed.png in Resources */,
 				C6EC07481FF61DCD006B96EA /* AvatarLinkedin.png in Resources */,
-				C6EC04B11FF61DCC006B96EA /* AvatarFacebook.png in Resources */,
 				C6EC04F21FF61DCC006B96EA /* DejaLu_GettingEmail_512.png in Resources */,
 				C6EC07591FF61DCD006B96EA /* AvatarFotopedia.png in Resources */,
 				C6EC051C1FF61DCC006B96EA /* DejaLu_Plus_512.png in Resources */,
@@ -5410,7 +5317,6 @@
 				C6EC07141FF61DCD006B96EA /* composer-view.min.js in Resources */,
 				C6EC053F1FF61DCC006B96EA /* DejaLu_TagOff_24@2x.png in Resources */,
 				C6EC058E1FF61DCC006B96EA /* DejaLu_Trash_48@2x.png in Resources */,
-				C6EC04C01FF61DCC006B96EA /* AvatarTumblr.png in Resources */,
 				C6EC06D71FF61DCD006B96EA /* conversation-selection-view.min.css in Resources */,
 				C6EC05D51FF61DCC006B96EA /* DejaLu_Empty_64@2x.png in Resources */,
 				C6EC06231FF61DCC006B96EA /* DejaLu_FailedOn_48.png in Resources */,
@@ -5421,13 +5327,11 @@
 				C6EC065A1FF61DCC006B96EA /* DejaLu_ArrowRightButton_20.png in Resources */,
 				C6EC05301FF61DCC006B96EA /* DejaLu_Minus_12@2x.png in Resources */,
 				C6EC068C1FF61DCC006B96EA /* DejaLu_StarOn_20.png in Resources */,
-				C6EC04B01FF61DCC006B96EA /* AvatarYahoo.png in Resources */,
 				C6EC05791FF61DCC006B96EA /* DejaLu_ArrowDown_12@2x.png in Resources */,
 				C6EC05F01FF61DCC006B96EA /* DejaLu_Signature_16.png in Resources */,
 				C6EC06E31FF61DCD006B96EA /* spinning.less in Resources */,
 				C6EC04CD1FF61DCC006B96EA /* DejaLu_Reply_512.png in Resources */,
 				C6EC04D31FF61DCC006B96EA /* DejaLu_Empty_256.png in Resources */,
-				C6EC04C21FF61DCC006B96EA /* AvatarGoogleplus.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
