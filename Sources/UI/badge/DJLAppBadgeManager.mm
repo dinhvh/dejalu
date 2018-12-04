@@ -91,6 +91,7 @@ private:
     BOOL _pendingNotify;
     NSTimeInterval _lastSoundDate;
     NSStatusItem * _statusItem;
+    NSSound * _newMailSound;
 }
 
 #import "DJLSingleton.h"
@@ -222,9 +223,11 @@ private:
     }
     _lastSoundDate = [NSDate timeIntervalSinceReferenceDate];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SoundEnabled"]) {
-        NSSound * sound = [[NSSound alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"newmail" ofType:@"m4a"] byReference:YES];
-        [sound setDelegate:self];
-        [sound play];
+        if (_newMailSound == nil) {
+            _newMailSound = [[NSSound alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"newmail" ofType:@"m4a"] byReference:YES];
+        }
+        [_newMailSound setDelegate:self];
+        [_newMailSound play];
     }
 }
 

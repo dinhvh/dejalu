@@ -272,6 +272,7 @@ public:
     CGFloat _splitViewInitialWidth[3];
     BOOL _splitViewInitialWidthScheduled;
     BOOL _restoringWindowSize;
+    NSSound * _mailSentSound;
 }
 
 @synthesize delegate = _delegate;
@@ -1498,8 +1499,10 @@ public:
     [DJLHUDWindow windowWithView:view];
 
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"SoundEnabled"]) {
-        NSSound * sound = [[NSSound alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"mailsent" ofType:@"m4a"] byReference:YES];
-        [sound play];
+        if (_mailSentSound == nil) {
+            _mailSentSound = [[NSSound alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"mailsent" ofType:@"m4a"] byReference:YES];
+        }
+        [_mailSentSound play];
     }
 }
 
