@@ -250,17 +250,14 @@ public:
     NSMutableArray * _composers;
     NSView * _conversationPanel;
     NSVisualEffectView * _leftContainerView;
-    //NSView * _rightContainerView;
     BOOL _refreshActionInProgress;
     BOOL _refreshConfirmation;
     BOOL _showingErrorDialog;
-    //NSDictionary * _currentError;
     NSMutableDictionary * _accountsErrors;
     NSMutableDictionary * _accountsSendErrors;
     NSMutableSet * _shownAccountsError;
     NSPopover * _labelsPopOver;
     NSMutableArray * _foldersManagerControllers;
-    //hermes::ErrorCode _currentErrorCode;
     __weak id <DJLMainWindowControllerDelegate> _delegate;
     Array * /* Account */ _accounts;
     int64_t _urlMessageIDFound;

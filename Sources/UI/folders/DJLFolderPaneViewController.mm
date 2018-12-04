@@ -66,8 +66,6 @@ public:
 @implementation DJLFolderPaneViewController {
     NSView * _view;
     DJLScrollView * _scrollView;
-    //DJLTableView * _tableView;
-    //NSOutlineView * _outlineView;
     PXSourceList * _sourceList;
     NSMutableArray * _accounts;
     NSMutableArray * _folders;
@@ -127,8 +125,6 @@ public:
     frame.size = CGSizeZero;
 
     _sourceList = [[DJLSourceList alloc] initWithFrame:frame];
-//    [_sourceList setRowSizeStyle:NSTableViewRowSizeStyleCustom];
-//    [_sourceList setRowHeight:40];
     [_sourceList setHeaderView:nil];
     [_sourceList setDataSource:self];
     [_sourceList setDelegate:self];

@@ -299,7 +299,6 @@ enum {
     NSRect frame = [[self view] bounds];
     _foldersScrollView = [[NSScrollView alloc] initWithFrame:frame];
     [_foldersScrollView setWantsLayer:YES];
-    //[_foldersScrollView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     [_foldersScrollView setHasVerticalScroller:YES];
     [_foldersScrollView setDrawsBackground:NO];
     frame.origin = CGPointZero;
@@ -322,7 +321,6 @@ enum {
     frame = [[self view] bounds];
     _mainScrollView = [[NSScrollView alloc] initWithFrame:frame];
     [_mainScrollView setWantsLayer:YES];
-    //[_mainScrollView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     [_mainScrollView setHasVerticalScroller:YES];
     [_mainScrollView setDrawsBackground:NO];
     frame.origin = CGPointZero;
