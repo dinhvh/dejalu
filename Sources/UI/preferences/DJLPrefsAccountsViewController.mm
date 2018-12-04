@@ -208,6 +208,7 @@ public:
     _editDialog = [[DJLWindow alloc] initWithContentRect:NSMakeRect(0, 0, DIALOG_WIDTH, DIALOG_HEIGHT) styleMask:NSTitledWindowMask | NSTexturedBackgroundWindowMask backing:NSBackingStoreBuffered defer:YES];
     [_editDialog setDelegate:self];
     [_editDialog setTrafficLightAlternatePositionEnabled:NO];
+    [_editDialog setTitlebarAppearsTransparent:YES];
     NSView * contentView = [[DJLColoredView alloc] initWithFrame:NSMakeRect(0, 0, DIALOG_WIDTH, DIALOG_HEIGHT)];
     [_editDialog setContentView:contentView];
     _nameLabel = [[NSTextField alloc] initWithFrame:NSMakeRect(20, 87, DIALOG_WIDTH - 40, 22)];
