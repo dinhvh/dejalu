@@ -26,14 +26,12 @@ using namespace hermes;
 using namespace mailcore;
 
 #define DEFAULT_MESSAGES_TO_FETCH 2000
-//#define MAX_CONNECTION_ERRORS_COUNT 3
 #define DEFAULT_REFRESH_DELAY (10 * 60)
 
 #define LOG(...) DJLLogWithID("sync", __VA_ARGS__)
 #define LOGSTACK(...) DJLLogStackWithID("sync", __VA_ARGS__)
 #define LOG_IDLE(...) DJLLogWithID("idle", __VA_ARGS__)
 #define LOG_SEARCH(...) DJLLogWithID("search", __VA_ARGS__)
-//#define LOG_CLEANUP(...) DJLLogStackWithID("cleanup", __VA_ARGS__)
 #define LOG_CLEANUP(...)
 
 enum IMAPFolderSynchronizerState {
@@ -224,6 +222,16 @@ void IMAPFolderSynchronizer::setRefreshDelay(double refreshDelay)
 double IMAPFolderSynchronizer::refreshDelay()
 {
     return mRefreshDelay;
+}
+
+void IMAPFolderSynchronizer::setMessagesToFetch(unsigned int messageToFetch)
+{
+    mMessagesToFetch = messageToFetch;
+}
+
+unsigned int IMAPFolderSynchronizer::messagesToFetch()
+{
+    return mMessagesToFetch;
 }
 
 void IMAPFolderSynchronizer::setDelegate(IMAPFolderSynchronizerDelegate * delegate)

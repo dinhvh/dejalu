@@ -56,6 +56,9 @@ namespace hermes {
         virtual void setSyncType(IMAPSyncType syncType);
         virtual IMAPSyncType syncType();
 
+        virtual void setMessagesToFetch(unsigned int messageToFetch);
+        virtual unsigned int messagesToFetch();
+
         virtual void setDelegate(IMAPFolderSynchronizerDelegate * delegate);
         virtual IMAPFolderSynchronizerDelegate * delegate();
 
