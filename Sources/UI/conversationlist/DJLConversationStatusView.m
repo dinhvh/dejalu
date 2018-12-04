@@ -93,9 +93,8 @@ static BOOL s_interactionEnabled = NO;
 {
     self = [super initWithFrame:frame];
     [self setCell:[[DJLConversationStatusViewCell alloc] init]];
-    [self setShowsBorderOnlyWhileMouseInside:YES];
     [self updateTrackingAreas];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_flagsChanged:) name:DJLWINDOW_FLAGS_CHANGED object:nil];
     
     return self;
