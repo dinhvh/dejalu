@@ -282,21 +282,12 @@ static int compareFoldersWithScore(void * a, void * b, void * context)
     }
     else if ([item isKindOfClass:[DJLFolderPaneAccountInfo class]]) {
         DJLFolderPaneAccountInfo * info = item;
-#if 0
-        if ([[info folders] count] > 0) {
-            return [[info baseFolders] count] + 1;
-        }
-        else {
-            return [[info baseFolders] count];
-        }
-#else
         if ([[[info foldersRootInfo] children] count] > 0) {
             return [[[info favoritesRootInfo] children] count] + 1;
         }
         else {
             return [[[info favoritesRootInfo] children] count];
         }
-#endif
     }
     else if ([item isKindOfClass:[DJLFolderPaneFoldersDisclosureInfo class]]) {
         DJLFolderPaneFoldersDisclosureInfo * info = item;
@@ -321,14 +312,6 @@ static int compareFoldersWithScore(void * a, void * b, void * context)
     }
     else if ([item isKindOfClass:[DJLFolderPaneAccountInfo class]]) {
         DJLFolderPaneAccountInfo * info = item;
-#if 0
-        if (index < [[info baseFolders] count]) {
-            return [info baseFolders][index];
-        }
-        else {
-            return [info foldersDisclosureInfo];
-        }
-#endif
         if (index < [[[info favoritesRootInfo] children] count]) {
             return [[info favoritesRootInfo] children][index];
         }
@@ -607,12 +590,6 @@ static int compareFoldersWithScore(void * a, void * b, void * context)
     return [info folderPath];
 }
 
-//- (DJLFolderPaneFolderInfo *) _folderInfoForPath:(NSString *)folderPath
-//{
-//    for(DJLFolderPaneAccountInfo * info in _accounts) {
-//    }
-//}
-
 - (void) setFolderPath:(NSString *)folderPath
 {
     _folderPath = folderPath;
@@ -644,30 +621,6 @@ static int compareFoldersWithScore(void * a, void * b, void * context)
         [_sourceList selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
         [_sourceList scrollRowToVisible:row];
         return;
-
-#if 0
-        for(DJLFolderPaneFolderInfo * folderInfo in [info folders]) {
-            if ([[folderInfo folderPath] isEqualToString:folderPath]) {
-                [_sourceList expandItem:info];
-                [_sourceList expandItem:[info foldersDisclosureInfo]];
-                NSInteger row = [_sourceList rowForItem:folderInfo];
-                [_sourceList selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
-                [_sourceList scrollRowToVisible:row];
-                //NSLog(@"select folder: %i", (int) row);
-                return;
-            }
-        }
-        for(DJLFolderPaneFolderInfo * folderInfo in [info baseFolders]) {
-            if ([[folderInfo folderPath] isEqualToString:folderPath]) {
-                [_sourceList expandItem:info];
-                NSInteger row = [_sourceList rowForItem:folderInfo];
-                [_sourceList selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
-                [_sourceList scrollRowToVisible:row];
-                //NSLog(@"select folder2: %i", (int) row);
-                return;
-            }
-        }
-#endif
     }
     [_sourceList deselectAll:nil];
 }
