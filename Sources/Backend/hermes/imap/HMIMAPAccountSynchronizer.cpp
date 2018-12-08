@@ -1431,12 +1431,12 @@ bool IMAPAccountSynchronizer::canSyncFolder(String * folderPath)
     
     if (mSyncingFolders->containsObject(folderPath)) {
         //fprintf(stderr, "alreading %s\n", MCUTF8(folderPath));
-        LOG_ERROR("%s: already syncing: %s", MCUTF8(mAccountInfo->email()), MCUTF8(folderPath));
+        //LOG_ERROR("%s: already syncing: %s", MCUTF8(mAccountInfo->email()), MCUTF8(folderPath));
         return false;
     }
     if (mSyncingFolders->count() >= MAX_SYNCING_FOLDERS) {
         //fprintf(stderr, "sync full %s\n", MCUTF8(folderPath));
-        LOG_ERROR("%s: sync full: %s", MCUTF8(mAccountInfo->email()), MCUTF8(folderPath));
+        //LOG_ERROR("%s: sync full: %s", MCUTF8(mAccountInfo->email()), MCUTF8(folderPath));
         return false;
     }
     return true;
@@ -1468,8 +1468,8 @@ void IMAPAccountSynchronizer::trySync(String * folderPath)
         folderSync->syncNext();
     }
     else {
-        LOG_ERROR("%s: did not sync: %s -> %i %i",
-                  MCUTF8(mAccountInfo->email()), MCUTF8(folderPath), folderSync->isSyncDone(), isSyncDisabled());
+//        LOG_ERROR("%s: did not sync: %s -> %i %i",
+//                  MCUTF8(mAccountInfo->email()), MCUTF8(folderPath), folderSync->isSyncDone(), isSyncDisabled());
     }
 }
 

@@ -281,9 +281,9 @@ void IMAPFolderSynchronizer::syncNext()
         return;
     }
 
-    if (mFolderPath->isEqual(MCSTR("INBOX"))) {
-        LOG_ERROR("sync important %s %i", MCUTF8(mFolderPath), mState);
-    }
+//    if (mFolderPath->isEqual(MCSTR("INBOX"))) {
+//        LOG_ERROR("sync important %s %i", MCUTF8(mFolderPath), mState);
+//    }
     switch (mState) {
         case IMAPFolderSynchronizerStateNeedMessageCount:
             mLoadingFirstHeaders = true;
@@ -709,7 +709,7 @@ void IMAPFolderSynchronizer::fetchHeadersSyncStateUpdated()
 
 void IMAPFolderSynchronizer::uncacheOldMessages()
 {
-    LOG_ERROR("%s %s uncache", MCUTF8(mSession->username()), MCUTF8(mFolderPath));
+//    LOG_ERROR("%s %s uncache", MCUTF8(mSession->username()), MCUTF8(mFolderPath));
     if (mSearchKeywords != NULL) {
         mState = IMAPFolderSynchronizerStateNeedPushMessages;
         mDelegate->folderSynchronizerSyncStepDone(this);
@@ -731,7 +731,7 @@ void IMAPFolderSynchronizer::uncacheOldMessages()
 
 void IMAPFolderSynchronizer::uncacheOldMessagesDone()
 {
-    LOG_ERROR("%s %s uncache done", MCUTF8(mSession->username()), MCUTF8(mFolderPath));
+//    LOG_ERROR("%s %s uncache done", MCUTF8(mSession->username()), MCUTF8(mFolderPath));
     mState = IMAPFolderSynchronizerStateNeedPushMessages;
     
     MC_SAFE_RELEASE(mUncacheOldMessagesSyncStep);
