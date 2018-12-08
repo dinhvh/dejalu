@@ -5562,6 +5562,8 @@ bool MailDB::isFolderUnseen(int64_t folderID)
         lastUID = sqlite3_column_int64(stmt, 0);
         lastSeenUID = sqlite3_column_int64(stmt, 1);
     }
+    sqliteReset(stmt);
+
     return (lastUID > lastSeenUID);
 }
 
