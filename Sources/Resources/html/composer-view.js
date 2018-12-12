@@ -10,6 +10,14 @@ var setSubject = function(subject) {
     document.querySelector('#reply-header .subject').textContent = subject;
 };
 
+var objcSetDarkMode = function(enabled) {
+    if (enabled) {
+        document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
+    }
+};
+
 var objcSetRepliedContent = function(jsonInfo, addressesDisplayString, quotedHeadString) {
     var info = JSON.parse(jsonInfo);
     var content = info['content'];

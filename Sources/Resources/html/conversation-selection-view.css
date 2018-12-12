@@ -19,6 +19,10 @@ body {
     cursor: default;
 }
 
+body.dark-mode {
+    background-color: black;
+}
+
 #main {
     height: 100%;
 }
@@ -89,6 +93,15 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     top: -1px;
+}
+
+body.dark-mode .action {
+    filter: invert(100%);
+    opacity: 0.7;
+}
+
+body.dark-mode .action:active {
+    opacity: 1.0;
 }
 
 #trash {

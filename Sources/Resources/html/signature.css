@@ -19,6 +19,11 @@ body {
     height: 100%;
 }
 
+body.dark-mode {
+    background-color: black;
+    color: #ccc;
+}
+
 a {
     cursor: text;
     color: #2E6AFF;

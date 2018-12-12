@@ -43,6 +43,14 @@ var objcDisable = function() {
     el.contentEditable = false;
 };
 
+var objcSetDarkMode = function(enabled) {
+    if (enabled) {
+        document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
+    }
+};
+
 document.addEventListener("DOMContentLoaded", function(event) {
                           objcFocus();
                           });

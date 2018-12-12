@@ -17,6 +17,10 @@ body {
   margin-bottom: 40px;
 }
 
+body.dark-mode {
+    background-color: black;
+}
+
 .message .content table {
     line-height: normal;
 }

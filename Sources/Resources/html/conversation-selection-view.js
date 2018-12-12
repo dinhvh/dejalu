@@ -19,6 +19,14 @@ var setSelectionConversationCount = function(count) {
     document.querySelector('#main').classList.remove('hidden');
 };
 
+var setDarkMode = function(enabled) {
+    if (enabled) {
+        document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
+    }
+};
+
 document.addEventListener("DOMContentLoaded", function(event) {
     setup();
 });
