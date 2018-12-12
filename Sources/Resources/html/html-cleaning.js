@@ -1047,7 +1047,7 @@ function filterId(node)
             if (child.id == 'main-body') {
                 child.removeAttribute('id');
             }
-            if ((child.className != null) && (child.classList != null)) {
+            if ((child.className != null) && (child.classList != null) && (child.className.indexOf != null)) {
                 if ((child.className.indexOf('-dejalu-') != 0) && !child.classList.contains('btn') && !child.classList.contains('no-resend')) {
                     child.removeAttribute('class');
                 }
