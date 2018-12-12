@@ -5,6 +5,8 @@
 
 #import "DJLConversationCellView.h"
 #import "DJLColoredView.h"
+#import "DJLDarkMode.h"
+#import "FBKVOController.h"
 
 @implementation DJLConversationCellContentView {
     DJLConversationCellView * _mainView;
@@ -14,6 +16,7 @@
     BOOL _nextCellSelected;
     CGFloat _vibrancy;
     NSString * _folderPath;
+    FBKVOController * _kvoController;
 }
 
 - (id) initWithFrame:(NSRect)frameRect
@@ -24,15 +27,20 @@
     _effectView = [[NSVisualEffectView alloc] initWithFrame:[self bounds]];
     [_effectView setBlendingMode:NSVisualEffectBlendingModeBehindWindow];
     [_effectView setAutoresizingMask:NSViewHeightSizable | NSViewWidthSizable];
-    [_effectView setMaterial:NSVisualEffectMaterialLight];
     _mainView = [[DJLConversationCellView alloc] initWithFrame:[self bounds]];
     [_mainView setAutoresizingMask:NSViewHeightSizable | NSViewWidthSizable];
     [_effectView addSubview:_opaqueView];
     [_effectView addSubview:_mainView];
     [self addSubview:_effectView];
     _vibrancy = 1.0;
-    [_mainView setVibrancy:1.0];
-    [_opaqueView setAlphaValue:0.0];
+
+    _kvoController = [FBKVOController controllerWithObserver:self];
+    [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block
+                           :^(id observer, id object, NSDictionary *change) {
+                               [self _applyVibrancy];
+                           }];
+    [self _applyVibrancy];
+
     return self;
 }
 
@@ -109,19 +117,57 @@
     [self _applyVibrancy];
 }
 
+- (BOOL) _isFocused
+{
+    if (![NSApp isActive]) {
+        NSLog(@"app not active");
+        return NO;
+    }
+    if ([NSApp keyWindow] != [self window]) {
+        NSLog(@"not the same window %@", [self window]);
+        return NO;
+    }
+    NSView * parentView = self;
+    NSLog(@"parent view? %@", parentView);
+    while (parentView != nil) {
+        NSLog(@"parent view? %@", parentView);
+        if ([[self window] firstResponder] == parentView) {
+            return YES;
+        }
+        parentView = [parentView superview];
+    }
+    return NO;
+}
+
 - (void) _applyVibrancy
 {
     if (_selected) {
         [_mainView setVibrancy:_vibrancy];
         [_opaqueView setAlphaValue:1.0];
-        [_effectView setMaterial:NSVisualEffectMaterialTitlebar];
-        [_opaqueView setBackgroundColor:[NSColor colorWithCalibratedWhite:0.9 alpha:1.0]];
+        if ([DJLDarkMode isDarkModeSupported]) {
+            [_effectView setMaterial:NSVisualEffectMaterialSidebar];
+        } else {
+            [_effectView setMaterial:NSVisualEffectMaterialTitlebar];
+        }
+        if ([DJLDarkMode isDarkModeForView:self]) {
+            [_opaqueView setBackgroundColor:[NSColor colorWithCalibratedWhite:0.08 alpha:1.0]];
+        } else {
+            [_opaqueView setBackgroundColor:[NSColor colorWithCalibratedWhite:0.9 alpha:1.0]];
+        }
     }
     else {
         [_mainView setVibrancy:_vibrancy];
         [_opaqueView setAlphaValue:1.0 - _vibrancy];
-        [_effectView setMaterial:NSVisualEffectMaterialLight];
-        [_opaqueView setBackgroundColor:[NSColor whiteColor]];
+        if ([DJLDarkMode isDarkModeSupported]) {
+            [_effectView setMaterial:NSVisualEffectMaterialSidebar];
+        } else {
+            [_effectView setMaterial:NSVisualEffectMaterialLight];
+        }
+        if ([DJLDarkMode isDarkModeForView:self]) {
+            [_opaqueView setBackgroundColor:[NSColor colorWithCalibratedWhite:0.08 alpha:1.0]];
+        } else {
+            [_opaqueView setBackgroundColor:[NSColor whiteColor]];
+        }
     }
     [self update];
 }

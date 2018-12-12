@@ -5,6 +5,9 @@
 
 #import "DJLGradientSeparatorLineView.h"
 #import "DJLColoredView.h"
+#import "DJLDarkMode.h"
+#import "FBKVOController.h"
+#import "DJLPopoverButton.h"
 
 @interface DJLToolbarView ()
 
@@ -22,12 +25,14 @@
     BOOL _dragging;
     NSMutableDictionary * _validation;
     BOOL _appStarted;
+    FBKVOController * _kvoController;
+    BOOL _forceWhiteBackground;
 }
 
 @synthesize viewsToFade = _viewsToFade;
 @synthesize highlighted = _highlighted;
 @synthesize validationDelegate = _validationDelegate;
-
+@synthesize forceWhiteBackground = _forceWhiteBackground;
 
 static NSTimeInterval s_startTime = 0;
 
@@ -65,6 +70,12 @@ static NSTimeInterval s_startTime = 0;
         [self performSelector:@selector(_delayedAppStartHighlight) withObject:nil afterDelay:10];
     }
 
+    _kvoController = [FBKVOController controllerWithObserver:self];
+    [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block:^(id observer, id object, NSDictionary * change) {
+        [self _applyDarkMode];
+    }];
+    [self _applyDarkMode];
+
     return self;
 }
 
@@ -74,9 +85,25 @@ static NSTimeInterval s_startTime = 0;
     [self removeTrackingArea:_area];
 }
 
+- (void) _applyDarkMode
+{
+    if ([DJLDarkMode isDarkModeForView:self] && !_forceWhiteBackground) {
+        [_opaqueView setBackgroundColor:[NSColor colorWithCalibratedWhite:0.08 alpha:1.0]];
+    } else {
+        [_opaqueView setBackgroundColor:[NSColor whiteColor]];
+    }
+}
+
+- (void) setForceWhiteBackground:(BOOL)forceWhiteBackground
+{
+    _forceWhiteBackground = forceWhiteBackground;
+    [self _applyDarkMode];
+}
+
 - (void) viewDidMoveToWindow
 {
     [self _updateHighlight];
+    [self _applyDarkMode];
 }
 
 - (void) _delayedAppStartHighlight
@@ -124,6 +151,12 @@ static NSTimeInterval s_startTime = 0;
     rect = [[self window] convertRectToScreen:rect];
     BOOL mouseOver = NSPointInRect([NSEvent mouseLocation], rect);
     [self setHighlighted:([NSApp isActive] && [[self window] isKeyWindow] && mouseOver) || _appStarted];
+
+    for(NSView * view in [self viewsToFade]) {
+        if ([view isKindOfClass:[DJLPopoverButton class]]) {
+            [(DJLPopoverButton *)view setForceWhiteBackground:_forceWhiteBackground];
+        }
+    }
 }
 
 - (void) mouseDown:(NSEvent *)theEvent

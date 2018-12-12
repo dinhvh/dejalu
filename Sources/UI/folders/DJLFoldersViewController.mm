@@ -9,6 +9,7 @@
 #import "DJLFolderPaneAccountInfo.h"
 #import "DJLFolderPaneFolderInfo.h"
 #import "DJLFolderPaneFoldersDisclosureInfo.h"
+#import "DJLDarkMode.h"
 
 #include "Hermes.h"
 
@@ -53,12 +54,22 @@ static NSMutableDictionary * s_images = nil;
 + (void) setupImage:(NSString *)imageName
 {
     NSImage * originImage = [NSImage imageNamed:imageName];
+
     NSImage * image = [originImage djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.6]];
     NSImage * pressedImage = [originImage djl_imageWithColor:[NSColor blackColor]];
     NSImage * selectedImage = [originImage djl_imageWithColor:[NSColor whiteColor]];
     NSImage * selectedPressedImage = [originImage djl_imageWithColor:[NSColor colorWithCalibratedWhite:1.0 alpha:0.6]];
-    s_images[imageName] = @{@"normal": image, @"pressed": pressedImage,
-                            @"selected": selectedImage, @"pressed-selected": selectedPressedImage};
+
+    s_images[imageName] = @{
+                            @"normal": image,
+                            @"pressed": pressedImage,
+                            @"selected": selectedImage,
+                            @"pressed-selected": selectedPressedImage,
+                            @"dark-normal": selectedPressedImage,
+                            @"dark-pressed": selectedImage,
+                            @"dark-selected": pressedImage,
+                            @"dark-pressed-selected": image,
+                            };
 }
 
 - (id) initWithFrame:(NSRect)frameRect
@@ -122,7 +133,11 @@ static NSMutableDictionary * s_images = nil;
         [[self textField] setStringValue:@""];
     }
     else {
-        [[self textField] setTextColor:_enabled ? [NSColor blackColor] : [NSColor colorWithCalibratedWhite:0.5 alpha:1.0]];
+        if ([DJLDarkMode isDarkModeForView:[self textField]]) {
+            [[self textField] setTextColor:_enabled ? [NSColor whiteColor] : [NSColor colorWithCalibratedWhite:0.5 alpha:1.0]];
+        } else {
+            [[self textField] setTextColor:_enabled ? [NSColor blackColor] : [NSColor colorWithCalibratedWhite:0.5 alpha:1.0]];
+        }
         [[self textField] setStringValue:_folderName];
     }
 
@@ -160,13 +175,24 @@ static NSMutableDictionary * s_images = nil;
             [_rightButton setHidden:NO];
             [_rightButton setFrame:NSMakeRect(bounds.size.width - 25, 6, 20, 20)];
             name = @"DejaLu_ArrowRightButton_16";
-            if ([self backgroundStyle] == NSBackgroundStyleDark) {
-                [_rightButton setImage:s_images[name][@"selected"]];
-                [_rightButton setAlternateImage:s_images[name][@"pressed-selected"]];
-            }
-            else {
-                [_rightButton setImage:s_images[name][@"normal"]];
-                [_rightButton setAlternateImage:s_images[name][@"pressed"]];
+            if ([DJLDarkMode isDarkModeForView:self]) {
+                if ([self backgroundStyle] == NSBackgroundStyleDark) {
+                    [_rightButton setImage:s_images[name][@"dark-selected"]];
+                    [_rightButton setAlternateImage:s_images[name][@"dark-pressed-selected"]];
+                }
+                else {
+                    [_rightButton setImage:s_images[name][@"dark-normal"]];
+                    [_rightButton setAlternateImage:s_images[name][@"dark-pressed"]];
+                }
+            } else {
+                if ([self backgroundStyle] == NSBackgroundStyleDark) {
+                    [_rightButton setImage:s_images[name][@"selected"]];
+                    [_rightButton setAlternateImage:s_images[name][@"pressed-selected"]];
+                }
+                else {
+                    [_rightButton setImage:s_images[name][@"normal"]];
+                    [_rightButton setAlternateImage:s_images[name][@"pressed"]];
+                }
             }
             [_backImage setHidden:YES];
             if ([_countLabel isHidden]) {
@@ -181,24 +207,44 @@ static NSMutableDictionary * s_images = nil;
             break;
         case DJLFoldersTableCellViewModeBack:
             name = @"DejaLu_ArrowLeft_12";
-            if ([self backgroundStyle] == NSBackgroundStyleDark) {
-                [_backImage setImage:s_images[name][@"selected"]];
-            }
-            else {
-                [_backImage setImage:s_images[name][@"normal"]];
+            if ([DJLDarkMode isDarkModeForView:self]) {
+                if ([self backgroundStyle] == NSBackgroundStyleDark) {
+                    [_backImage setImage:s_images[name][@"dark-selected"]];
+                }
+                else {
+                    [_backImage setImage:s_images[name][@"dark-normal"]];
+                }
+            } else {
+                if ([self backgroundStyle] == NSBackgroundStyleDark) {
+                    [_backImage setImage:s_images[name][@"selected"]];
+                }
+                else {
+                    [_backImage setImage:s_images[name][@"normal"]];
+                }
             }
             [_countLabel setHidden:YES];
             [_backImage setHidden:NO];
             [_rightButton setHidden:NO];
             [_rightButton setFrame:NSMakeRect(bounds.size.width - 25, 6, 20, 20)];
             name = @"DejaLu_Settings_16";
-            if ([self backgroundStyle] == NSBackgroundStyleDark) {
-                [_rightButton setImage:s_images[name][@"selected"]];
-                [_rightButton setAlternateImage:s_images[name][@"pressed-selected"]];
-            }
-            else {
-                [_rightButton setImage:s_images[name][@"normal"]];
-                [_rightButton setAlternateImage:s_images[name][@"pressed"]];
+            if ([DJLDarkMode isDarkModeForView:self]) {
+                if ([self backgroundStyle] == NSBackgroundStyleDark) {
+                    [_rightButton setImage:s_images[name][@"dark-selected"]];
+                    [_rightButton setAlternateImage:s_images[name][@"dark-pressed-selected"]];
+                }
+                else {
+                    [_rightButton setImage:s_images[name][@"dark-normal"]];
+                    [_rightButton setAlternateImage:s_images[name][@"dark-pressed"]];
+                }
+            } else {
+                if ([self backgroundStyle] == NSBackgroundStyleDark) {
+                    [_rightButton setImage:s_images[name][@"selected"]];
+                    [_rightButton setAlternateImage:s_images[name][@"pressed-selected"]];
+                }
+                else {
+                    [_rightButton setImage:s_images[name][@"normal"]];
+                    [_rightButton setAlternateImage:s_images[name][@"pressed"]];
+                }
             }
             [[self textField] setFrame:NSMakeRect(30, 0, bounds.size.width - 55, 25)];
             break;
@@ -610,7 +656,11 @@ enum {
             NSRect frame = NSMakeRect(0, 0, WIDTH, 5);
             NSTableCellView * cell = [[NSTableCellView alloc] initWithFrame:frame];
             DJLColoredView * view = [[DJLColoredView alloc] initWithFrame:NSMakeRect(5, 0, WIDTH - 10, 1)];
-            [view setBackgroundColor:[NSColor colorWithWhite:0.85 alpha:1.0]];
+            if ([DJLDarkMode isDarkModeForView:_foldersTableView]) {
+                [view setBackgroundColor:[NSColor colorWithWhite:0.40 alpha:1.0]];
+            } else {
+                [view setBackgroundColor:[NSColor colorWithWhite:0.85 alpha:1.0]];
+            }
             [cell addSubview:view];
             return cell;
         }
@@ -650,7 +700,11 @@ enum {
                 NSRect frame = NSMakeRect(0, 0, WIDTH, 5);
                 NSTableCellView * cell = [[NSTableCellView alloc] initWithFrame:frame];
                 DJLColoredView * view = [[DJLColoredView alloc] initWithFrame:NSMakeRect(5, 0, WIDTH - 10, 1)];
-                [view setBackgroundColor:[NSColor colorWithWhite:0.85 alpha:1.0]];
+                if ([DJLDarkMode isDarkModeForView:_foldersTableView]) {
+                    [view setBackgroundColor:[NSColor colorWithWhite:0.40 alpha:1.0]];
+                } else {
+                    [view setBackgroundColor:[NSColor colorWithWhite:0.85 alpha:1.0]];
+                }
                 [cell addSubview:view];
                 return cell;
             }

@@ -13,6 +13,8 @@
 #import "DJLPrefsLabelsViewController.h"
 #import "DJLPrefsAliasesViewController.h"
 #import "DJLPrefsSignatureViewController.h"
+#import "DJLDarkMode.h"
+#import "FBKVOController.h"
 
 @interface DJLPreferencesWindowController () <NSWindowDelegate, DJLPreferencesToolbarViewDelegate>
 
@@ -27,6 +29,7 @@
     DJLPrefsAliasesViewController * _prefsAliasesViewController;
     DJLPrefsSignatureViewController * _prefsSignatureViewController;
     DJLPreferencesViewController * _currentController;
+    FBKVOController * _kvoController;
 }
 
 - (id) init
@@ -53,12 +56,30 @@
 
     [self _setup];
 
+    _kvoController = [FBKVOController controllerWithObserver:self];
+    [_kvoController observe:[window contentView] keyPath:@"effectiveAppearance" options:0 block
+                           :^(id observer, id object, NSDictionary *change) {
+                               [self _applyDarkMode];
+                           }];
+    [self _applyDarkMode];
+
     return self;
 }
 
 - (void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void) _applyDarkMode
+{
+    NSColor * backgroundColor;
+    if ([DJLDarkMode isDarkModeForView:[[self window] contentView]]) {
+        backgroundColor = [NSColor colorWithCalibratedWhite:0.1 alpha:1.0];
+    } else {
+        backgroundColor = [NSColor whiteColor];
+    }
+    [(DJLColoredView *)[[self window] contentView] setBackgroundColor:backgroundColor];
 }
 
 - (void) _updateUI

@@ -8,6 +8,7 @@
 #import "DJLTableView.h"
 #import "DJLColoredView.h"
 #import "NSImage+DJLColored.h"
+#import "DJLDarkMode.h"
 
 using namespace mailcore;
 using namespace hermes;
@@ -24,19 +25,30 @@ using namespace hermes;
 @synthesize state = _state;
 @synthesize folderName = _folderName;
 
-static NSImage * s_checkmarkImage = nil;
-static NSImage * s_checkmarkSelectedImage = nil;
-static NSImage * s_mixedImage = nil;
-static NSImage * s_mixedSelectedImage = nil;
+static NSMutableDictionary * s_images = nil;
 
 + (void) initialize
 {
-    NSImage * originImage = [NSImage imageNamed:@"DejaLu_CheckmarkOn_12"];
-    s_checkmarkImage = [originImage djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.6]];
-    s_checkmarkSelectedImage = [originImage djl_imageWithColor:[NSColor whiteColor]];
-    originImage = [NSImage imageNamed:@"DejaLu_Minus_12"];
-    s_mixedImage = [originImage djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.6]];
-    s_mixedSelectedImage = [originImage djl_imageWithColor:[NSColor whiteColor]];
+    s_images = [[NSMutableDictionary alloc] init];
+    [self setupImage:@"DejaLu_CheckmarkOn_12"];
+    [self setupImage:@"DejaLu_Minus_12"];
+}
+
++ (void) setupImage:(NSString *)imageName
+{
+    NSImage * originImage = [NSImage imageNamed:imageName];
+
+    NSImage * image = [originImage djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.6]];
+    NSImage * selectedImage = [originImage djl_imageWithColor:[NSColor whiteColor]];
+    NSImage * darkImage = [originImage djl_imageWithColor:[NSColor whiteColor]];
+    NSImage * darkSelectedImage = [originImage djl_imageWithColor:[NSColor whiteColor]];
+
+    s_images[imageName] = @{
+                            @"normal": image,
+                            @"selected": selectedImage,
+                            @"dark-normal": darkImage,
+                            @"dark-selected": darkSelectedImage,
+                            };
 }
 
 - (id) initWithFrame:(NSRect)frameRect
@@ -76,19 +88,37 @@ static NSImage * s_mixedSelectedImage = nil;
 - (void) _applyImage
 {
     if (_state == NSOnState) {
+        NSString * name = @"DejaLu_CheckmarkOn_12";
         if ([self backgroundStyle] == NSBackgroundStyleDark) {
-            [[self imageView] setImage:s_checkmarkSelectedImage];
+            if ([DJLDarkMode isDarkModeForView:self]) {
+                [[self imageView] setImage:s_images[name][@"dark-selected"]];
+            } else {
+                [[self imageView] setImage:s_images[name][@"selected"]];
+            }
         }
         else {
-            [[self imageView] setImage:s_checkmarkImage];
+            if ([DJLDarkMode isDarkModeForView:self]) {
+                [[self imageView] setImage:s_images[name][@"dark-normal"]];
+            } else {
+                [[self imageView] setImage:s_images[name][@"normal"]];
+            }
         }
     }
     else if (_state == NSMixedState) {
+        NSString * name = @"DejaLu_Minus_12";
         if ([self backgroundStyle] == NSBackgroundStyleDark) {
-            [[self imageView] setImage:s_mixedSelectedImage];
+            if ([DJLDarkMode isDarkModeForView:self]) {
+                [[self imageView] setImage:s_images[name][@"dark-selected"]];
+            } else {
+                [[self imageView] setImage:s_images[name][@"selected"]];
+            }
         }
         else {
-            [[self imageView] setImage:s_mixedImage];
+            if ([DJLDarkMode isDarkModeForView:self]) {
+                [[self imageView] setImage:s_images[name][@"dark-normal"]];
+            } else {
+                [[self imageView] setImage:s_images[name][@"normal"]];
+            }
         }
     }
     else {

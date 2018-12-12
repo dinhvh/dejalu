@@ -333,6 +333,8 @@ private:
     NSView * contentView = [[self window] contentView];
 
     _toField = [[DJLEmailField alloc] initWithFrame:NSZeroRect];
+    [_toField setBackgroundColor:[NSColor whiteColor]];
+    [_toField setTextColor:[NSColor blackColor]];
     [_toField setAllowsEditingTextAttributes:NO];
     [_toField setBordered:NO];
     [_toField setFocusRingType:NSFocusRingTypeNone];
@@ -343,6 +345,7 @@ private:
     [contentView addSubview:_toField];
 
     _toLabel = [[NSTextField alloc] initWithFrame:NSZeroRect];
+    [_toLabel setBackgroundColor:[NSColor whiteColor]];
     [_toLabel setEditable:NO];
     [_toLabel setBordered:NO];
     [_toLabel setFont:[NSFont systemFontOfSize:15]];
@@ -351,6 +354,8 @@ private:
     [contentView addSubview:_toLabel];
 
     _ccField = [[DJLEmailField alloc] initWithFrame:NSZeroRect];
+    [_ccField setTextColor:[NSColor blackColor]];
+    [_ccField setBackgroundColor:[NSColor whiteColor]];
     [_ccField setAllowsEditingTextAttributes:NO];
     [_ccField setBordered:NO];
     [_ccField setFocusRingType:NSFocusRingTypeNone];
@@ -361,6 +366,7 @@ private:
     [contentView addSubview:_ccField];
 
     _ccLabel = [[NSTextField alloc] initWithFrame:NSZeroRect];
+    [_ccLabel setBackgroundColor:[NSColor whiteColor]];
     [_ccLabel setEditable:NO];
     [_ccLabel setBordered:NO];
     [_ccLabel setFont:[NSFont systemFontOfSize:15]];
@@ -369,6 +375,8 @@ private:
     [contentView addSubview:_ccLabel];
 
     _bccField = [[DJLEmailField alloc] initWithFrame:NSZeroRect];
+    [_bccField setTextColor:[NSColor blackColor]];
+    [_bccField setBackgroundColor:[NSColor whiteColor]];
     [_bccField setAllowsEditingTextAttributes:NO];
     [_bccField setBordered:NO];
     [_bccField setFocusRingType:NSFocusRingTypeNone];
@@ -379,6 +387,7 @@ private:
     [contentView addSubview:_bccField];
 
     _bccLabel = [[NSTextField alloc] initWithFrame:NSZeroRect];
+    [_bccLabel setBackgroundColor:[NSColor whiteColor]];
     [_bccLabel setEditable:NO];
     [_bccLabel setBordered:NO];
     [_bccLabel setFont:[NSFont systemFontOfSize:15]];
@@ -387,6 +396,8 @@ private:
     [contentView addSubview:_bccLabel];
 
     _subjectField = [[DJLTextField alloc] initWithFrame:NSZeroRect];
+    [_subjectField setTextColor:[NSColor blackColor]];
+    [_subjectField setBackgroundColor:[NSColor whiteColor]];
     [_subjectField setAllowsEditingTextAttributes:NO];
     [_subjectField setBordered:NO];
     [_subjectField setFocusRingType:NSFocusRingTypeNone];
@@ -395,6 +406,7 @@ private:
     [contentView addSubview:_subjectField];
 
     _subjectLabel = [[NSTextField alloc] initWithFrame:NSZeroRect];
+    [_subjectLabel setBackgroundColor:[NSColor whiteColor]];
     [_subjectLabel setEditable:NO];
     [_subjectLabel setBordered:NO];
     [_subjectLabel setFont:[NSFont systemFontOfSize:15]];
@@ -431,6 +443,7 @@ private:
     [contentView addSubview:_bccSeparator];
 
     _toolbarView = [[DJLComposerToolbarView alloc] initWithFrame:NSMakeRect(0, [contentView bounds].size.height - 35, [contentView bounds].size.width, 35)];
+    [_toolbarView setForceWhiteBackground:YES];
     [_toolbarView setDelegate:self];
     [_toolbarView setAutoresizingMask:NSViewWidthSizable | NSViewMinYMargin];
     [contentView addSubview:_toolbarView];
@@ -1882,6 +1895,18 @@ static int compareAddresses(void * a, void * b, void * context)
 
 #pragma mark -
 #pragma mark textfield delegate
+
+- (void) DJLEmailField_becomeFirstResponder:(NSTextField *)field
+{
+    NSText * editor = [[self window] fieldEditor:NO forObject:field];
+    [(NSTextView *)editor setInsertionPointColor:[NSColor blackColor]];
+}
+
+- (void) MMTextField_becomeFirstResponder:(NSTextField *)field
+{
+    NSText * editor = [[self window] fieldEditor:NO forObject:field];
+    [(NSTextView *)editor setInsertionPointColor:[NSColor blackColor]];
+}
 
 - (void)controlTextDidBeginEditing:(NSNotification *)notification
 {

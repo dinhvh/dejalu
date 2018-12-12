@@ -23,6 +23,7 @@
 #import "DJLNetworkErrorOverlayView.h"
 #import "DJLConversationListPlaceholderView.h"
 #import "DJLLabelsViewController.h"
+#import "DJLDarkMode.h"
 
 #import "FBKVOController.h"
 
@@ -287,6 +288,12 @@ private:
     [self _scrolled];
     [self _updateFirstResponderState];
     [self _periodicRedrawCells];
+
+    [_kvoController observe:[self view] keyPath:@"effectiveAppearance" options:0 block
+                           :^(id observer, id object, NSDictionary *change) {
+                               [self _applyDarkMode];
+                           }];
+    [self _applyDarkMode];
 }
 
 - (void) _resized
@@ -460,13 +467,21 @@ private:
 - (void) setVibrancy:(CGFloat)vibrancy
 {
     _vibrancy = vibrancy;
-    [_tableView setBackgroundColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1 - vibrancy]];
     NSRange range = [_tableView rowsInRect:[_tableView visibleRect]];
     for(NSUInteger i = range.location ; i < range.location + range.length ; i ++) {
         DJLConversationCellContentView * cell = [_tableView viewAtColumn:0 row:i makeIfNecessary:NO];
         [cell setVibrancy:_vibrancy];
     }
-    [_searchContainerView setBackgroundColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1 - vibrancy]];
+    [self _applyDarkMode];
+}
+
+- (void) _applyTableViewColor
+{
+    if ([DJLDarkMode isDarkModeForView:[self view]]) {
+        [_tableView setBackgroundColor:[NSColor colorWithCalibratedWhite:0.08 alpha:1 - _vibrancy]];
+    } else {
+        [_tableView setBackgroundColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1 - _vibrancy]];
+    }
 }
 
 - (void) updateFirstResponderState
@@ -1142,7 +1157,6 @@ private:
         _searchContainerView = [[DJLColoredView alloc] initWithFrame:frame];
         [_searchContainerView setNeedsDisplay:YES];
         [_searchContainerView setAutoresizingMask:NSViewMinYMargin | NSViewWidthSizable];
-        [_searchContainerView setBackgroundColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1 - _vibrancy]];
         frame = [_searchContainerView bounds];
         frame.origin.y = 5;
         frame.size.height = SEARCH_HEIGHT;
@@ -1164,6 +1178,8 @@ private:
 
         [_searchContainerView addSubview:_searchField];
         [[self view] addSubview:_searchContainerView positioned:NSWindowBelow relativeTo:_scrollView];
+
+        [self _applySearchFieldColor];
     }
     [_searchContainerView setHidden:NO];
 
@@ -1176,6 +1192,21 @@ private:
     [[[self view] window] makeFirstResponder:_searchField];
     [_searchSeparatorView setAlphaValue:_separatorAlphaValue];
     [[self delegate] DJLConversationListViewController:self separatorAlphaValue:0.0];
+}
+
+- (void) _applyDarkMode
+{
+    [self _applyTableViewColor];
+    [self _applySearchFieldColor];
+}
+
+- (void) _applySearchFieldColor
+{
+    if ([DJLDarkMode isDarkModeForView:[self view]]) {
+        [_searchContainerView setBackgroundColor:[NSColor colorWithCalibratedWhite:0.08 alpha:1 - _vibrancy]];
+    } else {
+        [_searchContainerView setBackgroundColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1 - _vibrancy]];
+    }
 }
 
 - (void) _cancelSearchAfterDelay

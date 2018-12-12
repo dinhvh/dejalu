@@ -9,6 +9,8 @@
 #import "DJLWindow.h"
 #import "DJLAppDelegate.h"
 #import "DJLPrefsButtonCell.h"
+#import "FBKVOController.h"
+#import "DJLDarkMode.h"
 
 using namespace hermes;
 using namespace mailcore;
@@ -60,6 +62,7 @@ public:
     NSButton * _cancelButton;
     Account * _account;
     NSTextField * _placeholder;
+    FBKVOController * _kvoController;
 }
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -115,10 +118,7 @@ public:
     [_addButton setBezelStyle:NSRoundRectBezelStyle];
     [_addButton setAutoresizingMask:NSViewMinXMargin | NSViewMinYMargin];
     NSImage * originImage = [NSImage imageNamed:@"DejaLu_Plus_12"];
-//    originImage = [originImage copy];
-//    [originImage setSize:NSMakeSize(12, 12)];
-    NSImage * img = [originImage djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.6]];
-    [_addButton setImage:img];
+    [_addButton setImage:originImage];
     [_addButton setTarget:self];
     [_addButton setAction:@selector(_add)];
     [contentView addSubview:_addButton];
@@ -128,15 +128,13 @@ public:
     [_removeButton setBezelStyle:NSRoundRectBezelStyle];
     [_removeButton setAutoresizingMask:NSViewMinXMargin | NSViewMinYMargin];
     originImage = [NSImage imageNamed:@"DejaLu_Minus_12"];
-//    originImage = [originImage copy];
-//    [originImage setSize:NSMakeSize(12, 12)];
-    img = [originImage djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.6]];
-    [_removeButton setImage:img];
+    [_removeButton setImage:originImage];
     [_removeButton setTarget:self];
     [_removeButton setAction:@selector(_remove)];
     [contentView addSubview:_removeButton];
 
     _editButton = [[NSButton alloc] initWithFrame:NSMakeRect(0, frame.size.height - 40, 100, 30)];
+    [_editButton setCell:[[DJLPrefsButtonCell alloc] init]];
     [_editButton setBezelStyle:NSRoundRectBezelStyle];
     [_editButton setAutoresizingMask:NSViewMinXMargin | NSViewMinYMargin];
     [_editButton setTitle:@"Edit"];
@@ -194,7 +192,25 @@ public:
     [_placeholder setHidden:YES];
     [contentView addSubview:_placeholder];
 
+    _kvoController = [FBKVOController controllerWithObserver:self];
+    [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block
+                           :^(id observer, id object, NSDictionary *change) {
+                               [self _applyDarkMode];
+                           }];
+    [self _applyDarkMode];
+
     [self _updateAccounts];
+}
+
+- (void) _applyDarkMode
+{
+    if ([DJLDarkMode isDarkModeForView:[self view]]) {
+        [_borderView setBackgroundColor:[NSColor colorWithWhite:0.3 alpha:1.0]];
+        [(DJLColoredView *)[_editDialog contentView] setBackgroundColor:[NSColor colorWithCalibratedWhite:0.1 alpha:1.0]];
+    } else {
+        [_borderView setBackgroundColor:[NSColor colorWithWhite:0.95 alpha:1.0]];
+        [(DJLColoredView *)[_editDialog contentView] setBackgroundColor:[NSColor whiteColor]];
+    }
 }
 
 #pragma mark -
@@ -265,6 +281,8 @@ public:
     [_cancelButton setTarget:self];
     [_cancelButton setAction:@selector(_cancelEdit)];
     [contentView addSubview:_cancelButton];
+
+    [self _applyDarkMode];
 }
 
 #pragma mark -
@@ -273,6 +291,16 @@ public:
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
     return AccountManager::sharedManager()->accounts()->count();
+}
+
+- (void)tableView:(NSTableView *)tableView willDisplayCell:(id)cell forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    NSTableCellView * view = [_tableView viewAtColumn:0 row:row makeIfNecessary:NO];
+    if ([_tableView selectedRow] == row) {
+        [[view textField] setTextColor:[NSColor whiteColor]];
+    } else {
+        [[view textField] setTextColor:[NSColor blackColor]];
+    }
 }
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row

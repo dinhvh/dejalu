@@ -4,6 +4,7 @@
 #import "DJLActivityCellView.h"
 
 #include "HMActivityItem.h"
+#import "DJLDarkMode.h"
 
 @implementation DJLActivityCellView {
     hermes::ActivityItem * _activityItem;
@@ -28,10 +29,17 @@
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
+    NSColor * color;
+    if ([DJLDarkMode isDarkModeForView:self]) {
+        color = [NSColor whiteColor];
+    } else {
+        color = [NSColor blackColor];
+    }
+
     NSString * progressString = MCO_TO_OBJC(_activityItem->progressString());
 
     NSDictionary * attr = @{NSFontAttributeName: [NSFont fontWithName:@"Helvetica Neue" size:14],
-                            NSForegroundColorAttributeName: [NSColor blackColor]};
+                            NSForegroundColorAttributeName: color};
     NSRect rect = [self bounds];
     rect.origin.y = 20;
     rect.size.height = 20;

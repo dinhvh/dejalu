@@ -4,6 +4,7 @@
 #import "DJLPrefsGeneralViewController.h"
 
 #import "DJLURLHandler.h"
+#import "DJLDarkMode.h"
 
 @interface DJLCheckboxButtonCell  : NSButtonCell
 
@@ -13,7 +14,11 @@
 
 - (void) drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
-    [[NSColor whiteColor] setFill];
+    if ([DJLDarkMode isDarkModeForView:[self controlView]]) {
+        [[NSColor colorWithCalibratedWhite:0.1 alpha:1.0] setFill];
+    } else {
+        [[NSColor whiteColor] setFill];
+    }
     NSRectFill(cellFrame);
 
     CGContextRef ctx = [[NSGraphicsContext currentContext] CGContext];

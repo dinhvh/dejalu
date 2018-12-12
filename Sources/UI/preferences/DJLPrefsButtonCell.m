@@ -3,6 +3,9 @@
 
 #import "DJLPrefsButtonCell.h"
 
+#import "DJLDarkMode.h"
+#import "NSImage+DJLColored.h"
+
 @implementation DJLPrefsButtonCell
 
 - (BOOL) acceptsFirstResponder
@@ -20,7 +23,13 @@
     NSRect originRect = NSZeroRect;
     originRect.size = imageSize;
     frame = NSIntegralRect(frame);
-    [image drawInRect:frame fromRect:originRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
+    NSImage * img;
+    if ([DJLDarkMode isDarkModeForView:[self controlView]]) {
+        img = [image djl_imageWithColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
+    } else {
+        img = [image djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.6]];
+    }
+    [img drawInRect:frame fromRect:originRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
 }
 
 @end

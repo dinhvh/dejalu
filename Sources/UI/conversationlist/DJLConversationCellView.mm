@@ -11,6 +11,8 @@
 #import "FBKVOController.h"
 #import "DJLUIConstants.h"
 #import "DJLAssert.h"
+#import "DJLDarkMode.h"
+#import "NSImage+DJLColored.h"
 
 using namespace mailcore;
 
@@ -83,9 +85,26 @@ using namespace mailcore;
     BOOL showSenderAvatar = [[NSUserDefaults standardUserDefaults] boolForKey:@"DJLShowSenderAvatar"];
     CGFloat avatarSize = showSenderAvatar ? 30 : 0;
     CGFloat statusMargin = 15;
-    NSColor * previewColor = [NSColor colorWithCalibratedWhite:0.5 alpha:1.0];
-    if (_selected) {
-        previewColor = [NSColor colorWithCalibratedWhite:0.2 alpha:1.0];
+
+    NSColor * previewColor;
+
+    if ([DJLDarkMode isDarkModeForView:self]) {
+        previewColor = [NSColor colorWithCalibratedWhite:0.4 alpha:1.0];
+        if (_selected) {
+            previewColor = [NSColor colorWithCalibratedWhite:0.6 alpha:1.0];
+        }
+    } else {
+        if (_vibrancy == 0.0) {
+            previewColor = [NSColor colorWithCalibratedWhite:0.5 alpha:1.0];
+            if (_selected) {
+                previewColor = [NSColor colorWithCalibratedWhite:0.2 alpha:1.0];
+            }
+        } else {
+            previewColor = [NSColor colorWithCalibratedWhite:0.2 alpha:1.0];
+            if (_selected) {
+                previewColor = [NSColor colorWithCalibratedWhite:0.0 alpha:1.0];
+            }
+        }
     }
 
     NSFont * snippetFont = [NSFont systemFontOfSize:12];
@@ -129,22 +148,25 @@ using namespace mailcore;
     NSMutableDictionary * labelAttr = [NSMutableDictionary dictionary];
     [labelAttr setObject:[NSFont systemFontOfSize:10] forKey:NSFontAttributeName];
     if (_selected) {
-        [labelAttr setObject:[NSColor colorWithWhite:0.2 alpha:1.0] forKey:NSForegroundColorAttributeName];
+        if ([DJLDarkMode isDarkModeForView:self]) {
+            [labelAttr setObject:[NSColor colorWithWhite:0.8 alpha:1.0] forKey:NSForegroundColorAttributeName];
+        } else {
+            [labelAttr setObject:[NSColor colorWithWhite:0.2 alpha:1.0] forKey:NSForegroundColorAttributeName];
+        }
     }
     else {
         [labelAttr setObject:[NSColor colorWithWhite:0.6 alpha:1.0] forKey:NSForegroundColorAttributeName];
     }
 
-    NSColor * color = nil;
-    if (_selected) {
-        color = [NSColor colorWithCalibratedWhite:0.4 alpha:1.0];
-    }
-    else {
-        color = [NSColor colorWithCalibratedWhite:0.8 - _vibrancy * 0.2 alpha:1.0];
-    }
-
     if (attachmentsCount > 0) {
         NSImage * image = [NSImage imageNamed:@"DejaLu_Attachment_16"];
+        NSColor * color;
+        if ([DJLDarkMode isDarkModeForView:self]) {
+            color = [NSColor colorWithWhite:0.8 alpha:1.0];
+        } else {
+            color = [NSColor colorWithWhite:0.2 alpha:1.0];
+        }
+        image = [image djl_imageWithColor:color];
         NSRect originRect = NSZeroRect;
         originRect.size = [image size];
         NSRect rect = NSMakeRect(x, 50, 0, 0);
@@ -196,6 +218,26 @@ using namespace mailcore;
         x += (int) size.width + 10;
     }
 
+    NSColor * color;
+    if (_selected) {
+        if ([DJLDarkMode isDarkModeForView:self]) {
+            color = [NSColor colorWithWhite:0.6 alpha:1.0];
+        } else {
+            color = [NSColor colorWithCalibratedWhite:0.4 alpha:1.0];
+        }
+    }
+    else {
+        if ([DJLDarkMode isDarkModeForView:self]) {
+            if (_vibrancy != 0) {
+                color = [NSColor colorWithCalibratedWhite:0.4 alpha:1.0];
+            } else {
+                color = [NSColor colorWithCalibratedWhite:0.4 alpha:1.0];
+            }
+        } else {
+            color = [NSColor colorWithCalibratedWhite:0.8 - _vibrancy * 0.2 alpha:1.0];
+        }
+    }
+
     for(NSString * label in filteredLabels) {
         [color setStroke];
         NSString * decodedLabel = MCO_TO_OBJC(MCO_FROM_OBJC(String, label)->mUTF7DecodedString());
@@ -244,6 +286,7 @@ using namespace mailcore;
 
 @synthesize delegate = _delegate;
 @synthesize vibrancy = _vibrancy;
+@synthesize selected = _selected;
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -346,14 +389,26 @@ using namespace mailcore;
         NSColor * color = nil;
         if ([self _isFocused]) {
             if (_vibrancy == 0.0) {
-                color = DJL_SELECTION_OVERLAY_FOCUS_COLOR;
+                if ([DJLDarkMode isDarkModeForView:self]) {
+                    color = [NSColor colorWithCalibratedWhite:0.15 alpha:1.0];
+                } else {
+                    color = DJL_SELECTION_OVERLAY_FOCUS_COLOR;
+                }
             }
             else {
-                color = DJL_SELECTION_OVERLAY_FOCUS_COLOR_FOR_VIBRANCY;
+                if ([DJLDarkMode isDarkModeForView:self]) {
+                    color = [NSColor colorWithCalibratedRed:.043137255 green:.4 blue:.82745098 alpha:0.9];
+                } else {
+                    color = DJL_SELECTION_OVERLAY_FOCUS_COLOR_FOR_VIBRANCY;
+                }
             }
         }
         else {
-            color = DJL_SELECTION_OVERLAY_UNFOCUS_COLOR;
+            if ([DJLDarkMode isDarkModeForView:self]) {
+                color = [NSColor colorWithCalibratedWhite:0.20 alpha:1.0];
+            } else {
+                color = DJL_SELECTION_OVERLAY_UNFOCUS_COLOR;
+            }
         }
         [color setFill];
         NSRectFill([self bounds]);
@@ -406,12 +461,21 @@ using namespace mailcore;
         NSFont * dateFont = [NSFont systemFontOfSize:12];
         NSMutableDictionary * dateAttr = [NSMutableDictionary dictionary];
         [dateAttr setObject:dateFont forKey:NSFontAttributeName];
+        NSColor * color;
         if (_selected) {
-            [dateAttr setObject:[NSColor blackColor] forKey:NSForegroundColorAttributeName];
+            if ([DJLDarkMode isDarkModeForView:self]) {
+                color = [NSColor whiteColor];
+            } else {
+                color = [NSColor blackColor];
+            }
+        } else {
+            if ([DJLDarkMode isDarkModeForView:self]) {
+                color = [NSColor colorWithCalibratedWhite:0.3 alpha:1.0];
+            } else {
+                color = [NSColor colorWithCalibratedWhite:0.7 alpha:1.0];
+            }
         }
-        else {
-            [dateAttr setObject:[NSColor colorWithCalibratedWhite:0.7 alpha:1.0] forKey:NSForegroundColorAttributeName];
-        }
+        [dateAttr setObject:color forKey:NSForegroundColorAttributeName];
         NSAttributedString * dateAttrStr = [[NSAttributedString alloc] initWithString:dateStr attributes:dateAttr];
         textSize = [dateAttrStr size];
         dateWidth = textSize.width;
@@ -427,11 +491,32 @@ using namespace mailcore;
     
     y = initialY - 5;
     
-    NSColor * sendersColor = [NSColor colorWithCalibratedWhite:0.0 alpha:1.0];
-    NSColor * separatorColor = [NSColor colorWithCalibratedWhite:0.0 alpha:1.0];
+    NSColor * sendersColor;
+    NSColor * separatorColor;
+    NSColor * subjectColor;
+    if ([DJLDarkMode isDarkModeForView:self]) {
+        sendersColor = [NSColor colorWithCalibratedWhite:0.8 alpha:1.0];
+        separatorColor = [NSColor colorWithCalibratedWhite:0.8 alpha:1.0];
+        subjectColor = [NSColor colorWithCalibratedWhite:0.8 alpha:1.0];
+    } else {
+        sendersColor = [NSColor colorWithCalibratedWhite:0.0 alpha:1.0];
+        separatorColor = [NSColor colorWithCalibratedWhite:0.0 alpha:1.0];
+        subjectColor = [NSColor blackColor];
+    }
     if (isRead && !_selected) {
-        sendersColor = [NSColor colorWithCalibratedWhite:0.4 alpha:1.0];
-        separatorColor = [NSColor colorWithCalibratedWhite:0.75 alpha:1.0];
+        if ([DJLDarkMode isDarkModeForView:self]) {
+            sendersColor = [NSColor colorWithCalibratedWhite:0.5 alpha:1.0];
+            separatorColor = [NSColor colorWithCalibratedWhite:0.5 alpha:1.0];
+            subjectColor = [NSColor colorWithCalibratedWhite:0.5 alpha:1.0];
+        } else {
+            if (_vibrancy == 0.0) {
+                sendersColor = [NSColor colorWithCalibratedWhite:0.4 alpha:1.0];
+            } else {
+                sendersColor = [NSColor colorWithCalibratedWhite:0.2 alpha:1.0];
+            }
+            separatorColor = [NSColor colorWithCalibratedWhite:0.75 alpha:1.0];
+            subjectColor = [NSColor blackColor];
+        }
     }
     NSString * listID = [_conversation objectForKey:@"listid"];
     NSMutableString * senders = [NSMutableString string];
@@ -455,7 +540,7 @@ using namespace mailcore;
     NSFont * subjectFont = [NSFont systemFontOfSize:14];
     NSMutableDictionary * subjectAttr = [NSMutableDictionary dictionary];
     [subjectAttr setObject:subjectFont forKey:NSFontAttributeName];
-    [subjectAttr setObject:[NSColor blackColor] forKey:NSForegroundColorAttributeName];
+    [subjectAttr setObject:subjectColor forKey:NSForegroundColorAttributeName];
     NSString * subject = [_conversation objectForKey:@"subject"];
     if (subject == nil) {
         subject = @"";
@@ -536,20 +621,6 @@ using namespace mailcore;
 
     y -= textSize.height + 5;
     
-    NSColor * previewColor = [NSColor colorWithCalibratedWhite:0.5 alpha:1.0];
-    if (_selected) {
-        previewColor = [NSColor colorWithCalibratedWhite:0.2 alpha:1.0];
-    }
-
-    NSFont * senderFont = [NSFont boldSystemFontOfSize:12];
-    NSMutableDictionary * senderAttr = [NSMutableDictionary dictionary];
-    [senderAttr setObject:senderFont forKey:NSFontAttributeName];
-    [senderAttr setObject:previewColor forKey:NSForegroundColorAttributeName];
-    NSFont * snippetFont = [NSFont systemFontOfSize:12];
-    NSMutableDictionary * snippetAttr = [NSMutableDictionary dictionary];
-    [snippetAttr setObject:snippetFont forKey:NSFontAttributeName];
-    [snippetAttr setObject:previewColor forKey:NSForegroundColorAttributeName];
-
     NSBezierPath * path = [[NSBezierPath alloc] init];
 
     if (showSenderAvatar) {
@@ -588,7 +659,13 @@ using namespace mailcore;
         path = [[NSBezierPath alloc] init];
         [path moveToPoint:NSMakePoint(avatarSize + 30, 0)];
         [path lineToPoint:NSMakePoint(bounds.size.width, 0)];
-        [[NSColor colorWithCalibratedWhite:0.0 alpha:0.15] setStroke];
+        NSColor * color;
+        if ([DJLDarkMode isDarkModeForView:self]) {
+            color = [NSColor colorWithCalibratedWhite:0.20 alpha:1.0];
+        } else {
+            color = [NSColor colorWithCalibratedWhite:0.0 alpha:0.15];
+        }
+        [color setStroke];
         [path stroke];
     }
 }

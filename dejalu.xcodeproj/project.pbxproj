@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		92D2C2A62018261100CC64DB /* statusitem.png in Resources */ = {isa = PBXBuildFile; fileRef = 92D2C2892018261000CC64DB /* statusitem.png */; };
 		92D2C2A8201826CA00CC64DB /* statusitem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92D2C2A7201826CA00CC64DB /* statusitem@2x.png */; };
+		BDD110DB21B74E61005CAEA7 /* DJLDarkMode.m in Sources */ = {isa = PBXBuildFile; fileRef = BDD110DA21B74E61005CAEA7 /* DJLDarkMode.m */; };
 		C602E3441C6B247100BF728E /* GoogleAnalyticsTracker.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C602E33C1C6B21D900BF728E /* GoogleAnalyticsTracker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C602E3451C6B264000BF728E /* GoogleAnalyticsTracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C602E33C1C6B21D900BF728E /* GoogleAnalyticsTracker.framework */; };
 		C60B45831E17397A006D5115 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C60B45531E1736FF006D5115 /* Sparkle.framework */; };
@@ -838,7 +839,6 @@
 		C6EC07231FF61DCD006B96EA /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC045E1FF61DCB006B96EA /* icon.png */; };
 		C6EC07241FF61DCD006B96EA /* archive.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC045F1FF61DCB006B96EA /* archive.png */; };
 		C6EC07251FF61DCD006B96EA /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC04601FF61DCB006B96EA /* settings.png */; };
-		C6EC07261FF61DCD006B96EA /* dejalu.iconset in Resources */ = {isa = PBXBuildFile; fileRef = C6EC04611FF61DCB006B96EA /* dejalu.iconset */; };
 		C6EC07271FF61DCD006B96EA /* failed.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC04621FF61DCB006B96EA /* failed.png */; };
 		C6EC07281FF61DCD006B96EA /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC04631FF61DCB006B96EA /* empty.png */; };
 		C6EC07291FF61DCD006B96EA /* getting-emails.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC04641FF61DCB006B96EA /* getting-emails.png */; };
@@ -856,7 +856,6 @@
 		C6EC07351FF61DCD006B96EA /* general-setting.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC04701FF61DCB006B96EA /* general-setting.png */; };
 		C6EC07361FF61DCD006B96EA /* accounts.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC04711FF61DCB006B96EA /* accounts.png */; };
 		C6EC07371FF61DCD006B96EA /* forward.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC04721FF61DCB006B96EA /* forward.png */; };
-		C6EC07381FF61DCD006B96EA /* dejalu-unread.iconset in Resources */ = {isa = PBXBuildFile; fileRef = C6EC04731FF61DCB006B96EA /* dejalu-unread.iconset */; };
 		C6EC07391FF61DCD006B96EA /* arrow-left.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC04741FF61DCB006B96EA /* arrow-left.png */; };
 		C6EC073A1FF61DCD006B96EA /* aliases.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC04751FF61DCB006B96EA /* aliases.png */; };
 		C6EC073B1FF61DCD006B96EA /* mark-as-starred.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC04761FF61DCB006B96EA /* mark-as-starred.png */; };
@@ -1222,6 +1221,8 @@
 /* Begin PBXFileReference section */
 		92D2C2892018261000CC64DB /* statusitem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = statusitem.png; sourceTree = "<group>"; };
 		92D2C2A7201826CA00CC64DB /* statusitem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "statusitem@2x.png"; sourceTree = "<group>"; };
+		BDD110DA21B74E61005CAEA7 /* DJLDarkMode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DJLDarkMode.m; sourceTree = "<group>"; };
+		BDD110DC21B74E74005CAEA7 /* DJLDarkMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DJLDarkMode.h; sourceTree = "<group>"; };
 		C602E3361C6B21D900BF728E /* GoogleAnalyticsTracker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GoogleAnalyticsTracker.xcodeproj; path = "Google-Analytics-for-OS-X/GoogleAnalyticsTracker.xcodeproj"; sourceTree = "<group>"; };
 		C60B45311E1736FE006D5115 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = SparkleSandbox/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		C61E770C18053A78009CF7C1 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -3153,6 +3154,8 @@
 				C68ACA231FCBE51700C9097D /* NSImage+DJLColored.h */,
 				C68ACA241FCBE51700C9097D /* NSImage+DJLColored.m */,
 				C68ACA251FCBE51700C9097D /* NSTokenTextView.h */,
+				BDD110DC21B74E74005CAEA7 /* DJLDarkMode.h */,
+				BDD110DA21B74E61005CAEA7 /* DJLDarkMode.m */,
 			);
 			path = "appkit+djl";
 			sourceTree = "<group>";
@@ -4755,7 +4758,6 @@
 				C6EC07631FF61DCD006B96EA /* yahoo.png in Resources */,
 				C6EC06411FF61DCC006B96EA /* DejaLu_UnreadDotOn_64.png in Resources */,
 				C6EC07501FF61DCD006B96EA /* gmail.png in Resources */,
-				C6EC07381FF61DCD006B96EA /* dejalu-unread.iconset in Resources */,
 				C6EC05BA1FF61DCC006B96EA /* DejaLu_MailSent_32@2x.png in Resources */,
 				C6EC06E91FF61DCD006B96EA /* _variables.scss in Resources */,
 				C6EC05C71FF61DCC006B96EA /* DejaLu_Spam_20@2x.png in Resources */,
@@ -4819,7 +4821,6 @@
 				C6EC06E21FF61DCD006B96EA /* icons.less in Resources */,
 				C6EC06C41FF61DCD006B96EA /* DejaLu_NetworkErrorOff_128.png in Resources */,
 				C6EC06701FF61DCC006B96EA /* DejaLu_TagOn_32.png in Resources */,
-				C6EC07261FF61DCD006B96EA /* dejalu.iconset in Resources */,
 				C6EC04F01FF61DCC006B96EA /* DejaLu_Forward_512.png in Resources */,
 				C6EC06201FF61DCC006B96EA /* DejaLu_Forward_32.png in Resources */,
 				C6EC056E1FF61DCC006B96EA /* DejaLu_StarOff_20@2x.png in Resources */,
@@ -5432,6 +5433,7 @@
 				C66F78B81CA282BF008137FD /* PXSourceListTableCellView.m in Sources */,
 				C68AC9D51FCB71FB00C9097D /* DJLLog.c in Sources */,
 				C68AC9771FCB71FA00C9097D /* HMMailDBAddLocalMessagesOperation.cpp in Sources */,
+				BDD110DB21B74E61005CAEA7 /* DJLDarkMode.m in Sources */,
 				C68ACAC81FCBE51700C9097D /* DJLAppBadgeManager.mm in Sources */,
 				C68AC9971FCB71FB00C9097D /* HMMailDBPurgeSentDraftOperation.cpp in Sources */,
 				C68AC9C71FCB71FB00C9097D /* HMKeychain.mm in Sources */,

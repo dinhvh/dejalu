@@ -4,6 +4,8 @@
 #import "DJLSyncProgressView.h"
 
 #import "DJLGradientView.h"
+#import "DJLDarkMode.h"
+#import "FBKVOController.h"
 
 @implementation DJLSyncProgressView {
     double _progressValue;
@@ -11,6 +13,7 @@
     NSString * _text;
     DJLGradientView * _backgroundView;
     NSProgressIndicator * _progressView;
+    FBKVOController * _kvoController;
 }
 
 @synthesize progressValue = _progressValue;
@@ -41,20 +44,48 @@
     [_progressView setIndeterminate:YES];
     [_progressView startAnimation:nil];
     [self addSubview:_progressView];
+
+    _kvoController = [FBKVOController controllerWithObserver:self];
+    [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block
+                           :^(id observer, id object, NSDictionary *change) {
+                               [self _applyDarkMode];
+                           }];
+    [self _applyDarkMode];
+
     return self;
+}
+
+- (void) _applyDarkMode
+{
+    if ([DJLDarkMode isDarkModeForView:self]) {
+        [_backgroundView setStartColor:[NSColor colorWithCalibratedWhite:0.08 alpha:0.9]];
+        [_backgroundView setEndColor:[NSColor colorWithCalibratedWhite:0.08 alpha:0.0]];
+    } else {
+        [_backgroundView setStartColor:[NSColor colorWithCalibratedWhite:1.0 alpha:0.9]];
+        [_backgroundView setEndColor:[NSColor colorWithCalibratedWhite:1.0 alpha:0.0]];
+    }
 }
 
 - (void)drawRect:(NSRect)dirtyRect
 {
     NSRect frame = [self bounds];
-    [[NSColor colorWithCalibratedWhite:1.0 alpha:0.9] setFill];
+    NSColor * color;
+    NSColor * textColor;
+    if ([DJLDarkMode isDarkModeForView:self]) {
+        color = [NSColor colorWithCalibratedWhite:0.08 alpha:0.9];
+        textColor = [NSColor colorWithCalibratedWhite:0.7 alpha:1.0];
+    } else {
+        color = [NSColor colorWithCalibratedWhite:1.0 alpha:0.9];
+        textColor = [NSColor colorWithCalibratedWhite:0.4 alpha:1.0];
+    }
+    [color setFill];
     frame.size.height -= 10;
     NSRectFill(frame);
     NSString * progressString = nil;
     progressString = [self text];
     NSMutableDictionary * attributes = [NSMutableDictionary dictionary];
     [attributes setObject:[NSFont systemFontOfSize:14] forKey:NSFontAttributeName];
-    [attributes setObject:[NSColor colorWithCalibratedWhite:0.4 alpha:1.0] forKey:NSForegroundColorAttributeName];
+    [attributes setObject:textColor forKey:NSForegroundColorAttributeName];
     NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setLineBreakMode:NSLineBreakByTruncatingTail];
     [attributes setObject:paragraphStyle forKey:NSParagraphStyleAttributeName];

@@ -13,6 +13,7 @@
 @property (nonatomic, assign) CGFloat separatorAlphaValue;
 @property (nonatomic, assign) CGFloat vibrancy;
 @property (nonatomic, assign) id <DJLToolbarViewValidationDelegate> validationDelegate;
+@property (nonatomic, assign) BOOL forceWhiteBackground;
 
 - (NSRect) toolbarRect;
 - (CGFloat) currentViewToFadeAlphaValue;

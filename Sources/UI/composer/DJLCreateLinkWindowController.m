@@ -5,6 +5,8 @@
 
 #import "DJLWindow.h"
 #import "DJLColoredView.h"
+#import "FBKVOController.h"
+#import "DJLDarkMode.h"
 
 @interface DJLCreateLinkWindowController () <DJLWindowDelegate>
 
@@ -17,6 +19,7 @@
     NSButton * _cancelButton;
     NSTextField * _errorMessageLabel;
     NSWindow * _parentWindow;
+    FBKVOController * _kvoController;
 }
 
 #define DIALOG_WIDTH 350
@@ -27,6 +30,7 @@
     DJLWindow * window = [[DJLWindow alloc] initWithContentRect:NSMakeRect(0, 0, DIALOG_WIDTH, DIALOG_HEIGHT) styleMask:NSTitledWindowMask | NSTexturedBackgroundWindowMask backing:NSBackingStoreBuffered defer:YES];
     [window setDelegate:self];
     [window setTrafficLightAlternatePositionEnabled:NO];
+    [window setTitlebarAppearsTransparent:YES];
     self = [super initWithWindow:window];
 
     [self _setupDialog];
@@ -75,6 +79,22 @@
     [_cancelButton setTarget:self];
     [_cancelButton setAction:@selector(_cancelAction)];
     [contentView addSubview:_cancelButton];
+
+    _kvoController = [FBKVOController controllerWithObserver:self];
+    [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block
+                           :^(id observer, id object, NSDictionary *change) {
+                               [self _applyDarkMode];
+                           }];
+    [self _applyDarkMode];
+}
+
+- (void) _applyDarkMode
+{
+    if ([DJLDarkMode isDarkModeForView:[[self window] contentView]]) {
+        [(DJLColoredView *)[[self window] contentView] setBackgroundColor:[NSColor colorWithCalibratedWhite:0.1 alpha:1.0]];
+    } else {
+        [(DJLColoredView *)[[self window] contentView] setBackgroundColor:[NSColor whiteColor]];
+    }
 }
 
 - (void) _showError:(NSString *)errorString

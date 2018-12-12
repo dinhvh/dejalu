@@ -3,8 +3,12 @@
 
 #import "DJLFolderPaneAccountCellView.h"
 
+#import "FBKVOController.h"
+#import "DJLDarkMode.h"
+
 @implementation DJLFolderPaneAccountCellView {
     NSTextField * _textField;
+    FBKVOController * _kvoController;
 }
 
 - (id) initWithFrame:(CGRect)frame
@@ -12,13 +16,26 @@
     self = [super initWithFrame:frame];
     _textField = [[NSTextField alloc] initWithFrame:[self bounds]];
     [_textField setFont:[NSFont boldSystemFontOfSize:11]];
-    [_textField setTextColor:[NSColor colorWithCalibratedWhite:0.4 alpha:1.0]];
     [_textField setBezeled:NO];
     [_textField setBordered:NO];
     [_textField setDrawsBackground:NO];
     [_textField setEditable:NO];
     [self addSubview:_textField];
+    _kvoController = [FBKVOController controllerWithObserver:self];
+    [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block:^(id observer, id object, NSDictionary *change) {
+        [self _applyTextColor];
+    }];
+    [self _applyTextColor];
     return self;
+}
+
+- (void) _applyTextColor
+{
+    if ([DJLDarkMode isDarkModeForView:self]) {
+        [_textField setTextColor:[NSColor colorWithCalibratedWhite:0.7 alpha:1.0]];
+    } else {
+        [_textField setTextColor:[NSColor colorWithCalibratedWhite:0.4 alpha:1.0]];
+    }
 }
 
 - (void) setDisplayName:(NSString *)displayName

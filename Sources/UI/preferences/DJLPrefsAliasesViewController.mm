@@ -9,6 +9,8 @@
 #import "NSString+DJL.h"
 #import "DJLWindow.h"
 #import "DJLPrefsButtonCell.h"
+#import "FBKVOController.h"
+#import "DJLDarkMode.h"
 
 using namespace mailcore;
 using namespace hermes;
@@ -64,6 +66,7 @@ enum {
     NSButton * _defaultCheckbox;
     NSButton * _makeDefaultButton;
     NSTextField * _placeholder;
+    FBKVOController * _kvoController;
 }
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -208,6 +211,24 @@ enum {
     [contentView addSubview:_placeholder];
 
     [self _updateView];
+
+    _kvoController = [FBKVOController controllerWithObserver:self];
+    [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block
+                           :^(id observer, id object, NSDictionary *change) {
+                               [self _applyDarkMode];
+                           }];
+    [self _applyDarkMode];
+}
+
+- (void) _applyDarkMode
+{
+    if ([DJLDarkMode isDarkModeForView:[self view]]) {
+        [_borderView setBackgroundColor:[NSColor colorWithWhite:0.3 alpha:1.0]];
+        [(DJLColoredView *)[_aliasDialog contentView] setBackgroundColor:[NSColor colorWithCalibratedWhite:0.1 alpha:1.0]];
+    } else {
+        [_borderView setBackgroundColor:[NSColor colorWithWhite:0.95 alpha:1.0]];
+        [(DJLColoredView *)[_aliasDialog contentView] setBackgroundColor:[NSColor whiteColor]];
+    }
 }
 
 - (void) _updateView
@@ -315,6 +336,7 @@ static int compareAddresses(void * a, void * b, void * context)
     _aliasDialog = [[DJLWindow alloc] initWithContentRect:NSMakeRect(0, 0, DIALOG_WIDTH, DIALOG_HEIGHT) styleMask:NSTitledWindowMask | NSTexturedBackgroundWindowMask backing:NSBackingStoreBuffered defer:YES];
     [_aliasDialog setDelegate:self];
     [_aliasDialog setTrafficLightAlternatePositionEnabled:NO];
+    [_aliasDialog setTitlebarAppearsTransparent:YES];
     NSView * contentView = [[DJLColoredView alloc] initWithFrame:NSMakeRect(0, 0, DIALOG_WIDTH, DIALOG_HEIGHT)];
     [_aliasDialog setContentView:contentView];
     _nameLabel = [[NSTextField alloc] initWithFrame:NSMakeRect(20, 117, DIALOG_WIDTH - 40, 22)];
@@ -392,6 +414,8 @@ static int compareAddresses(void * a, void * b, void * context)
     [_cancelButton setTarget:self];
     [_cancelButton setAction:@selector(_cancelAddAlias)];
     [contentView addSubview:_cancelButton];
+
+    [self _applyDarkMode];
 }
 
 - (void) _add

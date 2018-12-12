@@ -3,9 +3,13 @@
 
 #import "DJLFolderPaneFolderCellView.h"
 
+#import "FBKVOController.h"
+#import "DJLDarkMode.h"
+
 @implementation DJLFolderPaneFolderCellView {
     NSTextField * _textField;
     NSTextField * _countTextField;
+    FBKVOController * _kvoController;
 }
 
 - (id) initWithFrame:(CGRect)frame
@@ -13,7 +17,6 @@
     self = [super initWithFrame:frame];
     _textField = [[NSTextField alloc] initWithFrame:[self bounds]];
     [_textField setFont:[NSFont systemFontOfSize:14]];
-    [_textField setTextColor:[NSColor colorWithCalibratedWhite:0.2 alpha:1.0]];
     [_textField setBezeled:NO];
     [_textField setBordered:NO];
     [_textField setDrawsBackground:NO];
@@ -22,12 +25,17 @@
 
     _countTextField = [[NSTextField alloc] initWithFrame:[self bounds]];
     [_countTextField setFont:[NSFont systemFontOfSize:11]];
-    [_countTextField setTextColor:[NSColor colorWithCalibratedWhite:0.2 alpha:1.0]];
     [_countTextField setBezeled:NO];
     [_countTextField setBordered:NO];
     [_countTextField setDrawsBackground:NO];
     [_countTextField setEditable:NO];
     [self addSubview:_countTextField];
+
+    _kvoController = [FBKVOController controllerWithObserver:self];
+    [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block:^(id observer, id object, NSDictionary *change) {
+        [self _applyColor];
+    }];
+    [self _applyColor];
 
     _selectable = YES;
 
@@ -66,23 +74,43 @@
         }
         else {
             if (_selectable) {
-                [_textField setTextColor:[NSColor colorWithCalibratedWhite:0.2 alpha:1.0]];
-                [_countTextField setTextColor:[NSColor colorWithCalibratedWhite:0.2 alpha:1.0]];
+                if ([DJLDarkMode isDarkModeForView:self]) {
+                    [_textField setTextColor:[NSColor colorWithCalibratedWhite:0.8 alpha:1.0]];
+                    [_countTextField setTextColor:[NSColor colorWithCalibratedWhite:0.8 alpha:1.0]];
+                } else {
+                    [_textField setTextColor:[NSColor colorWithCalibratedWhite:0.2 alpha:1.0]];
+                    [_countTextField setTextColor:[NSColor colorWithCalibratedWhite:0.2 alpha:1.0]];
+                }
             }
             else {
-                [_textField setTextColor:[NSColor colorWithCalibratedWhite:0.4 alpha:1.0]];
-                [_countTextField setTextColor:[NSColor colorWithCalibratedWhite:0.4 alpha:1.0]];
+                if ([DJLDarkMode isDarkModeForView:self]) {
+                    [_textField setTextColor:[NSColor colorWithCalibratedWhite:0.7 alpha:1.0]];
+                    [_countTextField setTextColor:[NSColor colorWithCalibratedWhite:0.7 alpha:1.0]];
+                } else {
+                    [_textField setTextColor:[NSColor colorWithCalibratedWhite:0.4 alpha:1.0]];
+                    [_countTextField setTextColor:[NSColor colorWithCalibratedWhite:0.4 alpha:1.0]];
+                }
             }
         }
     }
     else {
         if (_selectable) {
-            [_textField setTextColor:[NSColor colorWithCalibratedWhite:0.2 alpha:1.0]];
-            [_countTextField setTextColor:[NSColor colorWithCalibratedWhite:0.2 alpha:1.0]];
+            if ([DJLDarkMode isDarkModeForView:self]) {
+                [_textField setTextColor:[NSColor colorWithCalibratedWhite:0.8 alpha:1.0]];
+                [_countTextField setTextColor:[NSColor colorWithCalibratedWhite:0.8 alpha:1.0]];
+            } else {
+                [_textField setTextColor:[NSColor colorWithCalibratedWhite:0.2 alpha:1.0]];
+                [_countTextField setTextColor:[NSColor colorWithCalibratedWhite:0.2 alpha:1.0]];
+            }
         }
         else {
-            [_textField setTextColor:[NSColor colorWithCalibratedWhite:0.4 alpha:1.0]];
-            [_countTextField setTextColor:[NSColor colorWithCalibratedWhite:0.4 alpha:1.0]];
+            if ([DJLDarkMode isDarkModeForView:self]) {
+                [_textField setTextColor:[NSColor colorWithCalibratedWhite:0.7 alpha:1.0]];
+                [_countTextField setTextColor:[NSColor colorWithCalibratedWhite:0.7 alpha:1.0]];
+            } else {
+                [_textField setTextColor:[NSColor colorWithCalibratedWhite:0.4 alpha:1.0]];
+                [_countTextField setTextColor:[NSColor colorWithCalibratedWhite:0.4 alpha:1.0]];
+            }
         }
     }
 }

@@ -12,6 +12,8 @@
 #import "NSImage+DJLColored.h"
 #import "DJLPopoverButton.h"
 #import "DJLToolbarButton.h"
+#import "FBKVOController.h"
+#import "DJLDarkMode.h"
 
 using namespace hermes;
 using namespace mailcore;
@@ -36,6 +38,7 @@ using namespace mailcore;
     NSImage * _altOfflineImg;
     DJLConversationListToolbarViewErrorKind _error;
     CGFloat _leftMargin;
+    FBKVOController * _kvoController;
 }
 
 @synthesize delegate = _delegate;
@@ -45,23 +48,13 @@ using namespace mailcore;
 {
     self = [super initWithFrame:frame];
 
-    //_mailboxButton = [[DJLPopoverButton alloc] initWithFrame:NSMakeRect(76, 8, 150, 20)];
     _mailboxButton = [[DJLPopoverButton alloc] initWithFrame:NSMakeRect(76, 0, 150, 35)];
     [_mailboxButton setShowsBorderOnlyWhileMouseInside:YES];
     [_mailboxButton setBezelStyle:NSRecessedBezelStyle];
     [self _setCurrentFolderName:nil];
-    NSImage * originImage = [NSImage imageNamed:@"DejaLu_ArrowDown_12"];
-    //originImage = [originImage copy];
-    //[originImage setSize:NSMakeSize(12, 12)];
-    NSImage * img = [originImage djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.75]];
-    //NSImage * altImg = [originImage djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:1.0]];
-    [_mailboxButton setImage:img];
-    //[_mailboxButton setAlternateImage:altImg];
     [_mailboxButton setImagePosition:NSImageRight];
-    //[_mailboxButton sizeToFit];
     [_mailboxButton setTarget:self];
     [_mailboxButton setAction:@selector(_showFoldersPopOver:)];
-    //[_mailboxButton setImage:];
     [self addSubview:_mailboxButton];
 
     _errorButton = [[NSButton alloc] initWithFrame:NSMakeRect(0, 8, 20, 20)];
@@ -107,30 +100,13 @@ using namespace mailcore;
     [self addSubview:_errorButton];
 
     _composeButton = [[DJLToolbarButton alloc] initWithFrame:NSMakeRect(frame.size.width - 30, 10, 20, 20)];
-    //[_composeButton setBordered:NO];
-    originImage = [NSImage imageNamed:@"DejaLu_Composer_16"];
-    //originImage = [originImage copy];
-    //[originImage setSize:NSMakeSize(20, 20)];
-    img = [originImage djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:1.0]];
-    //altImg = [originImage djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:1.0]];
-    [_composeButton setImage:img];
-    //[_composeButton setAlternateImage:altImg];
-    //[[_composeButton cell] setHighlightsBy:NSContentsCellMask];
     [_composeButton setTarget:self];
     [_composeButton setAction:@selector(_compose)];
     [_composeButton setAutoresizingMask:NSViewMinXMargin];
     [self addSubview:_composeButton];
 
     _searchButton = [[DJLToolbarButton alloc] initWithFrame:NSMakeRect(frame.size.width - 60, 8, 20, 20)];
-    //[_searchButton setBordered:NO];
     [[_searchButton cell] setHighlightsBy:NSContentsCellMask];
-    originImage = [NSImage imageNamed:@"DejaLu_Search_16"];
-    //originImage = [originImage copy];
-    //[originImage setSize:NSMakeSize(20, 20)];
-    img = [originImage djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:1.0]];
-    //altImg = [originImage djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:1.0]];
-    [_searchButton setImage:img];
-    //[_searchButton setAlternateImage:altImg];
     [_searchButton setTarget:self];
     [_searchButton setAction:@selector(_search)];
     [_searchButton setAutoresizingMask:NSViewMinXMargin];
@@ -140,12 +116,47 @@ using namespace mailcore;
     [self setButtonValidation:_searchButton selector:@selector(_search)];
     [self setViewsToFade:@[_searchButton, _composeButton]];
 
+    _kvoController = [FBKVOController controllerWithObserver:self];
+    [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block
+                           :^(id observer, id object, NSDictionary *change) {
+                               [self _applyIconDarkMode];
+                           }];
+    [self _applyIconDarkMode];
+
     return self;
 }
 
 - (void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void) _applyIconDarkMode
+{
+    NSColor * color;
+    if ([DJLDarkMode isDarkModeForView:self]) {
+        color = [NSColor colorWithCalibratedWhite:1.0 alpha:0.75];
+    } else {
+        color = [NSColor colorWithCalibratedWhite:0.0 alpha:0.75];
+    }
+
+    NSImage * originImage = [NSImage imageNamed:@"DejaLu_ArrowDown_12"];
+    NSImage * img = [originImage djl_imageWithColor:color];
+    [_mailboxButton setImage:img];
+
+    if ([DJLDarkMode isDarkModeForView:self]) {
+        color = [NSColor colorWithCalibratedWhite:1.0 alpha:1.0];
+    } else {
+        color = [NSColor colorWithCalibratedWhite:0.0 alpha:1.0];
+    }
+
+    originImage = [NSImage imageNamed:@"DejaLu_Composer_16"];
+    img = [originImage djl_imageWithColor:color];
+    [_composeButton setImage:img];
+
+    originImage = [NSImage imageNamed:@"DejaLu_Search_16"];
+    img = [originImage djl_imageWithColor:color];
+    [_searchButton setImage:img];
 }
 
 - (void) _compose
@@ -182,7 +193,6 @@ using namespace mailcore;
 
 - (void) DJLFoldersViewController:(DJLFoldersViewController *)controller hasHeight:(CGFloat)height
 {
-    //NSLog(@"height: %g", height);
     if (height > 500) {
         [_foldersPopOver setContentSize:NSMakeSize(WIDTH, HEIGHT)];
     }

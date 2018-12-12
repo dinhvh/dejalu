@@ -81,7 +81,6 @@ public:
 
 @implementation DJLConversationViewController {
     int64_t _convID;
-    //int64_t _folderID;
     MailDBConversationMessagesOperation * _messagesOp;
     MailStorageView * _storageView;
     hermes::Account * _account;
@@ -91,9 +90,7 @@ public:
     BOOL _setupDone;
     BOOL _loadConversationRequested;
     __weak id<DJLConversationViewControllerDelegate> _delegate;
-    //NSMutableDictionary * _messages;
     WebView * _webView;
-    //Array * _saveAttachmentOps;
     NSString * _temporaryFolder;
     Array * _attachmentDownloaders;
     Array * _attachmentToOpenDownloaders;

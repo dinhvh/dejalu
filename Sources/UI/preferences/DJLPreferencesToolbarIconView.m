@@ -4,6 +4,7 @@
 #import "DJLPreferencesToolbarIconView.h"
 
 #import "NSImage+DJLColored.h"
+#import "DJLDarkMode.h"
 
 #define FONT_SIZE 11
 
@@ -28,16 +29,17 @@
     if ([self state] == NSOnState) {
         frame.size.height -= 6;
         NSBezierPath * path = [NSBezierPath bezierPathWithRoundedRect:frame xRadius:5 yRadius:5];
-        [[NSColor colorWithWhite:0.9 alpha:1.0] setFill];
+        if ([DJLDarkMode isDarkModeForView:[self controlView]]) {
+            [[NSColor colorWithCalibratedWhite:0.2 alpha:1.0] setFill];
+        } else {
+            [[NSColor colorWithWhite:0.9 alpha:1.0] setFill];
+        }
         [path fill];
     }
 }
 
 - (void) drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
-    [[NSColor whiteColor] setFill];
-    NSRectFill(cellFrame);
-
     [self drawBezelWithFrame:cellFrame inView:controlView];
 
     NSImage * image = nil;
@@ -53,11 +55,26 @@
     rect.size.width = [image size].width;
     rect.size.height = [image size].height;
     rect = NSIntegralRect(rect);
-    [self drawImage:image withFrame:rect inView:controlView];
 
     NSColor * color = nil;
     if ([self state] == NSOnState) {
-        color = [NSColor colorWithCalibratedWhite:0 alpha:1.0];
+        if ([DJLDarkMode isDarkModeForView:[self controlView]]) {
+            color = [NSColor colorWithCalibratedWhite:1.0 alpha:1.0];
+        } else {
+            color = [NSColor colorWithCalibratedWhite:0 alpha:1.0];
+        }
+    }
+    else {
+        color = [NSColor colorWithCalibratedWhite:0.6 alpha:1.0];
+    }
+    [self drawImage:[image djl_imageWithColor:color] withFrame:rect inView:controlView];
+
+    if ([self state] == NSOnState) {
+        if ([DJLDarkMode isDarkModeForView:[self controlView]]) {
+            color = [NSColor colorWithCalibratedWhite:1.0 alpha:1.0];
+        } else {
+            color = [NSColor colorWithCalibratedWhite:0 alpha:1.0];
+        }
     }
     else {
         color = [NSColor colorWithCalibratedWhite:0.6 alpha:1.0];

@@ -3,11 +3,19 @@
 
 #import "DJLActivityAccountCellView.h"
 
+#import "DJLDarkMode.h"
+
 @implementation DJLActivityAccountCellView
 
 - (void)drawRect:(NSRect)dirtyRect {
+    NSColor * color;
+    if ([DJLDarkMode isDarkModeForView:self]) {
+        color = [NSColor whiteColor];
+    } else {
+        color = [NSColor blackColor];
+    }
     NSDictionary * attr = @{NSFontAttributeName: [NSFont fontWithName:@"Helvetica Neue" size:14],
-                            NSForegroundColorAttributeName: [NSColor blackColor]};
+                            NSForegroundColorAttributeName: color};
     NSRect rect = [self bounds];
     rect.origin.x = 10;
     rect.size.width -= 10;

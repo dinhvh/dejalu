@@ -12,6 +12,8 @@
 #import "DJLComposerWebView.h"
 #import "DJLPathManager.h"
 #import "WebResource+DJL.h"
+#import "FBKVOController.h"
+#import "DJLDarkMode.h"
 
 using namespace mailcore;
 using namespace hermes;
@@ -56,6 +58,8 @@ private:
     BOOL _webViewReady;
     BOOL _hasChanges;
     NSTextField * _placeholder;
+    FBKVOController * _kvoController;
+    DJLColoredView * _webViewPlaceholder;
 }
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -126,7 +130,11 @@ private:
     frame = [contentView bounds];
     frame = NSInsetRect(frame, 20, 20);
     frame.size.height -= 25 + 30;
+    _webViewPlaceholder = [[DJLColoredView alloc] initWithFrame:frame];
+    [_webViewPlaceholder setBackgroundColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
+    [contentView addSubview:_webViewPlaceholder];
     _webView = [[DJLComposerWebView alloc] initWithFrame:frame frameName:nil groupName:nil];
+    [_webView setHidden:YES];
     [_webView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     //[_webView setEditable:YES];
     [_webView setEditingDelegate:self];
@@ -162,6 +170,13 @@ private:
     [contentView addSubview:_placeholder];
 
     [self _updateView];
+
+    _kvoController = [FBKVOController controllerWithObserver:self];
+    [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block
+                           :^(id observer, id object, NSDictionary *change) {
+                               [self _applyDarkMode];
+                           }];
+    [self _applyDarkMode];
 }
 
 - (void) _unsetup
@@ -170,6 +185,22 @@ private:
     [_webView setFrameLoadDelegate:nil];
     [_webView setPolicyDelegate:nil];
     [_webView setUIDelegate:nil];
+}
+
+- (void) _applyDarkMode
+{
+    BOOL darkModeEnabled = [DJLDarkMode isDarkModeForView:[self view]];
+    if (darkModeEnabled) {
+        [_borderView setBackgroundColor:[NSColor colorWithCalibratedWhite:0.3 alpha:1.0]];
+        [_webViewPlaceholder setBackgroundColor:[NSColor colorWithCalibratedWhite:0.0 alpha:1.0]];
+    } else {
+        [_borderView setBackgroundColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0]];
+        [_webViewPlaceholder setBackgroundColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
+    }
+    if (!_webViewReady) {
+        return;
+    }
+    [[_webView windowScriptObject] callWebScriptMethod:@"objcSetDarkMode" withArguments:@[[NSNumber numberWithBool:darkModeEnabled]]];
 }
 
 - (BOOL) _isSelectionEmpty
@@ -459,6 +490,8 @@ private:
 {
     _webViewReady = YES;
     [self _accountSelected];
+    [self _applyDarkMode];
+    [_webView setHidden:NO];
 }
 
 - (void)webView:(WebView *)webView decidePolicyForNavigationAction:(NSDictionary *)actionInformation request:(NSURLRequest *)request frame:(WebFrame *)frame decisionListener:(id<WebPolicyDecisionListener>)listener

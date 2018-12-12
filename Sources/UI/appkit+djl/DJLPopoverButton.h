@@ -5,4 +5,6 @@
 
 @interface DJLPopoverButton : NSButton
 
+@property (nonatomic, assign) BOOL forceWhiteBackground;
+
 @end

@@ -3,6 +3,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface DJLTextField : NSTextField
+#import "MMTextField.h"
+
+@interface DJLTextField : MMTextField
 
 @end

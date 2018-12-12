@@ -27,6 +27,7 @@
 - (instancetype)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
+    [self setForceWhiteBackground:YES];
 
     _trashButton = [[DJLToolbarButton alloc] initWithFrame:NSMakeRect(frame.size.width - 180, 8, 20, 20)];
     NSImage * originImage = [NSImage imageNamed:@"DejaLu_Trash_16"];

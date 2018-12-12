@@ -36,6 +36,8 @@
 #import "DJLURLHandler.h"
 #import "DJLAddressBookManager.h"
 #import "DJLFolderPaneViewController.h"
+#import "DJLDarkMode.h"
+#import "FBKVOController.h"
 
 #include "Hermes.h"
 
@@ -310,14 +312,22 @@ public:
     [contentView addSubview:_splitView];
 
     _folderContainerView = [[NSVisualEffectView alloc] initWithFrame:NSMakeRect(0, 0, 200, 200)];
-    [_folderContainerView setMaterial:NSVisualEffectMaterialLight];
+    if ([DJLDarkMode isDarkModeSupported]) {
+        [_folderContainerView setMaterial:NSVisualEffectMaterialSidebar];
+    } else {
+        [_folderContainerView setMaterial:NSVisualEffectMaterialLight];
+    }
     _folderPaneViewController = [[DJLFolderPaneViewController alloc] init];
     [_folderPaneViewController setDelegate:self];
     [[_folderPaneViewController view] setFrame:NSMakeRect(0, 0, 200, 165)];
     [_folderContainerView addSubview:[_folderPaneViewController view]];
 
     _leftContainerView = [[NSVisualEffectView alloc] initWithFrame:NSMakeRect(0, 0, 200, 200)];
-    [_leftContainerView setMaterial:NSVisualEffectMaterialLight];
+    if ([DJLDarkMode isDarkModeSupported]) {
+        [_leftContainerView setMaterial:NSVisualEffectMaterialSidebar];
+    } else {
+        [_leftContainerView setMaterial:NSVisualEffectMaterialLight];
+    }
     _toolbarView = [[DJLConversationListToolbarView alloc] initWithFrame:NSMakeRect(0, 165, 200, 35)];
     [_toolbarView setAutoresizingMask:NSViewMinYMargin | NSViewWidthSizable];
     [_toolbarView setDelegate:self];
@@ -353,8 +363,6 @@ public:
 
     [_splitView adjustSubviews];
 
-    _kvoController = [FBKVOController controllerWithObserver:self];
-    
     [self _setup];
     [self _updateConversationPanel];
     [self _updateFirstResponderState];
@@ -382,6 +390,13 @@ public:
     // Wait before collecting the first analytics
     [self performSelector:@selector(_loopAnalytics) withObject:nil afterDelay:ANALYTICS_DELAY];
 
+    _kvoController = [FBKVOController controllerWithObserver:self];
+    [_kvoController observe:[self window] keyPath:@"effectiveAppearance" options:0 block
+                           :^(id observer, id object, NSDictionary *change) {
+                               [self _applyDarkMode];
+                           }];
+    [self _applyDarkMode];
+
     return self;
 }
 
@@ -391,6 +406,16 @@ public:
     UnifiedAccountManager::sharedManager()->removeObserver(_callback);
     AccountManager::sharedManager()->removeObserver(_callback);
     MC_SAFE_RELEASE(_callback);
+}
+
+- (void) _applyDarkMode
+{
+    DJLColoredView * contentView = [[self window] contentView];
+    if ([DJLDarkMode isDarkModeForView:contentView]) {
+        [contentView setBackgroundColor:[NSColor blackColor]];
+    } else {
+        [contentView setBackgroundColor:[NSColor whiteColor]];
+    }
 }
 
 - (void) awakeFromNib
@@ -936,7 +961,11 @@ public:
         viewFrame.size.width = frame.size.width;
     }
     DJLColoredView * animationContainerView = [[DJLColoredView alloc] initWithFrame:viewFrame];
-    [animationContainerView setBackgroundColor:[NSColor colorWithCalibratedRed:0.7863 green:0.8020 blue:0.85 alpha:1.0000]];
+    if ([DJLDarkMode isDarkModeForView:[[self window] contentView]]) {
+        [animationContainerView setBackgroundColor:[NSColor blackColor]];
+    } else {
+        [animationContainerView setBackgroundColor:[NSColor colorWithCalibratedRed:0.7863 green:0.8020 blue:0.85 alpha:1.0000]];
+    }
     viewFrame = [_folderContainerView frame];
     viewFrame.origin = NSZeroPoint;
     viewFrame.size.height = [animationContainerView bounds].size.height;
@@ -1211,9 +1240,6 @@ public:
 
 - (void) _updateToolbarError
 {
-    LOG_ERROR("_updateToolbarError: %s %s",
-              [[_accountsErrors description] UTF8String],
-              [[_accountsSendErrors description] UTF8String]);
     if ([_accountsErrors count] == 0 && [_accountsSendErrors count] == 0) {
         [_toolbarView setError:DJLConversationListToolbarViewErrorKindNone];
     }

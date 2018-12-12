@@ -9,6 +9,8 @@
 #import "DJLColoredView.h"
 #import "NSImage+DJLColored.h"
 #import "DJLPrefsButtonCell.h"
+#import "FBKVOController.h"
+#import "DJLDarkMode.h"
 
 using namespace mailcore;
 using namespace hermes;
@@ -157,6 +159,7 @@ private:
     NSButton * _editButton;
     NSTextField * _placeholder;
     BOOL _shouldReload;
+    FBKVOController * _kvoController;
 }
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -295,6 +298,22 @@ private:
     [contentView addSubview:_placeholder];
 
     [self _updateView];
+
+    _kvoController = [FBKVOController controllerWithObserver:self];
+    [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block
+                           :^(id observer, id object, NSDictionary *change) {
+                               [self _applyDarkMode];
+                           }];
+    [self _applyDarkMode];
+}
+
+- (void) _applyDarkMode
+{
+    if ([DJLDarkMode isDarkModeForView:[self view]]) {
+        [_borderView setBackgroundColor:[NSColor colorWithWhite:0.3 alpha:1.0]];
+    } else {
+        [_borderView setBackgroundColor:[NSColor colorWithWhite:0.95 alpha:1.0]];
+    }
 }
 
 - (void) _updateView

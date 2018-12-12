@@ -5,6 +5,8 @@
 
 #import "NSImage+DJLColored.h"
 #import "DJLColoredProgressIndicator.h"
+#import "DJLDarkMode.h"
+#import "FBKVOController.h"
 
 @implementation DJLConversationListPlaceholderView {
     NSImage * _noMessagesImage;
@@ -13,6 +15,7 @@
     NSImage * _searchingImage;
     NSImage * _inboxZeroImage;
     DJLColoredProgressIndicator * _progressIndicator;
+    FBKVOController * _kvoController;
 }
 
 @synthesize kind = _kind;
@@ -27,6 +30,15 @@
     [_progressIndicator setColor:[NSColor colorWithCalibratedWhite:0.5 alpha:1.0]];
     [_progressIndicator setHidden:YES];
     [self addSubview:_progressIndicator];
+    _kvoController = [FBKVOController controllerWithObserver:self];
+    [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block:^(id observer, id object, NSDictionary * change) {
+        _noMessagesImage = nil;
+        _notLoadedImage = nil;
+        _loadingImage = nil;
+        _searchingImage = nil;
+        _inboxZeroImage = nil;
+        [self setNeedsDisplay:YES];
+    }];
     return self;
 }
 
@@ -35,6 +47,16 @@
 
     if (_kind == DJLConversationListPlaceholderKindNone) {
         return;
+    }
+
+    NSColor * color;
+    NSColor * textColor;
+    if ([DJLDarkMode isDarkModeForView:self]) {
+        color = [NSColor colorWithCalibratedWhite:1.0 alpha:0.3];
+        textColor = [NSColor colorWithCalibratedWhite:1.0 alpha:0.4];
+    } else {
+        color = [NSColor colorWithCalibratedWhite:0.0 alpha:0.3];
+        textColor = [NSColor colorWithCalibratedWhite:0.0 alpha:0.4];
     }
 
     //int iconSize = 0;
@@ -49,7 +71,7 @@
                 NSImage * originImage = [NSImage imageNamed:@"DejaLu_InboxZero_128"];
                 //originImage = [originImage copy];
                 //[originImage setSize:NSMakeSize(iconSize, iconSize)];
-                NSImage * img = [originImage djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.3]];
+                NSImage * img = [originImage djl_imageWithColor:color];
                 _inboxZeroImage = img;
             }
             top = 180;
@@ -58,12 +80,9 @@
             image = _inboxZeroImage;
             break;
         case DJLConversationListPlaceholderKindEmpty:
-            //iconSize = 130;
             if (_noMessagesImage == nil) {
                 NSImage * originImage = [NSImage imageNamed:@"DejaLu_Empty_128"];
-//                originImage = [originImage copy];
-//                [originImage setSize:NSMakeSize(iconSize, iconSize)];
-                NSImage * img = [originImage djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.3]];
+                NSImage * img = [originImage djl_imageWithColor:color];
                 _noMessagesImage = img;
             }
             top = 180;
@@ -72,12 +91,9 @@
             image = _noMessagesImage;
             break;
         case DJLConversationListPlaceholderKindLoading:
-            //iconSize = 100;
             if (_loadingImage == nil) {
                 NSImage * originImage = [NSImage imageNamed:@"DejaLu_GettingEmail_128"];
-//                originImage = [originImage copy];
-//                [originImage setSize:NSMakeSize(iconSize, iconSize)];
-                NSImage * img = [originImage djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.3]];
+                NSImage * img = [originImage djl_imageWithColor:color];
                 _loadingImage = img;
             }
             top = 180;
@@ -86,12 +102,9 @@
             image = _loadingImage;
             break;
         case DJLConversationListPlaceholderKindNotLoaded:
-//            iconSize = 100;
             if (_notLoadedImage == nil) {
                 NSImage * originImage = [NSImage imageNamed:@"DejaLu_NetworkErrorOff_128"];
-//                originImage = [originImage copy];
-//                [originImage setSize:NSMakeSize(iconSize, iconSize)];
-                NSImage * img = [originImage djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.3]];
+                NSImage * img = [originImage djl_imageWithColor:color];
                 _notLoadedImage = img;
             }
             top = 180;
@@ -100,12 +113,9 @@
             image = _notLoadedImage;
             break;
         case DJLConversationListPlaceholderKindSearching:
-//            iconSize = 100;
             if (_searchingImage == nil) {
                 NSImage * originImage = [NSImage imageNamed:@"DejaLu_Search_128"];
-//                originImage = [originImage copy];
-//                [originImage setSize:NSMakeSize(iconSize, iconSize)];
-                NSImage * img = [originImage djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.3]];
+                NSImage * img = [originImage djl_imageWithColor:color];
                 _searchingImage = img;
             }
             top = 180;
@@ -114,12 +124,9 @@
             image = _searchingImage;
             break;
         case DJLConversationListPlaceholderKindNoAccounts:
-            //iconSize = 130;
             if (_noMessagesImage == nil) {
                 NSImage * originImage = [NSImage imageNamed:@"DejaLu_Empty_128"];
-                //                originImage = [originImage copy];
-                //                [originImage setSize:NSMakeSize(iconSize, iconSize)];
-                NSImage * img = [originImage djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:0.3]];
+                NSImage * img = [originImage djl_imageWithColor:color];
                 _noMessagesImage = img;
             }
             top = 180;
@@ -141,7 +148,7 @@
     NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setAlignment:NSTextAlignmentCenter];
     [text drawInRect:NSMakeRect(0, bounds.size.height - textTop, bounds.size.width, 200)
-      withAttributes:@{NSFontAttributeName: [NSFont boldSystemFontOfSize:18], NSParagraphStyleAttributeName: paragraphStyle, NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite:0.0 alpha:0.4]}];
+      withAttributes:@{NSFontAttributeName: [NSFont boldSystemFontOfSize:18], NSParagraphStyleAttributeName: paragraphStyle, NSForegroundColorAttributeName: textColor}];
 }
 
 - (void) setKind:(DJLConversationListPlaceholderKind)kind

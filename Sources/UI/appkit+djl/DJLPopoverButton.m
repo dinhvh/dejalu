@@ -3,15 +3,23 @@
 
 #import "DJLPopoverButton.h"
 
+#import "DJLDarkMode.h"
+
 #define FONT_SIZE 12
 #define ACCOUNT_FONT_SIZE 8
 #define ACCOUNT_SPACE 0
 
 @interface DJLPopoverButtonCell : NSButtonCell
 
+@property (nonatomic, assign) BOOL forceWhiteBackground;
+
 @end
 
-@implementation DJLPopoverButtonCell
+@implementation DJLPopoverButtonCell {
+    BOOL _forceWhiteBackground;
+}
+
+@synthesize forceWhiteBackground = _forceWhiteBackground;
 
 - (BOOL) acceptsFirstResponder
 {
@@ -30,11 +38,20 @@
     }
 
     NSBezierPath * path = [NSBezierPath bezierPathWithRoundedRect:frame xRadius:5 yRadius:5];
-    if ([self isHighlighted]) {
-        [[NSColor colorWithWhite:0.7 alpha:1.0] setFill];
-    }
-    else {
-        [[NSColor colorWithWhite:0.85 alpha:1.0] setFill];
+    if ([DJLDarkMode isDarkModeForView:[self controlView]] && !_forceWhiteBackground) {
+        if ([self isHighlighted]) {
+            [[NSColor colorWithWhite:0.3 alpha:1.0] setFill];
+        }
+        else {
+            [[NSColor colorWithWhite:0.15 alpha:1.0] setFill];
+        }
+    } else {
+        if ([self isHighlighted]) {
+            [[NSColor colorWithWhite:0.7 alpha:1.0] setFill];
+        }
+        else {
+            [[NSColor colorWithWhite:0.85 alpha:1.0] setFill];
+        }
     }
     [path fill];
 }
@@ -66,9 +83,15 @@
     [style setLineBreakMode:NSLineBreakByTruncatingTail];
     NSSize size = [title size];
 
+    NSColor * color;
+    if ([DJLDarkMode isDarkModeForView:[self controlView]] && !_forceWhiteBackground) {
+        color = [NSColor colorWithCalibratedWhite:0.8 alpha:1.0];
+    } else {
+        color = [NSColor colorWithCalibratedWhite:0.0 alpha:1.0];
+    }
+
     NSString * alternateTitle = [self alternateTitle];
     if ([alternateTitle length] == 0) {
-        //NSSize size = [title size];
         if (size.width > frame.size.width) {
             size.width = frame.size.width;
         }
@@ -77,14 +100,8 @@
         titleFrame.origin.y += (frame.size.height - size.height) / 2;
         titleFrame.size = size;
         titleFrame = NSIntegralRect(titleFrame);
-#if 0
-        NSAttributedString * attributedTitle = [[NSAttributedString alloc] initWithString:[self title]
-                                                                               attributes:@{NSFontAttributeName: [NSFont systemFontOfSize:FONT_SIZE],
-                                                                                            NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite:0.0 alpha:1.0],
-                                                                                            NSParagraphStyleAttributeName: style}];
-#endif
         NSMutableAttributedString * attributedTitle = [[self attributedTitle] mutableCopy];
-        [attributedTitle addAttributes:@{NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite:0.0 alpha:1.0],
+        [attributedTitle addAttributes:@{NSForegroundColorAttributeName: color,
                                          NSParagraphStyleAttributeName: style} range:NSMakeRange(0, [attributedTitle length])];
         [attributedTitle drawInRect:titleFrame];
         return NSZeroRect;
@@ -94,14 +111,8 @@
                                                                         attributes:@{NSFontAttributeName: [NSFont systemFontOfSize:FONT_SIZE],
                                                                                      NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite:0.6 alpha:1.0],
                                                                                      NSParagraphStyleAttributeName: style}];
-#if 0
-        NSAttributedString * attributedTitle = [[NSAttributedString alloc] initWithString:[self title]
-                                                                               attributes:@{NSFontAttributeName: [NSFont systemFontOfSize:FONT_SIZE],
-                                                                                            NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite:0.0 alpha:1.0],
-                                                                                            NSParagraphStyleAttributeName: style}];
-#endif
         NSMutableAttributedString * attributedTitle = [[self attributedTitle] mutableCopy];
-        [attributedTitle addAttributes:@{NSForegroundColorAttributeName: [NSColor colorWithCalibratedWhite:0.0 alpha:1.0],
+        [attributedTitle addAttributes:@{NSForegroundColorAttributeName: color,
                                          NSParagraphStyleAttributeName: style} range:NSMakeRange(0, [attributedTitle length])];
         NSMutableAttributedString * complete = [[NSMutableAttributedString alloc] init];
         [complete appendAttributedString:attributedTitle];
@@ -139,7 +150,6 @@
         rect = cellFrame;
         rect.origin = cellFrame.origin;
         rect.origin.x = cellFrame.size.width - 12 - 5;
-        //rect.size = cellFrame.size;
         rect.size.width = 12;
         [self drawImage:[self image] withFrame:rect inView:controlView];
     }
@@ -220,6 +230,16 @@
 - (void) _appStateDidChange
 {
     [self setNeedsDisplay:YES];
+}
+
+- (void) setForceWhiteBackground:(BOOL)forceWhiteBackground
+{
+    [[self cell] setForceWhiteBackground:forceWhiteBackground];
+}
+
+- (BOOL) forceWhiteBackground
+{
+    return [[self cell] forceWhiteBackground];
 }
 
 @end
