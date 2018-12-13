@@ -543,6 +543,7 @@ int MailDB::sqlitePrepare(const char * statement, sqlite3_stmt ** p_stmt)
     if (r != SQLITE_OK) {
         fprintf(stderr, "failed preparing SQL: %s\n", statement);
         fprintf(stderr, "error: %s\n", sqlite3_errmsg(mSqlite));
+        * p_stmt = stmt;
         return r;
     }
     mStatementsCache->setObjectForKey(statementString, Value::valueWithPointerValue(stmt));
