@@ -768,7 +768,6 @@
 		C6EC06C81FF61DCD006B96EA /* DejaLu_AppIcon_128.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC03EA1FF61DCB006B96EA /* DejaLu_AppIcon_128.png */; };
 		C6EC06C91FF61DCD006B96EA /* icudt51l.dat in Resources */ = {isa = PBXBuildFile; fileRef = C6EC03EC1FF61DCB006B96EA /* icudt51l.dat */; };
 		C6EC06CA1FF61DCD006B96EA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C6EC03ED1FF61DCB006B96EA /* InfoPlist.strings */; };
-		C6EC06CB1FF61DCD006B96EA /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = C6EC03EF1FF61DCB006B96EA /* Credits.rtf */; };
 		C6EC06CC1FF61DCD006B96EA /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6EC03F11FF61DCB006B96EA /* MainMenu.xib */; };
 		C6EC06CD1FF61DCD006B96EA /* PoweredBy_200px-White_HorizText@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC03F41FF61DCB006B96EA /* PoweredBy_200px-White_HorizText@2x.png */; };
 		C6EC06CE1FF61DCD006B96EA /* PoweredBy_200px-White_HorizText.png in Resources */ = {isa = PBXBuildFile; fileRef = C6EC03F51FF61DCB006B96EA /* PoweredBy_200px-White_HorizText.png */; };
@@ -5066,7 +5065,6 @@
 				C6EC04E11FF61DCC006B96EA /* DejaLu_UnreadDotOff_512.png in Resources */,
 				C6EC065E1FF61DCC006B96EA /* DejaLu_NetworkErrorOff_20.png in Resources */,
 				C6EC04FC1FF61DCC006B96EA /* DejaLu_UnreadDotOff_256.png in Resources */,
-				C6EC06CB1FF61DCD006B96EA /* Credits.rtf in Resources */,
 				C6EC06A41FF61DCC006B96EA /* DejaLu_GettingEmail_32.png in Resources */,
 				C6EC06341FF61DCC006B96EA /* DejaLu_Settings_64.png in Resources */,
 				C6EC071E1FF61DCD006B96EA /* mailsent.m4a in Resources */,
