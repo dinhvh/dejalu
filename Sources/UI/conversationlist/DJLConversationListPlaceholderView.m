@@ -31,13 +31,14 @@
     [_progressIndicator setHidden:YES];
     [self addSubview:_progressIndicator];
     _kvoController = [FBKVOController controllerWithObserver:self];
+    __weak typeof(self) weakSelf = self;
     [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block:^(id observer, id object, NSDictionary * change) {
         _noMessagesImage = nil;
         _notLoadedImage = nil;
         _loadingImage = nil;
         _searchingImage = nil;
         _inboxZeroImage = nil;
-        [self setNeedsDisplay:YES];
+        [weakSelf setNeedsDisplay:YES];
     }];
     return self;
 }

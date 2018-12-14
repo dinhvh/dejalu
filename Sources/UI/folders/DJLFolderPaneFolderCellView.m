@@ -32,8 +32,9 @@
     [self addSubview:_countTextField];
 
     _kvoController = [FBKVOController controllerWithObserver:self];
+    __weak typeof(self) weakSelf = self;
     [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block:^(id observer, id object, NSDictionary *change) {
-        [self _applyColor];
+        [weakSelf _applyColor];
     }];
     [self _applyColor];
 

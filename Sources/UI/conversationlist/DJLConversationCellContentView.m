@@ -35,9 +35,10 @@
     _vibrancy = 1.0;
 
     _kvoController = [FBKVOController controllerWithObserver:self];
+    __weak typeof(self) weakSelf = self;
     [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block
                            :^(id observer, id object, NSDictionary *change) {
-                               [self _applyVibrancy];
+                               [weakSelf _applyVibrancy];
                            }];
     [self _applyVibrancy];
 

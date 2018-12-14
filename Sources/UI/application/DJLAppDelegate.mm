@@ -67,12 +67,13 @@ private:
     _updatingAccountControllers = [[NSMutableArray alloc] init];
     _callback = new DJLAppDelegateCallback(self);
     _kvoController = [FBKVOController controllerWithObserver:self];
+    __weak typeof(self) weakSelf = self;
     [_kvoController observe:[NSUserDefaults standardUserDefaults] keyPath:@"DJLLogEnabled" options:0 block:^(id observer, id object, NSDictionary *change) {
-        [self _applyLogEnabled];
+        [weakSelf _applyLogEnabled];
     }];
     [self _applyQuickSyncEnabled];
     [_kvoController observe:[NSUserDefaults standardUserDefaults] keyPath:@"DJLLQuickSync" options:0 block:^(id observer, id object, NSDictionary *change) {
-        [self _applyQuickSyncEnabled];
+        [weakSelf _applyQuickSyncEnabled];
     }];
 
     [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self

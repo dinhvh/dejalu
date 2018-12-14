@@ -57,9 +57,10 @@
     [self _setup];
 
     _kvoController = [FBKVOController controllerWithObserver:self];
+    __weak typeof(self) weakSelf = self;
     [_kvoController observe:[window contentView] keyPath:@"effectiveAppearance" options:0 block
                            :^(id observer, id object, NSDictionary *change) {
-                               [self _applyDarkMode];
+                               [weakSelf _applyDarkMode];
                            }];
     [self _applyDarkMode];
 

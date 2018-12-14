@@ -22,8 +22,9 @@
     [_textField setEditable:NO];
     [self addSubview:_textField];
     _kvoController = [FBKVOController controllerWithObserver:self];
+    __weak typeof(self) weakSelf = self;
     [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block:^(id observer, id object, NSDictionary *change) {
-        [self _applyTextColor];
+        [weakSelf _applyTextColor];
     }];
     [self _applyTextColor];
     return self;

@@ -289,9 +289,10 @@ private:
     [self _updateFirstResponderState];
     [self _periodicRedrawCells];
 
+    __weak typeof(self) weakSelf = self;
     [_kvoController observe:[self view] keyPath:@"effectiveAppearance" options:0 block
                            :^(id observer, id object, NSDictionary *change) {
-                               [self _applyDarkMode];
+                               [weakSelf _applyDarkMode];
                            }];
     [self _applyDarkMode];
 }

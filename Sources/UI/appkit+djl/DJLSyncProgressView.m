@@ -46,9 +46,10 @@
     [self addSubview:_progressView];
 
     _kvoController = [FBKVOController controllerWithObserver:self];
+    __weak typeof(self) weakSelf = self;
     [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block
                            :^(id observer, id object, NSDictionary *change) {
-                               [self _applyDarkMode];
+                               [weakSelf _applyDarkMode];
                            }];
     [self _applyDarkMode];
 
