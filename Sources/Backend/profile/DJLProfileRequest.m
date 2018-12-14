@@ -20,9 +20,10 @@
 
 - (void) startWithCompletion:(DJLProfileRequestCompletion)completion
 {
+    __weak typeof(self) weakSelf = self;
     if ([[self provider] isEqualToString:@"gmail"]) {
         _session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]
-                                                 delegate:self delegateQueue:nil];
+                                                 delegate:weakSelf delegateQueue:nil];
         NSDictionary * parameters = @{@"alt": @"json", @"access_token": _token};
         NSString * urlString = [NSString stringWithFormat:@"https://www.googleapis.com/oauth2/v1/userinfo?%@", [parameters djlQueryString]];
         _task = [_session dataTaskWithURL:[NSURL URLWithString:urlString] completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) {
@@ -50,7 +51,7 @@
     }
     else if ([[self provider] isEqualToString:@"outlook"]) {
         _session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]
-                                                 delegate:self delegateQueue:nil];
+                                                 delegate:weakSelf delegateQueue:nil];
         NSString * urlString = @"https://outlook.office365.com/api/v1.0/me";
         NSURL * url = [NSURL URLWithString:urlString];
         NSMutableURLRequest * request = [[NSMutableURLRequest alloc] initWithURL:url];

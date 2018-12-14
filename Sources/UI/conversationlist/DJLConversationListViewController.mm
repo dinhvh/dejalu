@@ -1940,6 +1940,7 @@ private:
             hasUnread = YES;
         }
     }];
+    MC_SAFE_RELEASE(conversationsByAccount);
     return !hasUnread;
 }
 
@@ -1996,6 +1997,7 @@ private:
             hasUnstarred = YES;
         }
     }];
+    MC_SAFE_RELEASE(conversationsByAccount);
     return !hasUnstarred;
 }
 

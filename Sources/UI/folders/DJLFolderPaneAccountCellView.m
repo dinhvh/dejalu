@@ -21,13 +21,21 @@
     [_textField setDrawsBackground:NO];
     [_textField setEditable:NO];
     [self addSubview:_textField];
-    _kvoController = [FBKVOController controllerWithObserver:self];
-    __weak typeof(self) weakSelf = self;
-    [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block:^(id observer, id object, NSDictionary *change) {
-        [weakSelf _applyTextColor];
-    }];
-    [self _applyTextColor];
     return self;
+}
+
+- (void)viewDidMoveToSuperview
+{
+    if ([self superview] == nil) {
+        _kvoController = nil;
+    } else {
+        _kvoController = [FBKVOController controllerWithObserver:self];
+        __weak typeof(self) weakSelf = self;
+        [_kvoController observe:weakSelf keyPath:@"effectiveAppearance" options:0 block:^(id observer, id object, NSDictionary *change) {
+            [weakSelf _applyTextColor];
+        }];
+        [self _applyTextColor];
+    }
 }
 
 - (void) _applyTextColor

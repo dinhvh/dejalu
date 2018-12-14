@@ -313,18 +313,25 @@ using namespace mailcore;
                                              selector:@selector(avatarUpdated:)
                                                  name:DJLAVATARMANAGER_UPDATED
                                                object:nil];
-    _kvoController = [FBKVOController controllerWithObserver:self];
-    __weak typeof(self) weakSelf = self;
-    [_kvoController observe:[NSUserDefaults standardUserDefaults] keyPath:@"ShowCellDebugInfo" options:0 block:^(id observer, id object, NSDictionary * change) {
-        [weakSelf setNeedsDisplay:YES];
-    }];
-    
     return self;
 }
 
 - (void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)viewDidMoveToSuperview
+{
+    if ([self superview] == nil) {
+        _kvoController = nil;
+    } else {
+        _kvoController = [FBKVOController controllerWithObserver:self];
+        __weak typeof(self) weakSelf = self;
+        [_kvoController observe:[NSUserDefaults standardUserDefaults] keyPath:@"ShowCellDebugInfo" options:0 block:^(id observer, id object, NSDictionary * change) {
+            [weakSelf setNeedsDisplay:YES];
+        }];
+    }
 }
 
 - (void) avatarUpdated:(NSNotification *)notification

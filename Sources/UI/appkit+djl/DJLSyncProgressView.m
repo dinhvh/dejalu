@@ -45,15 +45,22 @@
     [_progressView startAnimation:nil];
     [self addSubview:_progressView];
 
-    _kvoController = [FBKVOController controllerWithObserver:self];
-    __weak typeof(self) weakSelf = self;
-    [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block
-                           :^(id observer, id object, NSDictionary *change) {
-                               [weakSelf _applyDarkMode];
-                           }];
-    [self _applyDarkMode];
-
     return self;
+}
+
+- (void)viewDidMoveToSuperview
+{
+    if ([self superview] == nil) {
+        _kvoController = nil;
+    } else {
+        _kvoController = [FBKVOController controllerWithObserver:self];
+        __weak typeof(self) weakSelf = self;
+        [_kvoController observe:weakSelf keyPath:@"effectiveAppearance" options:0 block
+                               :^(id observer, id object, NSDictionary *change) {
+                                   [weakSelf _applyDarkMode];
+                               }];
+        [self _applyDarkMode];
+    }
 }
 
 - (void) _applyDarkMode

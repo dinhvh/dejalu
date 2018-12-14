@@ -24,10 +24,12 @@
 
 - (void) startWithCompletion:(DJLOAuth2RequestCompletion)completion
 {
+    __weak typeof(self) weakSelf = self;
+
     NSURLSessionConfiguration * config = [NSURLSessionConfiguration ephemeralSessionConfiguration];
     [config setTimeoutIntervalForRequest:30];
     _session = [NSURLSession sessionWithConfiguration:config
-                delegate:self delegateQueue:nil];
+                delegate:weakSelf delegateQueue:nil];
 
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc] initWithURL:[self tokenURL]];
     [request setHTTPMethod:@"POST"];
@@ -42,7 +44,6 @@
 //    refresh_token=1/6BMfW9j53gdGImsiyUH5kU5RsR4zwI9lUVX-tqf8JXQ&
 //    grant_type=refresh_token
     [request setHTTPBody:[[_parameters djlQueryString] dataUsingEncoding:NSUTF8StringEncoding]];
-    __weak typeof(self) weakSelf = self;
     _task = [_session dataTaskWithRequest:request completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             typeof(self) strongSelf = weakSelf;

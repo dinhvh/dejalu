@@ -34,15 +34,22 @@
     [self addSubview:_effectView];
     _vibrancy = 1.0;
 
-    _kvoController = [FBKVOController controllerWithObserver:self];
-    __weak typeof(self) weakSelf = self;
-    [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block
-                           :^(id observer, id object, NSDictionary *change) {
-                               [weakSelf _applyVibrancy];
-                           }];
-    [self _applyVibrancy];
+   return self;
+}
 
-    return self;
+- (void)viewDidMoveToSuperview
+{
+    if ([self superview] == nil) {
+        _kvoController = nil;
+    } else {
+        _kvoController = [FBKVOController controllerWithObserver:self];
+        __weak typeof(self) weakSelf = self;
+        [_kvoController observe:weakSelf keyPath:@"effectiveAppearance" options:0 block
+                               :^(id observer, id object, NSDictionary *change) {
+                                   [weakSelf _applyVibrancy];
+                               }];
+        [self _applyVibrancy];
+    }
 }
 
 - (id <DJLConversationCellViewDelegate>) delegate

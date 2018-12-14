@@ -217,6 +217,9 @@ static BOOL s_interactionEnabled = NO;
     if (_area != nil) {
         [self removeTrackingArea:_area];
     }
+    if ([self superview] == nil) {
+        _area = nil;
+    }
     if (_over) {
         _over = NO;
         [self setNeedsDisplay];

@@ -116,20 +116,27 @@ using namespace mailcore;
     [self setButtonValidation:_searchButton selector:@selector(_search)];
     [self setViewsToFade:@[_searchButton, _composeButton]];
 
-    _kvoController = [FBKVOController controllerWithObserver:self];
-    __weak typeof(self) weakSelf = self;
-    [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block
-                           :^(id observer, id object, NSDictionary *change) {
-                               [self _applyIconDarkMode];
-                           }];
-    [weakSelf _applyIconDarkMode];
-
     return self;
 }
 
 - (void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)viewDidMoveToSuperview
+{
+    if ([self superview] == nil) {
+        _kvoController = nil;
+    } else {
+        _kvoController = [FBKVOController controllerWithObserver:self];
+        __weak typeof(self) weakSelf = self;
+        [_kvoController observe:weakSelf keyPath:@"effectiveAppearance" options:0 block
+                               :^(id observer, id object, NSDictionary *change) {
+                                   [self _applyIconDarkMode];
+                               }];
+        [weakSelf _applyIconDarkMode];
+    }
 }
 
 - (void) _applyIconDarkMode

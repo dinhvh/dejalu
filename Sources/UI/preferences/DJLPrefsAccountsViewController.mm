@@ -194,7 +194,7 @@ public:
 
     _kvoController = [FBKVOController controllerWithObserver:self];
     __weak typeof(self) weakSelf = self;
-    [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block
+    [_kvoController observe:[self view] keyPath:@"effectiveAppearance" options:0 block
                            :^(id observer, id object, NSDictionary *change) {
                                [weakSelf _applyDarkMode];
                            }];

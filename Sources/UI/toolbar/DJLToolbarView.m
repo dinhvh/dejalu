@@ -70,13 +70,6 @@ static NSTimeInterval s_startTime = 0;
         [self performSelector:@selector(_delayedAppStartHighlight) withObject:nil afterDelay:10];
     }
 
-    _kvoController = [FBKVOController controllerWithObserver:self];
-    __weak typeof(self) weakSelf = self;
-    [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block:^(id observer, id object, NSDictionary * change) {
-        [weakSelf _applyDarkMode];
-    }];
-    [self _applyDarkMode];
-
     return self;
 }
 
@@ -84,6 +77,20 @@ static NSTimeInterval s_startTime = 0;
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self removeTrackingArea:_area];
+}
+
+- (void)viewDidMoveToSuperview
+{
+    if ([self superview] == nil) {
+        _kvoController = nil;
+    } else {
+        _kvoController = [FBKVOController controllerWithObserver:self];
+        __weak typeof(self) weakSelf = self;
+        [_kvoController observe:weakSelf keyPath:@"effectiveAppearance" options:0 block:^(id observer, id object, NSDictionary * change) {
+            [weakSelf _applyDarkMode];
+        }];
+        [self _applyDarkMode];
+    }
 }
 
 - (void) _applyDarkMode
@@ -258,6 +265,9 @@ static NSTimeInterval s_startTime = 0;
 {
     if (_area != nil) {
         [self removeTrackingArea:_area];
+    }
+    if ([self superview] == nil) {
+        return;
     }
     _area = [[NSTrackingArea alloc] initWithRect:[self toolbarRect] options:NSTrackingActiveAlways | NSTrackingMouseEnteredAndExited /* | NSTrackingMouseMoved */ owner:self userInfo:nil];
     [self addTrackingArea:_area];

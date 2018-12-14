@@ -30,17 +30,25 @@
     [_progressIndicator setColor:[NSColor colorWithCalibratedWhite:0.5 alpha:1.0]];
     [_progressIndicator setHidden:YES];
     [self addSubview:_progressIndicator];
-    _kvoController = [FBKVOController controllerWithObserver:self];
-    __weak typeof(self) weakSelf = self;
-    [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block:^(id observer, id object, NSDictionary * change) {
-        _noMessagesImage = nil;
-        _notLoadedImage = nil;
-        _loadingImage = nil;
-        _searchingImage = nil;
-        _inboxZeroImage = nil;
-        [weakSelf setNeedsDisplay:YES];
-    }];
     return self;
+}
+
+- (void)viewDidMoveToSuperview
+{
+    if ([self superview] == nil) {
+        _kvoController = nil;
+    } else {
+        _kvoController = [FBKVOController controllerWithObserver:self];
+        __weak typeof(self) weakSelf = self;
+        [_kvoController observe:weakSelf keyPath:@"effectiveAppearance" options:0 block:^(id observer, id object, NSDictionary * change) {
+            _noMessagesImage = nil;
+            _notLoadedImage = nil;
+            _loadingImage = nil;
+            _searchingImage = nil;
+            _inboxZeroImage = nil;
+            [weakSelf setNeedsDisplay:YES];
+        }];
+    }
 }
 
 - (void)drawRect:(NSRect)dirtyRect {

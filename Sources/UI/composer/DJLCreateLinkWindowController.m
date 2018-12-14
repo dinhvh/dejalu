@@ -79,14 +79,6 @@
     [_cancelButton setTarget:self];
     [_cancelButton setAction:@selector(_cancelAction)];
     [contentView addSubview:_cancelButton];
-
-    _kvoController = [FBKVOController controllerWithObserver:self];
-    __weak typeof(self) weakSelf = self;
-    [_kvoController observe:self keyPath:@"effectiveAppearance" options:0 block
-                           :^(id observer, id object, NSDictionary *change) {
-                               [weakSelf _applyDarkMode];
-                           }];
-    [self _applyDarkMode];
 }
 
 - (void) _applyDarkMode
@@ -145,7 +137,17 @@
         [_urlField setStringValue:@""];
     }
     _parentWindow = window;
+
+    _kvoController = [FBKVOController controllerWithObserver:self];
+    __weak typeof(self) weakSelf = self;
+    [_kvoController observe:weakSelf keyPath:@"effectiveAppearance" options:0 block
+                           :^(id observer, id object, NSDictionary *change) {
+                               [weakSelf _applyDarkMode];
+                           }];
+    [self _applyDarkMode];
+
     [_parentWindow beginSheet:[self window] completionHandler:^(NSModalResponse response) {
+        _kvoController = nil;
     }];
 }
 
