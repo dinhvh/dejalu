@@ -45,7 +45,8 @@
     [request setHTTPBody:[[_parameters djlQueryString] dataUsingEncoding:NSUTF8StringEncoding]];
     _task = [_session dataTaskWithRequest:request completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            typeof(self) strongSelf = weakSelf;
+            // We use self because self needs to be alive while waiting for the result.
+            typeof(self) strongSelf = self;
             if (strongSelf == nil) {
                 return;
             }
