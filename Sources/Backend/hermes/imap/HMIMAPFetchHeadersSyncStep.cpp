@@ -137,8 +137,8 @@ void IMAPFetchHeadersSyncStep::start()
                                           IMAPMessagesRequestKindInternalDate);
     }
     //MCAssert((kind & IMAPMessagesRequestKindStructure) != 0);
-    LOG_ERROR("fetch uid: %s", MCUTF8(uidsToFetch));
-    LOG_ERROR("remaining uid: %s", MCUTF8(mRemainingUids));
+    //LOG_ERROR("fetch uid: %s", MCUTF8(uidsToFetch));
+    //LOG_ERROR("remaining uid: %s", MCUTF8(mRemainingUids));
     retain();
     setNetwork(true);
     mFetchOp = session()->fetchMessagesByUIDOperation(folderPath(), kind, uidsToFetch);
