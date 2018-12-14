@@ -44,9 +44,9 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>196</string>
+	<string>197</string>
 	<key>GitRevision</key>
-	<string>f3c4c1271f202f2554297573e43ecbf2d6b8d840</string>
+	<string>3a025b69e534ed652255d322a40c9e4e2ab28ea7</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
 	<key>MailLinkSupported</key>
@@ -77,7 +77,7 @@
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>https://d.dejalu.me/dejalu-eKTEtTljm4/sparkle.xml</string>
+	<string>https://d.dejalu.me/dejalu-F18wrB3UKS/sparkle.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 	<key>SUScheduledCheckInterval</key>
