@@ -28,8 +28,7 @@
 
     NSURLSessionConfiguration * config = [NSURLSessionConfiguration ephemeralSessionConfiguration];
     [config setTimeoutIntervalForRequest:30];
-    _session = [NSURLSession sessionWithConfiguration:config
-                delegate:weakSelf delegateQueue:nil];
+    _session = [NSURLSession sessionWithConfiguration:config];
 
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc] initWithURL:[self tokenURL]];
     [request setHTTPMethod:@"POST"];
