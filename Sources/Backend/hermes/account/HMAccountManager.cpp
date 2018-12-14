@@ -62,6 +62,14 @@ void AccountManager::setLogEnabled(bool enabled)
     }
 }
 
+void AccountManager::setQuickSyncEnabled(bool enabled)
+{
+    mQuickSyncEnabled = enabled;
+    mc_foreacharray(Account, account, mAccounts) {
+        account->setQuickSyncEnabled(mQuickSyncEnabled);
+    }
+}
+
 void AccountManager::setPath(mailcore::String * path)
 {
     MC_SAFE_REPLACE_COPY(String, mPath, path);
@@ -149,6 +157,7 @@ void AccountManager::loadAccount(mailcore::String * path, mailcore::Set * loaded
     account->setPath(mPath);
     account->open();
     account->setDeliveryEnabled(true);
+    account->setQuickSyncEnabled(mQuickSyncEnabled);
 
     addAccount(account);
 

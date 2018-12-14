@@ -45,6 +45,7 @@ namespace hermes {
         virtual void release();
 
         virtual void setLogEnabled(bool enabled);
+        virtual void setQuickSyncEnabled(bool enabled);
 
         virtual void setAccountInfo(IMAPAccountInfo * info);
         virtual IMAPAccountInfo * accountInfo();
@@ -263,6 +264,7 @@ namespace hermes {
         mailcore::Array * mRecipients;
         bool mClosed;
         bool mLogEnabled;
+        bool mQuickSyncEnabled;
 
         IMAPSyncType mSyncType;
         bool mCreatedMissingFolders;

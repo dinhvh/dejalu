@@ -61,7 +61,8 @@ IMAPFolderSynchronizer::IMAPFolderSynchronizer()
     mDelegate = NULL;
     mSession = NULL;
     mState = IMAPFolderSynchronizerStateNeedMessageCount;
-    mMessagesToFetch = DEFAULT_MESSAGES_TO_FETCH;
+    mDefaultMessagesToFetch = DEFAULT_MESSAGES_TO_FETCH;
+    mMessagesToFetch = mDefaultMessagesToFetch;
     mStorage = NULL;
     mMessageCount = 0;
     mUidNext = 0;
@@ -224,14 +225,15 @@ double IMAPFolderSynchronizer::refreshDelay()
     return mRefreshDelay;
 }
 
-void IMAPFolderSynchronizer::setMessagesToFetch(unsigned int messageToFetch)
+void IMAPFolderSynchronizer::setDefaultMessagesToFetch(unsigned int count)
 {
-    mMessagesToFetch = messageToFetch;
+    mDefaultMessagesToFetch = count;
+    mMessagesToFetch = mDefaultMessagesToFetch;
 }
 
-unsigned int IMAPFolderSynchronizer::messagesToFetch()
+unsigned int IMAPFolderSynchronizer::defaultMessagesToFetch()
 {
-    return mMessagesToFetch;
+    return mDefaultMessagesToFetch;
 }
 
 void IMAPFolderSynchronizer::setDelegate(IMAPFolderSynchronizerDelegate * delegate)
@@ -576,6 +578,8 @@ void IMAPFolderSynchronizer::fetchMessageList()
 {
     LOG("fetch msg list");
     retain();
+    //fprintf(stderr, "max msg count: %i\n", mMessageCount);
+    //fprintf(stderr, "msg to fetch: %i\n", mMessagesToFetch);
     mFetchMessageListSyncStep = new IMAPFetchMessageListSyncStep();
     mFetchMessageListSyncStep->setMessagesCount(mMessageCount);
     mFetchMessageListSyncStep->setMaxFetchCount(mMessagesToFetch);
@@ -604,6 +608,7 @@ void IMAPFolderSynchronizer::fetchMessageListSyncStepDone()
         setFolderUnseen(false);
     }
 
+    //fprintf(stderr, "fetched msg list: %i\n", mUids->count());
     mUidsToFetch = (IndexSet *) mUids->copy();
     //fprintf(stderr, "uid to fetch: %s\n", MCUTF8DESC(mUidsToFetch));
     mUidsToFetch->removeIndexSet(mCachedUids);
@@ -794,7 +799,7 @@ void IMAPFolderSynchronizer::fetchNextFlags()
         return;
     }
     
-    //fprintf(stderr, "to fetch flags: %s\n", MCUTF8DESC(mUidsToFetch));
+    //fprintf(stderr, "to fetch flags: %i\n", mUidsToFetch->count());
     
     retain();
     mFetchFlagsSyncStep = new IMAPFetchFlagsSyncStep();
@@ -1496,14 +1501,14 @@ bool IMAPFolderSynchronizer::loadMore()
             return false;
     }
     
-    mMessagesToFetch += DEFAULT_MESSAGES_TO_FETCH;
+    mMessagesToFetch += mDefaultMessagesToFetch;
     refresh();
     return true;
 }
 
 void IMAPFolderSynchronizer::resetMessagesToLoad()
 {
-    mMessagesToFetch = DEFAULT_MESSAGES_TO_FETCH;
+    mMessagesToFetch = mDefaultMessagesToFetch;
     refresh();
 }
 
@@ -1512,7 +1517,7 @@ bool IMAPFolderSynchronizer::messagesToLoadCanBeReset()
     if (mMessagesToFetch == 0) {
         return false;
     }
-    return mMessagesToFetch > DEFAULT_MESSAGES_TO_FETCH;
+    return mMessagesToFetch > mDefaultMessagesToFetch;
 }
 
 void IMAPFolderSynchronizer::setWaitingLoadMore(bool needsLoadMore)

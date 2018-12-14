@@ -64,6 +64,11 @@ void Account::setLogEnabled(bool enabled)
     mSendQueue->setLogEnabled(enabled);
 }
 
+void Account::setQuickSyncEnabled(bool enabled)
+{
+    mSync->setQuickSyncEnabled(enabled);
+}
+
 void Account::addObserver(AccountObserver * observer)
 {
     carray_add(mObservers, observer, NULL);

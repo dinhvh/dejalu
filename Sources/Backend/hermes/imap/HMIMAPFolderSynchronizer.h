@@ -56,8 +56,8 @@ namespace hermes {
         virtual void setSyncType(IMAPSyncType syncType);
         virtual IMAPSyncType syncType();
 
-        virtual void setMessagesToFetch(unsigned int messageToFetch);
-        virtual unsigned int messagesToFetch();
+        virtual void setDefaultMessagesToFetch(unsigned int count);
+        virtual unsigned int defaultMessagesToFetch();
 
         virtual void setDelegate(IMAPFolderSynchronizerDelegate * delegate);
         virtual IMAPFolderSynchronizerDelegate * delegate();
@@ -126,6 +126,7 @@ namespace hermes {
         mailcore::IMAPAsyncSession * mSession;
         int mState;
         unsigned int mMessagesToFetch;
+        unsigned int mDefaultMessagesToFetch;
         IMAPFetchFolderStateSyncStep * mFetchFolderStateSyncStep;
         IMAPFetchMessageListSyncStep * mFetchMessageListSyncStep;
         IMAPFetchHeadersSyncStep * mFetchHeaderSyncStep;

@@ -38,6 +38,7 @@
     NSButton * _zenNotificationsButton;
     NSButton * _showSenderAvatarButton;
     NSButton * _showStatusItemButton;
+    NSButton * _quickSyncButton;
     NSTextField * _zenDescription;
 }
 
@@ -106,6 +107,16 @@
     [_showStatusItemButton setAction:@selector(_showStatusItemChanged:)];
     [[self view] addSubview:_showStatusItemButton];
 
+    _quickSyncButton = [[NSButton alloc] initWithFrame:NSZeroRect];
+    [_quickSyncButton setCell:[[DJLCheckboxButtonCell alloc] init]];
+    [_quickSyncButton setButtonType:NSSwitchButton];
+    [_quickSyncButton setTitle:@"Quick sync"];
+    [_quickSyncButton setFont:[NSFont systemFontOfSize:12]];
+    [_quickSyncButton sizeToFit];
+    [_quickSyncButton setTarget:self];
+    [_quickSyncButton setAction:@selector(_quickSyncChanged:)];
+    [[self view] addSubview:_quickSyncButton];
+
     _zenDescription = [[NSTextField alloc] initWithFrame:NSZeroRect];
     [_zenDescription setBordered:NO];
     [_zenDescription setEditable:NO];
@@ -134,6 +145,8 @@
     [_showSenderAvatarButton setState:showSenderAvatar ? NSOnState : NSOffState];
     BOOL showStatusItem = [[NSUserDefaults standardUserDefaults] boolForKey:@"DJLShowStatusItem"];
     [_showStatusItemButton setState:showStatusItem ? NSOnState : NSOffState];
+    BOOL quickSync = [[NSUserDefaults standardUserDefaults] boolForKey:@"DJLQuickSync"];
+    [_quickSyncButton setState:quickSync ? NSOnState : NSOffState];
 }
 
 - (void) viewDidLayout
@@ -169,19 +182,23 @@
     frame.origin.x = (int) x;
     frame.origin.y = [[self view] bounds].size.height - 130;
     [_showStatusItemButton setFrame:frame];
-    frame = [_zenNotificationsButton frame];
+    frame = [_quickSyncButton frame];
     frame.origin.x = (int) x;
     frame.origin.y = [[self view] bounds].size.height - 160;
+    [_quickSyncButton setFrame:frame];
+    frame = [_zenNotificationsButton frame];
+    frame.origin.x = (int) x;
+    frame.origin.y = [[self view] bounds].size.height - 190;
     [_zenNotificationsButton setFrame:frame];
     frame = [_zenDescription frame];
     frame.origin.x = (int) x + 10;
-    frame.origin.y = [[self view] bounds].size.height - 165 - frame.size.height;
+    frame.origin.y = [[self view] bounds].size.height - 195 - frame.size.height;
     [_zenDescription setFrame:frame];
 }
 
 - (CGFloat) height
 {
-    return 190 + [_zenDescription frame].size.height;
+    return 220 + [_zenDescription frame].size.height;
 }
 
 - (void) _playSoundChanged:(id)sender
@@ -212,6 +229,11 @@
 - (void) _showStatusItemChanged:(id)sender
 {
     [[NSUserDefaults standardUserDefaults] setBool:([_showStatusItemButton state] == NSOnState) forKey:@"DJLShowStatusItem"];
+}
+
+- (void) _quickSyncChanged:(id)sender
+{
+    [[NSUserDefaults standardUserDefaults] setBool:([_quickSyncButton state] == NSOnState) forKey:@"DJLQuickSync"];
 }
 
 @end

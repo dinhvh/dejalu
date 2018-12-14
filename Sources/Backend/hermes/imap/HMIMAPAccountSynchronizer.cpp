@@ -49,6 +49,7 @@ enum {
 };
 
 #define FOLDERS_REFRESH_DELAY (30 * 60)
+#define DEFAULT_MESSAGES_TO_FETCH 2000
 
 IMAPAccountSynchronizer::IMAPAccountSynchronizer()
 {
@@ -141,6 +142,7 @@ IMAPAccountSynchronizer::IMAPAccountSynchronizer()
     mCreateMissingFolderIndex = 0;
     mMissingFolderToCreate = NULL;
     mMissingFolderCreateOp = NULL;
+    mQuickSyncEnabled = false;
 
     Reachability::sharedManager()->addObserver(this);
 }
@@ -246,6 +248,19 @@ void IMAPAccountSynchronizer::setLogEnabled(bool enabled)
     pthread_mutex_lock(&mProtocolLogFileLock);
     mLogEnabled = enabled;
     pthread_mutex_unlock(&mProtocolLogFileLock);
+}
+
+void IMAPAccountSynchronizer::setQuickSyncEnabled(bool enabled)
+{
+    mQuickSyncEnabled = enabled;
+    mc_foreacharray(String, folderPath, mStorage->folders()) {
+        IMAPFolderSynchronizer * folderSync = (IMAPFolderSynchronizer *) mFoldersSynchronizers->objectForKey(folderPath);
+        if (mQuickSyncEnabled) {
+            folderSync->setDefaultMessagesToFetch(200);
+        } else {
+            folderSync->setDefaultMessagesToFetch(DEFAULT_MESSAGES_TO_FETCH);
+        }
+    }
 }
 
 void IMAPAccountSynchronizer::setAccountInfo(IMAPAccountInfo * info)
@@ -1281,6 +1296,9 @@ void IMAPAccountSynchronizer::setFoldersSynchronizers()
 
         LOG("create folder sync for %s", MCUTF8(folderPath));
 
+        if (mQuickSyncEnabled) {
+            folderSync->setDefaultMessagesToFetch(200);
+        }
         folderSync->setSyncType(mSyncType);
         if (folderPath->isEqual(mInboxFolderPath)) {
             folderSync->setRefreshDelay(2 * 60);

@@ -23,6 +23,7 @@ namespace hermes {
         static AccountManager * sharedManager();
 
         virtual void setLogEnabled(bool enabled);
+        virtual void setQuickSyncEnabled(bool enabled);
 
         virtual void addObserver(AccountManagerObserver * observer);
         virtual void removeObserver(AccountManagerObserver * observer);
@@ -56,6 +57,7 @@ namespace hermes {
         mailcore::String * mPath;
         mailcore::Array * mAccounts;
         bool mLogEnabled;
+        bool mQuickSyncEnabled;
 
         void loadAccount(mailcore::String * path, mailcore::Set * loaded);
     };

@@ -70,6 +70,10 @@ private:
     [_kvoController observe:[NSUserDefaults standardUserDefaults] keyPath:@"DJLLogEnabled" options:0 block:^(id observer, id object, NSDictionary *change) {
         [self _applyLogEnabled];
     }];
+    [self _applyQuickSyncEnabled];
+    [_kvoController observe:[NSUserDefaults standardUserDefaults] keyPath:@"DJLLQuickSync" options:0 block:^(id observer, id object, NSDictionary *change) {
+        [self _applyQuickSyncEnabled];
+    }];
 
     [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
                                                            selector:@selector(_receiveWakeNote)
@@ -386,6 +390,12 @@ private:
     }
 
     AccountManager::sharedManager()->setLogEnabled(enabled);
+}
+
+- (void) _applyQuickSyncEnabled
+{
+    BOOL enabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"DJLQuickSync"];
+    AccountManager::sharedManager()->setQuickSyncEnabled(enabled);
 }
 
 - (void) _setupDebugMenu

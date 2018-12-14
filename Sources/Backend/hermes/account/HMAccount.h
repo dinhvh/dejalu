@@ -38,6 +38,7 @@ namespace hermes {
         virtual void release();
         
         virtual void setLogEnabled(bool enabled);
+        virtual void setQuickSyncEnabled(bool enabled);
 
         virtual void addObserver(AccountObserver * observer);
         virtual void removeObserver(AccountObserver * observer);
