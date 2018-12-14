@@ -11,6 +11,7 @@
 {
     self = [super initWithFrame:frameRect];
     [self registerForDraggedTypes:@[NSFilenamesPboardType, NSFilesPromisePboardType]];
+    [self setBackgroundColors:@[[NSColor whiteColor]]];
     return self;
 }
 

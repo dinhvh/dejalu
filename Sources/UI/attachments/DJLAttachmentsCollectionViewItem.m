@@ -31,6 +31,7 @@
     [textField setAlignment:NSCenterTextAlignment];
     [textField setFont:[NSFont fontWithName:@"Helvetica Neue" size:15]];
     [[textField cell] setLineBreakMode:NSLineBreakByTruncatingTail];
+    [textField setTextColor:[NSColor blackColor]];
     [textField setDrawsBackground:NO];
     //[[someTextField cell] setTruncatesLastVisibleLine:YES];
     [view addSubview:textField];
