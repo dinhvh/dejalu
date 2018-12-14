@@ -4,6 +4,8 @@
 #import "DJLGenericCompletionWindowController.h"
 
 #import "DJLColoredView.h"
+#import "DJLDarkMode.h"
+#import "FBKVOController.h"
 
 @interface DJLGenericCompletionWindowController () <NSTableViewDataSource, NSTableViewDelegate>
 
@@ -12,7 +14,18 @@
 
 @end
 
-@implementation DJLGenericCompletionWindowController
+@implementation DJLGenericCompletionWindowController {
+    NSScrollView * _scrollView;
+    NSTableView * _tableView;
+    __unsafe_unretained NSTextField * _field;
+    BOOL _disableValidation;
+    BOOL _isValidatingToken;
+    BOOL _menuLookEnabled;
+    NSUInteger _itemsCount;
+    NSControlSize _controlSize;
+    CGFloat _deltaYPosition;
+    FBKVOController * _kvoController;
+}
 
 @synthesize field = _field;
 @synthesize menuLookEnabled = _menuLookEnabled;
@@ -79,17 +92,7 @@
     DJLColoredView * contentView;
     
     contentView = [[DJLColoredView alloc] initWithFrame:scrollFrame];
-    if (_menuLookEnabled) {
-        //[contentView setBackgroundColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0]];
-        [contentView setBackgroundColor:[NSColor colorWithCalibratedWhite:1 alpha:1.0]];
-        //[contentView setRoundedCorner:MMColoredViewRoundedCornerBottomLeft | MMColoredViewRoundedCornerBottomRight |
-        // MMColoredViewRoundedCornerTopLeft | MMColoredViewRoundedCornerTopRight];
-        //[contentView setCornerRadius:5.];
-    }
-    else {
-        [contentView setBackgroundColor:[NSColor whiteColor]];
-    }
-    
+
     NSRect borderScrollFrame;
     borderScrollFrame = scrollFrame;
     if (_menuLookEnabled) {
@@ -150,8 +153,39 @@
     //[popupWindow release];
     //[contentView release];
     //[scrollView release];
-    
+
+    _kvoController = [FBKVOController controllerWithObserver:self];
+    __weak typeof(self) weakSelf = self;
+    [_kvoController observe:_tableView keyPath:@"effectiveAppearance" options:0 block
+                           :^(id observer, id object, NSDictionary *change) {
+                               [weakSelf _applyDarkMode];
+                           }];
+    [self _applyDarkMode];
+
     [self didBuildUI];
+}
+
+- (void) _applyDarkMode
+{
+    DJLColoredView * contentView = [[self window] contentView];
+    if (_menuLookEnabled) {
+        //[contentView setBackgroundColor:[NSColor colorWithCalibratedWhite:0.95 alpha:1.0]];
+        if ([DJLDarkMode isDarkModeForView:_tableView]) {
+            [contentView setBackgroundColor:[NSColor colorWithCalibratedWhite:0.1 alpha:1.0]];
+        } else {
+            [contentView setBackgroundColor:[NSColor colorWithCalibratedWhite:1 alpha:1.0]];
+        }
+        //[contentView setRoundedCorner:MMColoredViewRoundedCornerBottomLeft | MMColoredViewRoundedCornerBottomRight |
+        // MMColoredViewRoundedCornerTopLeft | MMColoredViewRoundedCornerTopRight];
+        //[contentView setCornerRadius:5.];
+    }
+    else {
+        if ([DJLDarkMode isDarkModeForView:_tableView]) {
+            [contentView setBackgroundColor:[NSColor colorWithCalibratedWhite:0.1 alpha:1.0]];
+        } else {
+            [contentView setBackgroundColor:[NSColor whiteColor]];
+        }
+    }
 }
 
 - (void) _scrollerStyleChanged

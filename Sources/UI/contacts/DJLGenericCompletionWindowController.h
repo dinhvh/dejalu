@@ -3,17 +3,7 @@
 
 #import <AppKit/AppKit.h>
 
-@interface DJLGenericCompletionWindowController : NSWindowController {
-	NSScrollView * _scrollView;
-	NSTableView * _tableView;
-    __unsafe_unretained NSTextField * _field;
-    BOOL _disableValidation;
-    BOOL _isValidatingToken;
-    BOOL _menuLookEnabled;
-    NSUInteger _itemsCount;
-    NSControlSize _controlSize;
-    CGFloat _deltaYPosition;
-}
+@interface DJLGenericCompletionWindowController : NSWindowController
 
 @property (nonatomic, assign) NSTextField * field;
 @property (nonatomic, assign) BOOL menuLookEnabled;
