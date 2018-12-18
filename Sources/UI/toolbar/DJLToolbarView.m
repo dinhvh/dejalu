@@ -81,6 +81,7 @@ static NSTimeInterval s_startTime = 0;
 
 - (void)viewDidMoveToSuperview
 {
+    [super viewDidMoveToSuperview];
     if ([self superview] == nil) {
         _kvoController = nil;
     } else {
