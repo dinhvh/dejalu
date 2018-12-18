@@ -85,9 +85,17 @@
 
     NSColor * color;
     if ([DJLDarkMode isDarkModeForView:[self controlView]] && !_forceWhiteBackground) {
-        color = [NSColor colorWithCalibratedWhite:0.8 alpha:1.0];
+        if ([self isEnabled]) {
+            color = [NSColor colorWithCalibratedWhite:0.8 alpha:1.0];
+        } else {
+            color = [NSColor colorWithCalibratedWhite:0.4 alpha:1.0];
+        }
     } else {
-        color = [NSColor colorWithCalibratedWhite:0.0 alpha:1.0];
+        if ([self isEnabled]) {
+            color = [NSColor colorWithCalibratedWhite:0.0 alpha:1.0];
+        } else {
+            color = [NSColor colorWithCalibratedWhite:0.8 alpha:1.0];
+        }
     }
 
     NSString * alternateTitle = [self alternateTitle];
