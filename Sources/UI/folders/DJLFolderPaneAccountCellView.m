@@ -26,6 +26,7 @@
 
 - (void)viewDidMoveToSuperview
 {
+    [super viewDidMoveToSuperview];
     if ([self superview] == nil) {
         _kvoController = nil;
     } else {
