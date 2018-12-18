@@ -8,6 +8,7 @@
 #import "DJLTableView.h"
 #import "DJLWindow.h"
 #import "NSImage+DJLColored.h"
+#import "DJLDarkMode.h"
 
 #define LOG(...) DJLLogWithID("statusview", __VA_ARGS__)
 #define LOGSTACK(...) DJLLogStackWithID("statusview", __VA_ARGS__)
@@ -217,26 +218,51 @@ static BOOL s_interactionEnabled = NO;
         NSImage * imageOn = [NSImage imageNamed:@"DejaLu_CheckmarkOn_12"];
         NSImage * imageOff = [NSImage imageNamed:@"DejaLu_CheckmarkOn_12"];
         NSImage * image = nil;
-        if ([self isChecked]) {
-            if (_tracking) {
-                if (_clickingInside) {
-                    image = [imageOff djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.8 alpha:1.0]];
+        if ([DJLDarkMode isDarkModeForView:self]) {
+            if ([self isChecked]) {
+                if (_tracking) {
+                    if (_clickingInside) {
+                        image = [imageOff djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.2 alpha:1.0]];
+                    } else {
+                        image = [imageOn djl_imageWithColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
+                    }
                 } else {
-                    image = [imageOn djl_imageWithColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
+                    if (_over) {
+                        image = [imageOn djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.5 alpha:1.0]];
+                    } else {
+                        image = [imageOn djl_imageWithColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
+                    }
                 }
             } else {
-                if (_over) {
-                    image = [imageOn djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.5 alpha:1.0]];
-                } else {
+                if (_clickingInside) {
                     image = [imageOn djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.8 alpha:1.0]];
+                }
+                else if (_over) {
+                    image = [imageOn djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.2 alpha:1.0]];
                 }
             }
         } else {
-            if (_clickingInside) {
-                image = [imageOn djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.8 alpha:1.0]];
-            }
-            else if (_over) {
-                image = [imageOn djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.4 alpha:1.0]];
+            if ([self isChecked]) {
+                if (_tracking) {
+                    if (_clickingInside) {
+                        image = [imageOff djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.8 alpha:1.0]];
+                    } else {
+                        image = [imageOn djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:1.0]];
+                    }
+                } else {
+                    if (_over) {
+                        image = [imageOn djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.5 alpha:1.0]];
+                    } else {
+                        image = [imageOn djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:1.0]];
+                    }
+                }
+            } else {
+                if (_clickingInside) {
+                    image = [imageOn djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.0 alpha:1.0]];
+                }
+                else if (_over) {
+                    image = [imageOn djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.8 alpha:1.0]];
+                }
             }
         }
         if (image != nil) {
