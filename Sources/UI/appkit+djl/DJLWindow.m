@@ -13,6 +13,7 @@
 - (instancetype)initWithContentRect:(NSRect)contentRect styleMask:(NSUInteger)windowStyle backing:(NSBackingStoreType)bufferingType defer:(BOOL)deferCreation
 {
     self = [super initWithContentRect:contentRect styleMask:windowStyle backing:bufferingType defer:deferCreation];
+    _trafficLightAlternatePositionEnabled = YES;
     [self _setup];
     return self;
 }
@@ -24,7 +25,6 @@
 
 - (void) _setup
 {
-    _trafficLightAlternatePositionEnabled = YES;
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(_layoutTrafficLightsAndContent) name:NSWindowDidResizeNotification object:self];
     [nc addObserver:self selector:@selector(_layoutTrafficLightsAndContent) name:NSWindowDidMoveNotification object:self];

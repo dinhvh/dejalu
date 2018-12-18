@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		92D2C2A62018261100CC64DB /* statusitem.png in Resources */ = {isa = PBXBuildFile; fileRef = 92D2C2892018261000CC64DB /* statusitem.png */; };
 		92D2C2A8201826CA00CC64DB /* statusitem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92D2C2A7201826CA00CC64DB /* statusitem@2x.png */; };
+		BDC2261921C8978F002E8E77 /* DJLArchivedOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC2261821C8978F002E8E77 /* DJLArchivedOverlayView.m */; };
+		BDC2261D21C89B2E002E8E77 /* DJLDeletedOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC2261B21C89B2D002E8E77 /* DJLDeletedOverlayView.m */; };
 		BDD110DB21B74E61005CAEA7 /* DJLDarkMode.m in Sources */ = {isa = PBXBuildFile; fileRef = BDD110DA21B74E61005CAEA7 /* DJLDarkMode.m */; };
 		BDD110FB21C4EBFB005CAEA7 /* DJLCleanupWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDD110FA21C4EBFB005CAEA7 /* DJLCleanupWindowController.m */; };
 		BDD1111821C78158005CAEA7 /* DJLConversationCellView.mm in Sources */ = {isa = PBXBuildFile; fileRef = C68ACA471FCBE51700C9097D /* DJLConversationCellView.mm */; };
@@ -1221,6 +1223,10 @@
 /* Begin PBXFileReference section */
 		92D2C2892018261000CC64DB /* statusitem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = statusitem.png; sourceTree = "<group>"; };
 		92D2C2A7201826CA00CC64DB /* statusitem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "statusitem@2x.png"; sourceTree = "<group>"; };
+		BDC2261721C8978F002E8E77 /* DJLArchivedOverlayView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DJLArchivedOverlayView.h; sourceTree = "<group>"; };
+		BDC2261821C8978F002E8E77 /* DJLArchivedOverlayView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DJLArchivedOverlayView.m; sourceTree = "<group>"; };
+		BDC2261B21C89B2D002E8E77 /* DJLDeletedOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DJLDeletedOverlayView.m; sourceTree = "<group>"; };
+		BDC2261C21C89B2D002E8E77 /* DJLDeletedOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DJLDeletedOverlayView.h; sourceTree = "<group>"; };
 		BDD110DA21B74E61005CAEA7 /* DJLDarkMode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DJLDarkMode.m; sourceTree = "<group>"; };
 		BDD110DC21B74E74005CAEA7 /* DJLDarkMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DJLDarkMode.h; sourceTree = "<group>"; };
 		BDD110F921C4EBFB005CAEA7 /* DJLCleanupWindowController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DJLCleanupWindowController.h; sourceTree = "<group>"; };
@@ -2432,6 +2438,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BDC2261621C8976E002E8E77 /* archivedoverlay */ = {
+			isa = PBXGroup;
+			children = (
+				BDC2261721C8978F002E8E77 /* DJLArchivedOverlayView.h */,
+				BDC2261821C8978F002E8E77 /* DJLArchivedOverlayView.m */,
+			);
+			path = archivedoverlay;
+			sourceTree = "<group>";
+		};
+		BDC2261A21C89B2D002E8E77 /* deletedoverlay */ = {
+			isa = PBXGroup;
+			children = (
+				BDC2261B21C89B2D002E8E77 /* DJLDeletedOverlayView.m */,
+				BDC2261C21C89B2D002E8E77 /* DJLDeletedOverlayView.h */,
+			);
+			path = deletedoverlay;
+			sourceTree = "<group>";
+		};
 		C602E3371C6B21D900BF728E /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -3065,6 +3089,7 @@
 				C68AC9F31FCBE51700C9097D /* activity */,
 				C68AC9FC1FCBE51700C9097D /* appkit+djl */,
 				C68ACA261FCBE51700C9097D /* application */,
+				BDC2261621C8976E002E8E77 /* archivedoverlay */,
 				C68ACA291FCBE51700C9097D /* attachments */,
 				C68ACA2E1FCBE51700C9097D /* badge */,
 				C68ACA311FCBE51700C9097D /* composer */,
@@ -3073,6 +3098,7 @@
 				C68ACA431FCBE51700C9097D /* conversationlist */,
 				C68ACA561FCBE51700C9097D /* conversationselection */,
 				C68ACA591FCBE51700C9097D /* conversationview */,
+				BDC2261A21C89B2D002E8E77 /* deletedoverlay */,
 				C68ACA601FCBE51700C9097D /* emailsentoverlay */,
 				C68ACA631FCBE51700C9097D /* folders */,
 				C68ACA761FCBE51700C9097D /* giphy */,
@@ -5496,6 +5522,7 @@
 				C68ACACA1FCBE51700C9097D /* DJLComposerWebView.m in Sources */,
 				C68AC9741FCB71FA00C9097D /* HMMailDB.cpp in Sources */,
 				C68AC9B91FCB71FB00C9097D /* HMIMAPFetchFlagsSyncStep.cpp in Sources */,
+				BDC2261921C8978F002E8E77 /* DJLArchivedOverlayView.m in Sources */,
 				C68AC95F1FCB71FA00C9097D /* WebResource+DJL.m in Sources */,
 				C68AC98C1FCB71FB00C9097D /* HMMailDBMessagesOperation.cpp in Sources */,
 				C68AC99A1FCB71FB00C9097D /* HMMailDBRemoveExpiredLocalMessagesOperation.cpp in Sources */,
@@ -5529,6 +5556,7 @@
 				C68ACAAD1FCBE51700C9097D /* DJLActivityAccountCellView.m in Sources */,
 				C68ACABA1FCBE51700C9097D /* DJLProgressView.m in Sources */,
 				C68AC9D81FCB71FB00C9097D /* DJLOAuth2Request.m in Sources */,
+				BDC2261D21C89B2E002E8E77 /* DJLDeletedOverlayView.m in Sources */,
 				C68AC9CF1FCB71FB00C9097D /* HMEmailTemplate.cpp in Sources */,
 				C68ACAE41FCBE51700C9097D /* DJLFolderPaneRowView.m in Sources */,
 				C68ACAC11FCBE51700C9097D /* DJLWhiteView.m in Sources */,

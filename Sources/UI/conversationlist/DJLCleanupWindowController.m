@@ -12,6 +12,9 @@
 #import "DJLConversationCellView.h"
 #import "DJLGradientSeparatorLineView.h"
 #import "DJLWindow.h"
+#import "DJLArchivedOverlayView.h"
+#import "DJLDeletedOverlayView.h"
+#import "DJLHUDWindow.h"
 
 @interface DJLCleanupWindowController () <NSWindowDelegate, NSTableViewDataSource, NSTableViewDelegate, DJLConversationCellViewDelegate>
 
@@ -34,14 +37,15 @@
 
 - (id) init
 {
-    NSWindow * window = [[DJLWindow alloc] initWithContentRect:NSMakeRect(0, 0, 500, 600)
-                                                     styleMask:NSTitledWindowMask | /* NSResizableWindowMask | */NSClosableWindowMask | NSMiniaturizableWindowMask | NSTexturedBackgroundWindowMask | NSFullSizeContentViewWindowMask
-                                                       backing:NSBackingStoreBuffered defer:YES];
+    DJLWindow * window = [[DJLWindow alloc] initWithContentRect:NSMakeRect(0, 0, 500, 600)
+                                                      styleMask:NSTitledWindowMask | /* NSResizableWindowMask | */NSClosableWindowMask | NSMiniaturizableWindowMask | NSTexturedBackgroundWindowMask | NSFullSizeContentViewWindowMask
+                                                        backing:NSBackingStoreBuffered defer:YES];
     NSRect frame;
     [window setTitlebarAppearsTransparent:YES];
     [window center];
     [window setAnimationBehavior:NSWindowAnimationBehaviorDocumentWindow];
     [window setReleasedWhenClosed:NO];
+    [window setTrafficLightAlternatePositionEnabled:NO];
 
     frame = [window frame];
     frame.origin = CGPointZero;
@@ -88,13 +92,32 @@
 - (void) _setup
 {
     NSView * contentView = [[self window] contentView];
-    NSRect frame = [contentView bounds];
+    NSRect contentFrame = [contentView bounds];
+    NSRect frame;
+
+    // Buttons.
+    _archiveButton = [NSButton buttonWithTitle:@"Archive" target:self action:@selector(_archive:)];
+    [contentView addSubview:_archiveButton];
+    _deleteButton = [NSButton buttonWithTitle:@"Delete" target:self action:@selector(_delete:)];
+    [contentView addSubview:_deleteButton];
+    _cancelButton = [NSButton buttonWithTitle:@"Cancel" target:self action:@selector(_cancel:)];
+    [contentView addSubview:_cancelButton];
+
+    // Bottom separator.
+    frame = contentFrame;
+    frame.origin.y = 0;
+    frame.size.height = 1;
+    _bottomSeparatorView = [[DJLGradientSeparatorLineView alloc] initWithFrame:frame];
+    [_bottomSeparatorView setAlphaValue:1.0];
+    [contentView addSubview:_bottomSeparatorView];
+
+    // list of emails.
     frame.origin.x = 20;
-    frame.origin.y = 50;
-    frame.size.width -= 40;
-    frame.size.height -= 120;
+    frame.origin.y = NSMaxY([_bottomSeparatorView frame]) + 10;
+    frame.size.width = contentFrame.size.width - 40;
+    frame.size.height = 400;
     _scrollView = [[DJLScrollView alloc] initWithFrame:frame];
-    [_scrollView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+    //[_scrollView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
     [_scrollView setHasVerticalScroller:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_scrollerStyleChanged) name:NSPreferredScrollerStyleDidChangeNotification object:nil];
     [self _scrollerStyleChanged];
@@ -116,61 +139,80 @@
     [_scrollView setDrawsBackground:NO];
     [_tableView setBackgroundColor:[NSColor clearColor]];
 
-    // Buttons.
-    _archiveButton = [NSButton buttonWithTitle:@"Archive" target:self action:@selector(_archive:)];
-    NSRect contentFrame = [contentView bounds];
-    frame = [_archiveButton frame];
-    frame.origin.x = contentFrame.size.width - frame.size.width - 10;
-    frame.origin.y = 10;
-    [_archiveButton setFrame:frame];
-    [contentView addSubview:_archiveButton];
-    _deleteButton = [NSButton buttonWithTitle:@"Delete" target:self action:@selector(_delete:)];
-    frame = [_archiveButton frame];
-    frame.origin.x = [_archiveButton frame].origin.x - frame.size.width;
-    frame.origin.y = 10;
-    [_deleteButton setFrame:frame];
-    [contentView addSubview:_deleteButton];
-    _cancelButton = [NSButton buttonWithTitle:@"Cancel" target:self action:@selector(_cancel:)];
-    frame = [_cancelButton frame];
-    frame.origin.x = [_deleteButton frame].origin.x - frame.size.width;
-    frame.origin.y = 10;
-    [_cancelButton setFrame:frame];
-    [contentView addSubview:_cancelButton];
-
     // Text.
     _textField = [[NSTextField alloc] initWithFrame:NSZeroRect];
     [_textField setAlignment:NSTextAlignmentCenter];
-    [_textField setStringValue:@"Please unselect the emails you'd like to keep\nthen use Archive or Delete."];
     [_textField sizeToFit];
     [_textField setEditable:NO];
     [_textField setBordered:NO];
     frame = [_textField frame];
     frame.origin.x = 20;
     frame.size.width = contentFrame.size.width - 40;
-    frame.origin.y = contentFrame.size.height - (30 + frame.size.height);
+    frame.origin.y = 0;
     [_textField setFrame:frame];
     [contentView addSubview:_textField];
 
     // Top separator.
     frame = contentFrame;
-    frame.origin.y = [_textField frame].origin.y - 3;
+    frame.origin.y = 0;
     frame.size.height = 1;
     _separatorView = [[DJLGradientSeparatorLineView alloc] initWithFrame:frame];
     [_separatorView setAutoresizingMask:NSViewWidthSizable];
     [_separatorView setAlphaValue:0.0];
     [contentView addSubview:_separatorView];
 
-    // Bottom separator.
-    frame = contentFrame;
-    frame.origin.y = 50;
-    frame.size.height = 1;
-    //_bottomSeparatorView = [[DJLColoredView alloc] initWithFrame:frame];
-    _bottomSeparatorView = [[DJLGradientSeparatorLineView alloc] initWithFrame:frame];
-    [_bottomSeparatorView setAlphaValue:1.0];
-    [contentView addSubview:_bottomSeparatorView];
-
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_scrolled) name:NSViewBoundsDidChangeNotification object:[_scrollView contentView]];
     [self _scrolled];
+}
+
+- (void) _layout
+{
+    NSRect frame;
+    NSView * contentView = [[self window] contentView];
+    NSRect contentFrame = [contentView bounds];
+
+    [_textField sizeToFit];
+
+    frame = [_archiveButton frame];
+    frame.origin.x = contentFrame.size.width - frame.size.width - 10;
+    frame.origin.y = 5;
+    [_archiveButton setFrame:frame];
+
+    frame = [_archiveButton frame];
+    frame.origin.x = [_archiveButton frame].origin.x - frame.size.width;
+    frame.origin.y = 5;
+    [_deleteButton setFrame:frame];
+
+    frame = [_cancelButton frame];
+    frame.origin.x = [_deleteButton frame].origin.x - frame.size.width;
+    frame.origin.y = 5;
+    [_cancelButton setFrame:frame];
+
+    frame = contentFrame;
+    frame.origin.y = NSMaxY([_archiveButton frame]) + 10;
+    frame.size.height = 1;
+    [_bottomSeparatorView setFrame:frame];
+
+    frame.origin.x = 20;
+    frame.origin.y = NSMaxY([_bottomSeparatorView frame]);
+    frame.size.width = contentFrame.size.width - 40;
+    frame.size.height = 400;
+    [_scrollView setFrame:frame];
+
+    frame = contentFrame;
+    frame.origin.y = NSMaxY([_scrollView frame]);
+    frame.size.height = 1;
+    [_separatorView setFrame:frame];
+
+    frame = [_textField frame];
+    frame.origin.x = 20;
+    frame.origin.y = NSMaxY([_separatorView frame]) + 10;
+    frame.size.width = contentFrame.size.width - 40;
+    [_textField setFrame:frame];
+
+    CGFloat maxY = NSMaxY([_textField frame]) + 35;
+    [[self window] setFrame:NSMakeRect(0, 0, contentFrame.size.width, maxY) display:NO];
+    [[self window] center];
 }
 
 - (void) _scrollerStyleChanged
@@ -224,6 +266,11 @@
     _checkedMessages = [[NSMutableIndexSet alloc] init];
     [_checkedMessages addIndexesInRange:NSMakeRange(0, [notifications count])];
     _conversations = notifications;
+    if ([[self conversations] count] == 1) {
+        [_textField setStringValue:[NSString stringWithFormat:@"1 email notification found.\nPlease unselect the emails you'd like to keep\nthen use Archive or Delete."]];
+    } else {
+        [_textField setStringValue:[NSString stringWithFormat:@"%i email notifications found.\nPlease unselect the emails you'd like to keep\nthen use Archive or Delete.", (int)[[self conversations] count]]];
+    }
 }
 
 - (NSArray *) conversations
@@ -242,6 +289,7 @@
 
 - (void) showWindow:(id)sender
 {
+    [self _layout];
     [super showWindow:sender];
     [_tableView reloadData];
     [NSApp runModalForWindow:[self window]];
@@ -296,11 +344,21 @@
 
 - (void) _archive:(id)sender
 {
+    DJLArchivedOverlayView * view = [[DJLArchivedOverlayView alloc] initWithFrame:NSMakeRect(0,0, 150, 150)];
+    [view setCount:(int) [_checkedMessages count]];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_MSEC * 500), dispatch_get_main_queue(), ^{
+        [DJLHUDWindow windowWithView:view];
+    });
     [[self delegate] DJLCleanupWindowControllerArchive:self];
 }
 
 - (void) _delete:(id)sender
 {
+    DJLDeletedOverlayView * view = [[DJLDeletedOverlayView alloc] initWithFrame:NSMakeRect(0,0, 150, 150)];
+    [view setCount:(int) [_checkedMessages count]];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_MSEC * 500), dispatch_get_main_queue(), ^{
+        [DJLHUDWindow windowWithView:view];
+    });
     [[self delegate] DJLCleanupWindowControllerDelete:self];
 }
 
