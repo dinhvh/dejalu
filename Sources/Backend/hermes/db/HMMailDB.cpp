@@ -93,6 +93,8 @@ static void initialize()
     s_senderMapping->setObjectForKey(MCSTR("googlestore-noreply@google.com"), MCSTR("Google Store"));
     s_senderMapping->setObjectForKey(MCSTR("costco@online.costco.com"), MCSTR("Costco"));
     s_senderMapping->setObjectForKey(MCSTR("schwabalerts.myportfolio@schwab.com"), MCSTR("Schwab"));
+    s_senderMapping->setObjectForKey(MCSTR("mcinfo@ups.com"), MCSTR("UPS"));
+    s_senderMapping->setObjectForKey(MCSTR("uber.us@uber.com"), MCSTR("Uber"));
 
     s_senderSuffixMapping = new HashMap();
     s_senderSuffixMapping->setObjectForKey(MCSTR("-noreply@linkedin.com"), MCSTR("Linkedin"));
