@@ -88,6 +88,11 @@ static void initialize()
     s_senderMapping->setObjectForKey(MCSTR("trackingupdates@fedex.com"), MCSTR("Fedex"));
     s_senderMapping->setObjectForKey(MCSTR("paper@reply.dropboxmail.com"), MCSTR("Dropbox Paper"));
     s_senderMapping->setObjectForKey(MCSTR("paper@dropbox.com"), MCSTR("Dropbox Paper"));
+    s_senderMapping->setObjectForKey(MCSTR("auto-reply@usps.com"), MCSTR("USPS"));
+    s_senderMapping->setObjectForKey(MCSTR("uspsinformeddelivery@usps.gov"), MCSTR("USPS"));
+    s_senderMapping->setObjectForKey(MCSTR("googlestore-noreply@google.com"), MCSTR("Google Store"));
+    s_senderMapping->setObjectForKey(MCSTR("costco@online.costco.com"), MCSTR("Costco"));
+    s_senderMapping->setObjectForKey(MCSTR("schwabalerts.myportfolio@schwab.com"), MCSTR("Schwab"));
 
     s_senderSuffixMapping = new HashMap();
     s_senderSuffixMapping->setObjectForKey(MCSTR("-noreply@linkedin.com"), MCSTR("Linkedin"));
@@ -2918,11 +2923,12 @@ HashMap * MailDB::peopleConversationInfo(int64_t peopleConversationID,
                     }
                 }
                 if (listID == NULL) {
-                    if (mailbox->hasPrefix(MCSTR("noreply@"))) {
+                    if (mailbox->hasPrefix(MCSTR("noreply@")) || mailbox->hasPrefix(MCSTR("no-reply@"))) {
                         isNotification = true;
                     }
                     mc_foreacharray(Address, replyToAddress, message->header()->replyTo()) {
-                        if (replyToAddress->mailbox()->lowercaseString()->hasPrefix(MCSTR("noreply@"))) {
+                        String * replyMailbox = replyToAddress->mailbox()->lowercaseString();
+                        if (replyMailbox->hasPrefix(MCSTR("noreply@")) || replyMailbox->hasPrefix(MCSTR("no-reply@"))) {
                             isNotification = true;
                         }
                     }
