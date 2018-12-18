@@ -29,6 +29,7 @@ typedef enum DJLConversationListToolbarViewErrorKind {
 
 - (void) DJLConversationListToolbarViewCompose:(DJLConversationListToolbarView *)toolbar;
 - (void) DJLConversationListToolbarViewSearch:(DJLConversationListToolbarView *)toolbar;
+- (void) DJLConversationListToolbarViewCleanup:(DJLConversationListToolbarView *)toolbar;
 - (hermes::UnifiedAccount *) DJLConversationListToolbarViewAccount:(DJLConversationListToolbarView *)toolbar;
 //- (NSString *) DJLConversationListToolbarViewSelectedPath:(DJLConversationListToolbarView *)toolbar;
 - (void) DJLConversationListToolbarView:(DJLConversationListToolbarView *)toolbar

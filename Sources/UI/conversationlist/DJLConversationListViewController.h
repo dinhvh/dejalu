@@ -57,6 +57,7 @@
 - (void) refresh;
 
 - (NSArray *) selectedConversationsInfos;
+- (NSArray *) allConversationsInfos;
 - (hermes::MailStorageView *) storageViewForSingleSelection;
 - (hermes::Account *) accountForSingleSelection;
 - (hermes::Account *) uniqueAccountForSelection;
@@ -66,6 +67,9 @@
 - (void) refreshAndScrollToTop;
 
 - (hermes::UnifiedMailStorageView *) currentUnifiedStorageView;
+
+- (void) archiveConversationsInfos:(NSArray *)conversationsInfos;
+- (void) trashConversationsInfos:(NSArray *)conversationsInfos;
 
 @end
 

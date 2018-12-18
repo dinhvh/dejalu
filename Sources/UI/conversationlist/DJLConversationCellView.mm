@@ -275,11 +275,14 @@ using namespace mailcore;
     NSDictionary * _conversation;
     DJLConversationStatusView * _starView;
     DJLConversationStatusView * _unreadView;
+    DJLConversationStatusView * _checkedView;
     DJLConversationCellSnippetView * _snippetView;
     BOOL _tracked;
     __weak id <DJLConversationCellViewDelegate> _delegate;
     FBKVOController * _kvoController;
     BOOL _selected;
+    BOOL _checked;
+    BOOL _checkMode;
     BOOL _nextCellSelected;
     CGFloat _vibrancy;
 }
@@ -293,13 +296,20 @@ using namespace mailcore;
     self = [super initWithFrame:frame];
 
     _starView = [[DJLConversationStatusView alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)];
-    [_starView setStar:YES];
+    [_starView setType:DJLConversationStatusViewTypeStar];
+    //[_starView setStar:YES];
     [_starView setTarget:self];
     [_starView setAction:@selector(_clicked:)];
 
     _unreadView = [[DJLConversationStatusView alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)];
+    [_unreadView setType:DJLConversationStatusViewTypeRead];
     [_unreadView setTarget:self];
     [_unreadView setAction:@selector(_clicked:)];
+
+    _checkedView = [[DJLConversationStatusView alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)];
+    [_checkedView setType:DJLConversationStatusViewTypeChecked];
+    [_checkedView setTarget:self];
+    [_checkedView setAction:@selector(_clicked:)];
 
     _snippetView = [[DJLConversationCellSnippetView alloc] initWithFrame:[self bounds]];
     //[_snippetView setAutoresizingMask:NSViewHeightSizable | NSViewWidthSizable];
@@ -308,6 +318,7 @@ using namespace mailcore;
     [self _layoutStatusViews];
     [self addSubview:_starView];
     [self addSubview:_unreadView];
+    [self addSubview:_checkedView];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(avatarUpdated:)
@@ -323,6 +334,7 @@ using namespace mailcore;
 
 - (void)viewDidMoveToSuperview
 {
+    [super viewDidMoveToSuperview];
     if ([self superview] == nil) {
         _kvoController = nil;
     } else {
@@ -359,6 +371,10 @@ using namespace mailcore;
     buttonFrame.size.height = 25;
     buttonFrame.origin.y = (int) ([self bounds].size.height / 2) - 12;
     [_unreadView setFrame:buttonFrame];
+    buttonFrame.size.width = 25;
+    buttonFrame.size.height = 25;
+    buttonFrame.origin.y = (int) ([self bounds].size.height / 2) - 14;
+    [_checkedView setFrame:buttonFrame];
 }
 
 - (void) resizeSubviewsWithOldSize:(NSSize)oldSize
@@ -510,7 +526,7 @@ using namespace mailcore;
         separatorColor = [NSColor colorWithCalibratedWhite:0.0 alpha:1.0];
         subjectColor = [NSColor blackColor];
     }
-    if (isRead && !_selected) {
+    if (isRead && !_selected && !_checkMode) {
         if ([DJLDarkMode isDarkModeForView:self]) {
             sendersColor = [NSColor colorWithCalibratedWhite:0.5 alpha:1.0];
             separatorColor = [NSColor colorWithCalibratedWhite:0.5 alpha:1.0];
@@ -697,8 +713,11 @@ using namespace mailcore;
     if (sender == _starView) {
         [[self delegate] DJLConversationCellViewStarClicked:self];
     }
-    else {
+    else if (sender == _unreadView) {
         [[self delegate] DJLConversationCellViewUnreadClicked:self];
+    }
+    else {
+        [[self delegate] DJLConversationCellViewCheckedClicked:self];
     }
 }
 
@@ -741,6 +760,17 @@ using namespace mailcore;
     [self setNeedsDisplay:YES];
 }
 
+- (void) setChecked:(BOOL)checked
+{
+    _checked = checked;
+    [_checkedView setChecked:_checked];
+}
+
+- (BOOL) isChecked
+{
+    return _checked;
+}
+
 - (void) setFolderPath:(NSString *)folderPath
 {
     [_snippetView setFolderPath:folderPath];
@@ -755,6 +785,25 @@ using namespace mailcore;
 {
     [self setNeedsDisplay:YES];
     [_snippetView setNeedsDisplay:YES];
+}
+
+- (void) setCheckMode:(BOOL)checkMode
+{
+    _checkMode = checkMode;
+    if (_checkMode) {
+        [_starView setHidden:YES];
+        [_unreadView setHidden:YES];
+        [_checkedView setHidden:NO];
+    } else {
+        [_starView setHidden:NO];
+        [_unreadView setHidden:NO];
+        [_checkedView setHidden:YES];
+    }
+}
+
+- (BOOL) isCheckMode
+{
+    return _checkMode;
 }
 
 @end

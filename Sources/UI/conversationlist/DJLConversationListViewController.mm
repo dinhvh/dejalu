@@ -565,6 +565,17 @@ private:
     return result;
 }
 
+- (NSArray *) allConversationsInfos
+{
+    NSMutableArray * result = [NSMutableArray array];
+    unsigned int conversationsCount = [self _currentUnifiedStorageView]->conversationsCount();
+    for(unsigned int i = 0 ; i < conversationsCount ; i ++) {
+        HashMap * info = [self _currentUnifiedStorageView]->conversationsInfoAtIndex(i);
+        [result addObject:MCO_TO_OBJC(info)];
+    }
+    return result;
+}
+
 - (BOOL) _archiveMessage
 {
     if ([_folderPath isEqualToString:MCO_TO_OBJC(_unifiedAccount->inboxFolderPath())]) {
@@ -830,6 +841,7 @@ private:
         [view setFolderPath:[self folderPath]];
     }
     [view setVibrancy:_vibrancy];
+    [view setCheckMode:NO];
     [view setDelegate:self];
     NSDictionary * objcInfo = MCO_TO_OBJC(info);
     [view setConversation:objcInfo];
@@ -1078,6 +1090,11 @@ private:
     else {
         account->markAsUnreadPeopleConversations(convIDs);
     }
+}
+
+- (void) DJLConversationCellViewCheckedClicked:(DJLConversationCellView *)view
+{
+    // do nothing.
 }
 
 #pragma mark -
@@ -1835,78 +1852,22 @@ private:
 
 - (void) archiveSelection
 {
-    LOG_ERROR("archive selection");
-    Array * conversationsByAccount = new Array();
-    for(unsigned int i = 0 ; i < _unifiedAccount->accounts()->count() ; i ++) {
-        conversationsByAccount->addObject(Array::array());
-    }
+    Array * conversations = new Array();
     [[_tableView selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger row, BOOL *stop) {
         HashMap * info = [self _currentUnifiedStorageView]->conversationsInfoAtIndex((unsigned int) row);
-        int64_t convID = ((Value *) info->objectForKey(MCSTR("id")))->longLongValue();
-        unsigned int accountIndex = ((Value *) info->objectForKey(MCSTR("account")))->unsignedIntValue();
-        Array * conversationsIDs = (Array *) conversationsByAccount->objectAtIndex(accountIndex);
-        conversationsIDs->addObject(Value::valueWithLongLongValue(convID));
+        conversations->addObject(info);
     }];
-    for(unsigned int i = 0 ; i < _unifiedAccount->accounts()->count() ; i ++) {
-        Array * conversationsIDs = (Array *) conversationsByAccount->objectAtIndex(i);
-        LOG_ERROR("archive selection %i conv", conversationsIDs->count());
-        Account * account = (Account *) _unifiedAccount->accounts()->objectAtIndex(i);
-        MailStorageView * storageView = (MailStorageView *) [self _currentUnifiedStorageView]->storageViews()->objectAtIndex(i);
-        if (conversationsIDs->count() > 0) {
-            account->archivePeopleConversations(conversationsIDs, storageView->foldersScores());
-        }
-    }
-    MC_SAFE_RELEASE(conversationsByAccount);
+    [self _archiveConversations:conversations];
 }
 
 - (void) trashSelection
 {
-    LOG_ERROR("delete selection");
-    Array * conversationsByAccount = new Array();
-    for(unsigned int i = 0 ; i < _unifiedAccount->accounts()->count() ; i ++) {
-        conversationsByAccount->addObject(Array::array());
-    }
-    __block bool isAllTrash = true;
+    Array * conversations = new Array();
     [[_tableView selectedRowIndexes] enumerateIndexesUsingBlock:^(NSUInteger row, BOOL *stop) {
         HashMap * info = [self _currentUnifiedStorageView]->conversationsInfoAtIndex((unsigned int) row);
-        bool isTrash = (info->objectForKey(MCSTR("trash")) != NULL);
-        isAllTrash = isAllTrash && isTrash;
-        int64_t convID = ((Value *) info->objectForKey(MCSTR("id")))->longLongValue();
-        unsigned int accountIndex = ((Value *) info->objectForKey(MCSTR("account")))->unsignedIntValue();
-        Array * conversationsIDs = (Array *) conversationsByAccount->objectAtIndex(accountIndex);
-        conversationsIDs->addObject(Value::valueWithLongLongValue(convID));
+        conversations->addObject(info);
     }];
-    BOOL missingTrash = NO;
-    for(unsigned int i = 0 ; i < _unifiedAccount->accounts()->count() ; i ++) {
-        Array * conversationsIDs = (Array *) conversationsByAccount->objectAtIndex(i);
-        Account * account = (Account *) _unifiedAccount->accounts()->objectAtIndex(i);
-        if (conversationsIDs->count() > 0) {
-            if (account->trashFolderPath() == NULL) {
-                missingTrash = YES;
-                [self _showAlertTrashMissing:account];
-                break;
-            }
-        }
-    }
-    if (missingTrash) {
-        MC_SAFE_RELEASE(conversationsByAccount);
-        return;
-    }
-    for(unsigned int i = 0 ; i < _unifiedAccount->accounts()->count() ; i ++) {
-        Array * conversationsIDs = (Array *) conversationsByAccount->objectAtIndex(i);
-        LOG_ERROR("delete selection %i conv", conversationsIDs->count());
-        Account * account = (Account *) _unifiedAccount->accounts()->objectAtIndex(i);
-        if (conversationsIDs->count() > 0) {
-            if (isAllTrash) {
-                account->purgeFromTrashPeopleConversations(conversationsIDs);
-            }
-            else {
-                MailStorageView * storageView = (MailStorageView *) [self _currentUnifiedStorageView]->storageViews()->objectAtIndex(i);
-                account->deletePeopleConversations(conversationsIDs, storageView->foldersScores());
-            }
-        }
-    }
-    MC_SAFE_RELEASE(conversationsByAccount);
+    [self _trashConversations:conversations];
 }
 
 - (void) _showAlertTrashMissing:(Account *)account
@@ -2383,6 +2344,89 @@ private:
     else {
         return NO;
     }
+}
+
+- (void) archiveConversationsInfos:(NSArray *)conversationsInfos
+{
+    Array * conversations = MCO_FROM_OBJC(mailcore::Array, conversationsInfos);
+    [self _archiveConversations:conversations];
+}
+
+- (void) _archiveConversations:(Array *)conversations
+{
+    Array * conversationsByAccount = new Array();
+    for(unsigned int i = 0 ; i < _unifiedAccount->accounts()->count() ; i ++) {
+        conversationsByAccount->addObject(Array::array());
+    }
+    mc_foreacharray(HashMap, info, conversations) {
+        int64_t convID = ((Value *) info->objectForKey(MCSTR("id")))->longLongValue();
+        unsigned int accountIndex = ((Value *) info->objectForKey(MCSTR("account")))->unsignedIntValue();
+        Array * conversationsIDs = (Array *) conversationsByAccount->objectAtIndex(accountIndex);
+        conversationsIDs->addObject(Value::valueWithLongLongValue(convID));
+    };
+    for(unsigned int i = 0 ; i < _unifiedAccount->accounts()->count() ; i ++) {
+        Array * conversationsIDs = (Array *) conversationsByAccount->objectAtIndex(i);
+        Account * account = (Account *) _unifiedAccount->accounts()->objectAtIndex(i);
+        MailStorageView * storageView = (MailStorageView *) [self _currentUnifiedStorageView]->storageViews()->objectAtIndex(i);
+        if (conversationsIDs->count() > 0) {
+            account->archivePeopleConversations(conversationsIDs, storageView->foldersScores());
+        }
+    }
+    MC_SAFE_RELEASE(conversationsByAccount);
+}
+
+- (void) trashConversationsInfos:(NSArray *)conversationsInfos
+{
+    Array * conversations = MCO_FROM_OBJC(mailcore::Array, conversationsInfos);
+    [self _trashConversations:conversations];
+}
+
+- (void) _trashConversations:(Array *)conversations
+{
+    Array * conversationsByAccount = new Array();
+    for(unsigned int i = 0 ; i < _unifiedAccount->accounts()->count() ; i ++) {
+        conversationsByAccount->addObject(Array::array());
+    }
+    bool isAllTrash = true;
+    mc_foreacharray(HashMap, info, conversations) {
+        bool isTrash = (info->objectForKey(MCSTR("trash")) != NULL);
+        isAllTrash = isAllTrash && isTrash;
+        int64_t convID = ((Value *) info->objectForKey(MCSTR("id")))->longLongValue();
+        unsigned int accountIndex = ((Value *) info->objectForKey(MCSTR("account")))->unsignedIntValue();
+        Array * conversationsIDs = (Array *) conversationsByAccount->objectAtIndex(accountIndex);
+        conversationsIDs->addObject(Value::valueWithLongLongValue(convID));
+    }
+    BOOL missingTrash = NO;
+    for(unsigned int i = 0 ; i < _unifiedAccount->accounts()->count() ; i ++) {
+        Array * conversationsIDs = (Array *) conversationsByAccount->objectAtIndex(i);
+        Account * account = (Account *) _unifiedAccount->accounts()->objectAtIndex(i);
+        if (conversationsIDs->count() > 0) {
+            if (account->trashFolderPath() == NULL) {
+                missingTrash = YES;
+                [self _showAlertTrashMissing:account];
+                break;
+            }
+        }
+    }
+    if (missingTrash) {
+        MC_SAFE_RELEASE(conversationsByAccount);
+        return;
+    }
+    for(unsigned int i = 0 ; i < _unifiedAccount->accounts()->count() ; i ++) {
+        Array * conversationsIDs = (Array *) conversationsByAccount->objectAtIndex(i);
+        LOG_ERROR("delete selection %i conv", conversationsIDs->count());
+        Account * account = (Account *) _unifiedAccount->accounts()->objectAtIndex(i);
+        if (conversationsIDs->count() > 0) {
+            if (isAllTrash) {
+                account->purgeFromTrashPeopleConversations(conversationsIDs);
+            }
+            else {
+                MailStorageView * storageView = (MailStorageView *) [self _currentUnifiedStorageView]->storageViews()->objectAtIndex(i);
+                account->deletePeopleConversations(conversationsIDs, storageView->foldersScores());
+            }
+        }
+    }
+    MC_SAFE_RELEASE(conversationsByAccount);
 }
 
 @end

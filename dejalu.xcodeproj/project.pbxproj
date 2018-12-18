@@ -10,6 +10,8 @@
 		92D2C2A62018261100CC64DB /* statusitem.png in Resources */ = {isa = PBXBuildFile; fileRef = 92D2C2892018261000CC64DB /* statusitem.png */; };
 		92D2C2A8201826CA00CC64DB /* statusitem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92D2C2A7201826CA00CC64DB /* statusitem@2x.png */; };
 		BDD110DB21B74E61005CAEA7 /* DJLDarkMode.m in Sources */ = {isa = PBXBuildFile; fileRef = BDD110DA21B74E61005CAEA7 /* DJLDarkMode.m */; };
+		BDD110FB21C4EBFB005CAEA7 /* DJLCleanupWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDD110FA21C4EBFB005CAEA7 /* DJLCleanupWindowController.m */; };
+		BDD1111821C78158005CAEA7 /* DJLConversationCellView.mm in Sources */ = {isa = PBXBuildFile; fileRef = C68ACA471FCBE51700C9097D /* DJLConversationCellView.mm */; };
 		C602E3441C6B247100BF728E /* GoogleAnalyticsTracker.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C602E33C1C6B21D900BF728E /* GoogleAnalyticsTracker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C602E3451C6B264000BF728E /* GoogleAnalyticsTracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C602E33C1C6B21D900BF728E /* GoogleAnalyticsTracker.framework */; };
 		C60B45831E17397A006D5115 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C60B45531E1736FF006D5115 /* Sparkle.framework */; };
@@ -195,7 +197,6 @@
 		C68ACACE1FCBE51700C9097D /* DJLContactsCompletionWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C68ACA401FCBE51700C9097D /* DJLContactsCompletionWindowController.m */; };
 		C68ACACF1FCBE51700C9097D /* DJLGenericCompletionWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C68ACA421FCBE51700C9097D /* DJLGenericCompletionWindowController.m */; };
 		C68ACAD01FCBE51700C9097D /* DJLConversationCellContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = C68ACA451FCBE51700C9097D /* DJLConversationCellContentView.m */; };
-		C68ACAD11FCBE51700C9097D /* DJLConversationCellView.mm in Sources */ = {isa = PBXBuildFile; fileRef = C68ACA471FCBE51700C9097D /* DJLConversationCellView.mm */; };
 		C68ACAD21FCBE51700C9097D /* DJLConversationListPlaceholderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C68ACA491FCBE51700C9097D /* DJLConversationListPlaceholderView.m */; };
 		C68ACAD31FCBE51700C9097D /* DJLConversationListToolbarView.mm in Sources */ = {isa = PBXBuildFile; fileRef = C68ACA4B1FCBE51700C9097D /* DJLConversationListToolbarView.mm */; };
 		C68ACAD41FCBE51700C9097D /* DJLConversationListViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = C68ACA4D1FCBE51700C9097D /* DJLConversationListViewController.mm */; };
@@ -1222,6 +1223,8 @@
 		92D2C2A7201826CA00CC64DB /* statusitem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "statusitem@2x.png"; sourceTree = "<group>"; };
 		BDD110DA21B74E61005CAEA7 /* DJLDarkMode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DJLDarkMode.m; sourceTree = "<group>"; };
 		BDD110DC21B74E74005CAEA7 /* DJLDarkMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DJLDarkMode.h; sourceTree = "<group>"; };
+		BDD110F921C4EBFB005CAEA7 /* DJLCleanupWindowController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DJLCleanupWindowController.h; sourceTree = "<group>"; };
+		BDD110FA21C4EBFB005CAEA7 /* DJLCleanupWindowController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DJLCleanupWindowController.m; sourceTree = "<group>"; };
 		C602E3361C6B21D900BF728E /* GoogleAnalyticsTracker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GoogleAnalyticsTracker.xcodeproj; path = "Google-Analytics-for-OS-X/GoogleAnalyticsTracker.xcodeproj"; sourceTree = "<group>"; };
 		C60B45311E1736FE006D5115 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = SparkleSandbox/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		C61E770C18053A78009CF7C1 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -3245,6 +3248,8 @@
 				C68ACA531FCBE51700C9097D /* DJLConversationStatusView.m */,
 				C68ACA541FCBE51700C9097D /* DJLRefreshOverlayView.h */,
 				C68ACA551FCBE51700C9097D /* DJLRefreshOverlayView.m */,
+				BDD110F921C4EBFB005CAEA7 /* DJLCleanupWindowController.h */,
+				BDD110FA21C4EBFB005CAEA7 /* DJLCleanupWindowController.m */,
 			);
 			path = conversationlist;
 			sourceTree = "<group>";
@@ -5427,6 +5432,7 @@
 				C68ACAC71FCBE51700C9097D /* DJLAttachmentsCollectionViewItem.m in Sources */,
 				C68ACAD71FCBE51700C9097D /* DJLConversationStatusView.m in Sources */,
 				C68ACAC51FCBE51700C9097D /* DJLAppDelegate.mm in Sources */,
+				BDD1111821C78158005CAEA7 /* DJLConversationCellView.mm in Sources */,
 				C68ACAF91FCBE51700C9097D /* DJLSourceList.m in Sources */,
 				C66F78B81CA282BF008137FD /* PXSourceListTableCellView.m in Sources */,
 				C68AC9D51FCB71FB00C9097D /* DJLLog.c in Sources */,
@@ -5445,6 +5451,7 @@
 				C68ACAED1FCBE51700C9097D /* DJLAddAccountWindowController.mm in Sources */,
 				C68AC9781FCB71FA00C9097D /* HMMailDBAddMessagesOperation.cpp in Sources */,
 				C68ACAD51FCBE51700C9097D /* DJLConversationLoadMoreCellView.m in Sources */,
+				BDD110FB21C4EBFB005CAEA7 /* DJLCleanupWindowController.m in Sources */,
 				C68AC9C11FCB71FB00C9097D /* HMIMAPFolderSyncStep.cpp in Sources */,
 				C68AC9991FCB71FB00C9097D /* HMMailDBRemoveCopyMessagesOperation.cpp in Sources */,
 				C68ACADC1FCBE51700C9097D /* DJLConversationWindowController.mm in Sources */,
@@ -5511,7 +5518,6 @@
 				C68ACACF1FCBE51700C9097D /* DJLGenericCompletionWindowController.m in Sources */,
 				C68AC98B1FCB71FB00C9097D /* HMMailDBMessagesLocalChangesOperation.cpp in Sources */,
 				C68AC9AE1FCB71FB00C9097D /* HMSQLiteKVDB.cpp in Sources */,
-				C68ACAD11FCBE51700C9097D /* DJLConversationCellView.mm in Sources */,
 				C68AC9AA1FCB71FB00C9097D /* HMMailStorage.cpp in Sources */,
 				C68AC9C31FCB71FB00C9097D /* HMIMAPPushMessagesStep.cpp in Sources */,
 				C68ACAF31FCBE51700C9097D /* DJLPrefsAliasesViewController.mm in Sources */,

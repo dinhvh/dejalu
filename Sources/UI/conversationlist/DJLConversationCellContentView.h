@@ -10,6 +10,8 @@
 @property (nonatomic, weak) id <DJLConversationCellViewDelegate> delegate;
 @property (nonatomic, retain) NSDictionary * conversation;
 @property (nonatomic, assign, getter=isSelected) BOOL selected;
+@property (nonatomic, assign, getter=isChecked) BOOL checked;
+@property (nonatomic, assign, getter=isCheckMode) BOOL checkMode;
 @property (nonatomic, assign, getter=isNextCellSelected) BOOL nextCellSelected;
 @property (nonatomic, assign) CGFloat vibrancy;
 @property (nonatomic, retain) NSString * folderPath;

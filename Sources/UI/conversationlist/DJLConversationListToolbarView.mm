@@ -28,6 +28,7 @@ using namespace mailcore;
     __weak id <DJLConversationListToolbarViewDelegate> _delegate;
     NSButton * _mailboxButton;
     NSPopover * _foldersPopOver;
+    DJLPopoverButton * _cleanupButton;
     DJLFoldersViewController * _foldersViewController;
     NSButton * _composeButton;
     NSButton * _searchButton;
@@ -56,6 +57,14 @@ using namespace mailcore;
     [_mailboxButton setTarget:self];
     [_mailboxButton setAction:@selector(_showFoldersPopOver:)];
     [self addSubview:_mailboxButton];
+
+    _cleanupButton = [[DJLPopoverButton alloc] initWithFrame:NSMakeRect(230, 7, 40, 20)];
+    [_cleanupButton setTitle:@"Clean up"];
+    [_cleanupButton setShowsBorderOnlyWhileMouseInside:YES];
+    [_cleanupButton setBezelStyle:NSRecessedBezelStyle];
+    [_cleanupButton setTarget:self];
+    [_cleanupButton setAction:@selector(_cleanup)];
+    [self addSubview:_cleanupButton];
 
     _errorButton = [[NSButton alloc] initWithFrame:NSMakeRect(0, 8, 20, 20)];
     [_errorButton setBordered:NO];
@@ -112,8 +121,9 @@ using namespace mailcore;
     [_searchButton setAutoresizingMask:NSViewMinXMargin];
     [self addSubview:_searchButton];
 
-    [self setButtonValidation:_composeButton selector:@selector(composeMessage)];
+    [self setButtonValidation:_composeButton selector:@selector(_compose)];
     [self setButtonValidation:_searchButton selector:@selector(_search)];
+    [self setButtonValidation:_cleanupButton selector:@selector(_cleanup)];
     [self setViewsToFade:@[_searchButton, _composeButton]];
 
     return self;
@@ -126,6 +136,7 @@ using namespace mailcore;
 
 - (void)viewDidMoveToSuperview
 {
+    [super viewDidMoveToSuperview];
     if ([self superview] == nil) {
         _kvoController = nil;
     } else {
@@ -175,6 +186,11 @@ using namespace mailcore;
 - (void) _search
 {
     [_delegate DJLConversationListToolbarViewSearch:self];
+}
+
+- (void) _cleanup
+{
+    [_delegate DJLConversationListToolbarViewCleanup:self];
 }
 
 #define WIDTH 300
@@ -353,8 +369,13 @@ using namespace mailcore;
     frame = NSIntegralRect(frame);
     [_mailboxButton setFrame:frame];
 
-    frame = [_errorButton frame];
+    [_cleanupButton sizeToFit];
+    frame = [_cleanupButton frame];
     frame.origin.x = NSMaxX([_mailboxButton frame]);
+    [_cleanupButton setFrame:frame];
+
+    frame = [_errorButton frame];
+    frame.origin.x = NSMaxX([_cleanupButton frame]);
     [_errorButton setFrame:frame];
 }
 

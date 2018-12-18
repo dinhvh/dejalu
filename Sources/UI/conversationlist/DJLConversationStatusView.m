@@ -7,6 +7,7 @@
 
 #import "DJLTableView.h"
 #import "DJLWindow.h"
+#import "NSImage+DJLColored.h"
 
 #define LOG(...) DJLLogWithID("statusview", __VA_ARGS__)
 #define LOGSTACK(...) DJLLogStackWithID("statusview", __VA_ARGS__)
@@ -77,12 +78,14 @@ static void fillStar(CGContextRef context, unsigned int points, CGPoint position
     BOOL _tracking;
     BOOL _clickingInside;
     NSDictionary * _conversation;
-    BOOL _star;
+    //BOOL _star;
+    DJLConversationStatusViewType _type;
 }
 
 static BOOL s_interactionEnabled = NO;
 
-@synthesize star = _star;
+//@synthesize star = _star;
+@synthesize type = _type;
 
 + (void) setInteractionEnabled:(BOOL)enabled
 {
@@ -117,7 +120,7 @@ static BOOL s_interactionEnabled = NO;
     NSNumber * nbUnread = [_conversation objectForKey:@"unread"];
     NSNumber * nbStarred = [_conversation objectForKey:@"starred"];
     
-    if (![self isStar]) {
+    if ([self type] == DJLConversationStatusViewTypeRead) {
         NSRect rect = NSMakeRect(7, 9, 10, 10);
         if ([nbUnread boolValue]) {
             NSColor * color = nil;
@@ -162,8 +165,7 @@ static BOOL s_interactionEnabled = NO;
                 CGContextStrokePath([[NSGraphicsContext currentContext] CGContext]);
             }
         }
-    }
-    else {
+    } else if ([self type] == DJLConversationStatusViewTypeStar) {
         if ([nbStarred boolValue]) {
             NSColor * color = nil;
             NSColor * borderColor = nil;
@@ -208,6 +210,37 @@ static BOOL s_interactionEnabled = NO;
                 fillStar([[NSGraphicsContext currentContext] CGContext], 5, CGPointMake(12, 12), [color CGColor], 3, 6);
                 strokeStar([[NSGraphicsContext currentContext] CGContext], 5, CGPointMake(12, 12), [borderColor CGColor], 3, 6);
             }
+        }
+    }
+    else if ([self type] == DJLConversationStatusViewTypeChecked) {
+        NSRect rect = NSMakeRect(7, 9, 12, 12);
+        NSImage * imageOn = [NSImage imageNamed:@"DejaLu_CheckmarkOn_12"];
+        NSImage * imageOff = [NSImage imageNamed:@"DejaLu_CheckmarkOn_12"];
+        NSImage * image = nil;
+        if ([self isChecked]) {
+            if (_tracking) {
+                if (_clickingInside) {
+                    image = [imageOff djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.8 alpha:1.0]];
+                } else {
+                    image = [imageOn djl_imageWithColor:[NSColor colorWithCalibratedWhite:1.0 alpha:1.0]];
+                }
+            } else {
+                if (_over) {
+                    image = [imageOn djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.5 alpha:1.0]];
+                } else {
+                    image = [imageOn djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.8 alpha:1.0]];
+                }
+            }
+        } else {
+            if (_clickingInside) {
+                image = [imageOn djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.8 alpha:1.0]];
+            }
+            else if (_over) {
+                image = [imageOn djl_imageWithColor:[NSColor colorWithCalibratedWhite:0.4 alpha:1.0]];
+            }
+        }
+        if (image != nil) {
+            [image drawInRect:rect fromRect:NSMakeRect(0, 0, 12, 12) operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
         }
     }
 }

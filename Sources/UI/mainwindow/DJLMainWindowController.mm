@@ -38,6 +38,7 @@
 #import "DJLFolderPaneViewController.h"
 #import "DJLDarkMode.h"
 #import "FBKVOController.h"
+#import "DJLCleanupWindowController.h"
 
 #include "Hermes.h"
 
@@ -72,7 +73,7 @@ using namespace hermes;
       NSSplitViewDelegate, DJLConversationToolbarViewDelegate,
       DJLConversationSelectionViewControllerDelegate, DJLComposerWindowControllerDelegate,
       DJLConversationWindowControllerDelegate, DJLLabelsViewControllerDelegate, DJLURLHandlerDelegate,
-      DJLToolbarViewValidationDelegate, DJLFolderPaneViewControllerDelegate>
+      DJLToolbarViewValidationDelegate, DJLFolderPaneViewControllerDelegate, DJLCleanupWindowControllerDelegate>
 
 - (void) _gotFolders:(Account *)account;
 - (void) _foldersUpdated;
@@ -275,6 +276,7 @@ public:
     BOOL _splitViewInitialWidthScheduled;
     BOOL _restoringWindowSize;
     NSSound * _mailSentSound;
+    DJLCleanupWindowController * _cleanupWindowController;
 }
 
 @synthesize delegate = _delegate;
@@ -1759,6 +1761,7 @@ public:
     [_folderPaneViewController setUnifiedAccount:account];
     [_folderPaneViewController setFolderPath:path];
     [_toolbarView setFolderPath:path];
+    [_toolbarView validate];
 }
 
 - (void) DJLConversationListToolbarViewShowError:(DJLConversationListToolbarView *)toolbar
@@ -1769,6 +1772,27 @@ public:
 - (void) DJLConversationListToolbarView:(DJLConversationListToolbarView *)toolbar openFoldersManager:(hermes::Account *)account
 {
     [[self delegate] DJLMainWindowController:self openLabelsPrefsForAccount:account];
+}
+
+- (void) DJLConversationListToolbarViewCleanup:(DJLConversationListToolbarView *)toolbar;
+{
+    _cleanupWindowController = [[DJLCleanupWindowController alloc] init];
+    [_cleanupWindowController setConversations:[_conversationListViewController allConversationsInfos]];
+    [_cleanupWindowController setDelegate:self];
+
+    if ([[_cleanupWindowController conversations] count] == 0) {
+        _cleanupWindowController = nil;
+
+        NSAlert * alert = [[NSAlert alloc] init];
+        [alert setMessageText:@"Clean up notifications"];
+        [alert setInformativeText:@"No notifications were found."];
+        [alert addButtonWithTitle:@"OK"];
+        [alert runModal];
+
+        return;
+    }
+
+    [_cleanupWindowController showWindow:nil];
 }
 
 #pragma mark -
@@ -2447,6 +2471,7 @@ public:
     [_conversationListViewController setUnifiedAccount:unifiedAccount];
     [_conversationListViewController setFolderPath:path];
     [_toolbarView setFolderPath:path];
+    [_toolbarView validate];
 }
 
 - (void) DJLFolderPaneViewControllerCollapseDetails:(DJLFolderPaneViewController *)controller
@@ -2618,11 +2643,19 @@ public:
         return [self validateMenuItem:item];
     }
     else if (toolbar == _toolbarView) {
-        if (selector == @selector(composeMessage)) {
+        if (selector == @selector(_compose)) { // method in DJLConversationListToolbarView
             return AccountManager::sharedManager()->accounts()->count() > 0;
         }
-        else if (selector == @selector(_search)) {
+        else if (selector == @selector(_search)) { // method in DJLConversationListToolbarView
             return YES;
+        }
+        else if (selector == @selector(_cleanup)) { // method in DJLConversationListToolbarView
+            NSString * inboxFolderPath = MCO_TO_OBJC([_conversationListViewController unifiedAccount]->inboxFolderPath());
+            if ([inboxFolderPath isEqualToString:[_conversationListViewController folderPath]]) {
+                return YES;
+            } else {
+                return NO;
+            }
         }
         else {
             return NO;
@@ -2633,7 +2666,7 @@ public:
     }
 }
 
-#pragma mark DJLURLHandler delegate
+#pragma mark - DJLURLHandler delegate
 
 - (BOOL) _checkHasAccount
 {
@@ -2884,6 +2917,28 @@ public:
     [MPGoogleAnalyticsTracker trackEventOfCategory:@"Contacts" action:actionString label:actionString value:@(0)];
 
     [self performSelector:@selector(_loopAnalytics) withObject:nil afterDelay:1 * 60 * 60];
+}
+
+#pragma mark - DJLCleanupWindowController delegate
+
+- (void) DJLCleanupWindowControllerArchive:(DJLCleanupWindowController *)controller
+{
+    [_conversationListViewController archiveConversationsInfos:[controller selectedConversations]];
+    [_cleanupWindowController close];
+    _cleanupWindowController = nil;
+}
+
+- (void) DJLCleanupWindowControllerDelete:(DJLCleanupWindowController *)controller
+{
+    [_conversationListViewController trashConversationsInfos:[controller selectedConversations]];
+    [_cleanupWindowController close];
+    _cleanupWindowController = nil;
+}
+
+- (void) DJLCleanupWindowControllerCancel:(DJLCleanupWindowController *)controller
+{
+    [_cleanupWindowController close];
+    _cleanupWindowController = nil;
 }
 
 @end

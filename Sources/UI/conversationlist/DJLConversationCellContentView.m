@@ -13,6 +13,8 @@
     NSVisualEffectView * _effectView;
     DJLColoredView * _opaqueView;
     BOOL _selected;
+    BOOL _checked;
+    BOOL _checkMode;
     BOOL _nextCellSelected;
     CGFloat _vibrancy;
     NSString * _folderPath;
@@ -39,6 +41,7 @@
 
 - (void)viewDidMoveToSuperview
 {
+    [super viewDidMoveToSuperview];
     if ([self superview] == nil) {
         _kvoController = nil;
     } else {
@@ -95,6 +98,31 @@
 - (BOOL) isSelected
 {
     return _selected;
+}
+
+- (void) setChecked:(BOOL)checked
+{
+    if (_checked == checked) {
+        return;
+    }
+    _checked = checked;
+    [_mainView setChecked:_checked];
+    [self _applyVibrancy];
+}
+
+- (BOOL) isChecked
+{
+    return _checked;
+}
+
+- (void) setCheckMode:(BOOL)checkMode
+{
+    [_mainView setCheckMode:checkMode];
+}
+
+- (BOOL) isCheckMode
+{
+    return [_mainView isCheckMode];
 }
 
 - (void) setNextCellSelected:(BOOL)nextCellSelected
