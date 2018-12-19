@@ -90,13 +90,16 @@ static void initialize()
     s_senderMapping->setObjectForKey(MCSTR("paper@dropbox.com"), MCSTR("Dropbox Paper"));
     s_senderMapping->setObjectForKey(MCSTR("auto-reply@usps.com"), MCSTR("USPS"));
     s_senderMapping->setObjectForKey(MCSTR("uspsinformeddelivery@usps.gov"), MCSTR("USPS"));
-    s_senderMapping->setObjectForKey(MCSTR("googlestore-noreply@google.com"), MCSTR("Google Store"));
     s_senderMapping->setObjectForKey(MCSTR("costco@online.costco.com"), MCSTR("Costco"));
     s_senderMapping->setObjectForKey(MCSTR("schwabalerts.myportfolio@schwab.com"), MCSTR("Schwab"));
+    s_senderMapping->setObjectForKey(MCSTR("donotreply-comm@schwab.com"), MCSTR("Schwab"));
+    s_senderMapping->setObjectForKey(MCSTR("SchwabStockPlanServices@schwab.com"), MCSTR("Schwab"));
     s_senderMapping->setObjectForKey(MCSTR("mcinfo@ups.com"), MCSTR("UPS"));
     s_senderMapping->setObjectForKey(MCSTR("uber.us@uber.com"), MCSTR("Uber"));
+    s_senderMapping->setObjectForKey(MCSTR("service@paypal.com"), MCSTR("Paypal"));
 
     s_senderSuffixMapping = new HashMap();
+    s_senderSuffixMapping->setObjectForKey(MCSTR("-noreply@google.com"), MCSTR("Google"));
     s_senderSuffixMapping->setObjectForKey(MCSTR("-noreply@linkedin.com"), MCSTR("Linkedin"));
     s_senderSuffixMapping->setObjectForKey(MCSTR("@plus.google.com"), MCSTR("Google"));
     s_senderSuffixMapping->setObjectForKey(MCSTR("@emaildl.att-mail.com"), MCSTR("AT&T"));
@@ -2925,12 +2928,12 @@ HashMap * MailDB::peopleConversationInfo(int64_t peopleConversationID,
                     }
                 }
                 if (listID == NULL) {
-                    if (mailbox->hasPrefix(MCSTR("noreply@")) || mailbox->hasPrefix(MCSTR("no-reply@"))) {
+                    if (mailbox->hasPrefix(MCSTR("noreply@")) || mailbox->hasPrefix(MCSTR("no-reply@")) || mailbox->hasPrefix(MCSTR("no_reply@"))) {
                         isNotification = true;
                     }
                     mc_foreacharray(Address, replyToAddress, message->header()->replyTo()) {
                         String * replyMailbox = replyToAddress->mailbox()->lowercaseString();
-                        if (replyMailbox->hasPrefix(MCSTR("noreply@")) || replyMailbox->hasPrefix(MCSTR("no-reply@"))) {
+                        if (replyMailbox->hasPrefix(MCSTR("noreply@")) || replyMailbox->hasPrefix(MCSTR("no-reply@")) || replyMailbox->hasPrefix(MCSTR("no_reply@"))) {
                             isNotification = true;
                         }
                     }
