@@ -26,6 +26,8 @@
 {
     __weak typeof(self) weakSelf = self;
 
+    DJLOAuth2RequestCompletion completionCopy = [completion copy];
+
     NSURLSessionConfiguration * config = [NSURLSessionConfiguration ephemeralSessionConfiguration];
     [config setTimeoutIntervalForRequest:30];
     _session = [NSURLSession sessionWithConfiguration:config];
@@ -55,20 +57,20 @@
             if (error != nil) {
                 //NSLog(@"error: %@", error);
                 LOG_ERROR("oauth2 error: %s", [[error description] UTF8String]);
-                completion(nil, error);
+                completionCopy(nil, error);
                 return;
             }
             if ([(NSHTTPURLResponse *) response statusCode] != 200) {
                 //NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
                 LOG_ERROR("oauth2 response error: %.*s", (int) [data length], [data bytes]);
-                completion(nil, [NSError errorWithDomain:DJLOAuth2ErrorDomain code:DJLOAuth2ErrorToken userInfo:nil]);
+                completionCopy(nil, [NSError errorWithDomain:DJLOAuth2ErrorDomain code:DJLOAuth2ErrorToken userInfo:nil]);
                 return;
             }
 
             NSError * jsonError;
             NSDictionary * result = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
             if (result == nil) {
-                completion(nil, jsonError);
+                completionCopy(nil, jsonError);
                 return;
             }
             //            {
@@ -83,7 +85,7 @@
             //                "expires_in":3920,
             //                "token_type":"Bearer"
             //            }
-            completion(result, nil);
+            completionCopy(result, nil);
         });
     }];
     [_task resume];
