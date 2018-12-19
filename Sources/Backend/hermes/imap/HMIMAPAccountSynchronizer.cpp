@@ -644,59 +644,73 @@ void IMAPAccountSynchronizer::close()
             op->cancel();
         }
     }
+    mPendingFlagsOperations->removeAllObjects();
     {
         mc_foreacharray(Operation, op, mPendingSaveMessageOperations) {
             op->cancel();
         }
     }
+    mPendingSaveMessageOperations->removeAllObjects();
     {
         mc_foreacharray(Operation, op, mPendingCopyOperations) {
             op->cancel();
         }
     }
+    mPendingCopyOperations->removeAllObjects();
     {
         mc_foreacharray(Operation, op, mPendingMoveOperations) {
             op->cancel();
         }
     }
+    mPendingMoveOperations->removeAllObjects();
     {
         mc_foreacharray(Operation, op, mPendingPurgeOperations) {
             op->cancel();
         }
     }
+    mPendingPurgeOperations->removeAllObjects();
     {
         mc_foreacharray(Operation, op, mRemoveDraftForSendOperations) {
             op->cancel();
         }
     }
+    mRemoveDraftForSendOperations->removeAllObjects();
     {
         mc_foreacharray(Operation, op, mPendingLabelOperations) {
             op->cancel();
         }
     }
+    mPendingLabelOperations->removeAllObjects();
     {
         mc_foreacharray(Operation, op, mFetchConversationIDOperations) {
             op->cancel();
         }
     }
+    mFetchConversationIDOperations->removeAllObjects();
     if (mOpenOperation != NULL) {
         mOpenOperation->cancel();
     }
+    MC_SAFE_RELEASE(mOpenOperation);
     if (mFetchRecipientOp != NULL) {
         mFetchRecipientOp->cancel();
     }
+    MC_SAFE_RELEASE(mFetchRecipientOp);
     if (mSaveRecipientsOp != NULL) {
         mSaveRecipientsOp->cancel();
     }
+    MC_SAFE_RELEASE(mSaveRecipientsOp);
     if (mStoreFoldersOp != NULL) {
         mStoreFoldersOp->cancel();
     }
+    MC_SAFE_RELEASE(mStoreFoldersOp);
     if (mStoreMainFoldersOp != NULL) {
         mStoreMainFoldersOp->cancel();
     }
+    MC_SAFE_RELEASE(mStoreMainFoldersOp);
     if (mMessagesOp != NULL) {
         mMessagesOp->cancel();
     }
+    MC_SAFE_RELEASE(mMessagesOp);
 
     retain();
     mCloseOperation = mStorage->closeOperation();
@@ -720,14 +734,14 @@ void IMAPAccountSynchronizer::failPendingRequests(hermes::ErrorCode error)
     }
 }
 
-void IMAPAccountSynchronizer::disconnect()
-{
-    //MCAssert(mSession != NULL);
-    
-    closeConnection();
-    
-    //mFoldersSynchronizers->removeAllObjects();
-}
+//void IMAPAccountSynchronizer::disconnect()
+//{
+//    //MCAssert(mSession != NULL);
+//
+//    closeConnection();
+//
+//    //mFoldersSynchronizers->removeAllObjects();
+//}
 
 void IMAPAccountSynchronizer::connect()
 {
@@ -2685,7 +2699,9 @@ void IMAPAccountSynchronizer::notifyAttachmentDownloaders(hermes::ErrorCode erro
 
 void IMAPAccountSynchronizer::handleError()
 {
-    mDelegate->accountSynchronizerStateUpdated(this);
+    if (mDelegate != NULL) {
+        mDelegate->accountSynchronizerStateUpdated(this);
+    }
 
     LOG_ERROR("%s: sync error detected: %i", MCUTF8(mAccountInfo->email()), mError);
     if (isAuthenticationError(mError)) {

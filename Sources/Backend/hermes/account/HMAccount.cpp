@@ -39,6 +39,9 @@ Account::~Account()
 {
     //LOG_CLEANUP("Account dealloced");
     MC_SAFE_RELEASE(mSendQueue);
+    if (mSync != NULL) {
+        mSync->setDelegate(NULL);
+    }
     MC_SAFE_RELEASE(mSync);
     carray_free(mObservers);
     MC_SAFE_RELEASE(mAccountInfo);
