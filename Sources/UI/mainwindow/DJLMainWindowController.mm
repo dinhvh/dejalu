@@ -1777,6 +1777,8 @@ public:
 - (void) DJLConversationListToolbarViewCleanup:(DJLConversationListToolbarView *)toolbar;
 {
     _cleanupWindowController = [[DJLCleanupWindowController alloc] init];
+    [_cleanupWindowController setUnifiedAccount:[_conversationListViewController unifiedAccount]];
+    [_cleanupWindowController setUnifiedStorageView:[_conversationListViewController currentUnifiedStorageView]];
     [_cleanupWindowController setConversations:[_conversationListViewController allConversationsInfos]];
     [_cleanupWindowController setDelegate:self];
 
@@ -1949,6 +1951,11 @@ public:
     if ([self _hasConversationPanel]) {
         [self toggleDetails:nil];
     }
+}
+
+- (void) DJLConversationListViewControllerSearchStateChanged:(DJLConversationListViewController *)controller
+{
+    [_toolbarView validate];
 }
 
 - (void) DJLFolderPaneViewControllerScrollToTop:(DJLFolderPaneViewController *)controller
@@ -2650,6 +2657,9 @@ public:
             return YES;
         }
         else if (selector == @selector(_cleanup)) { // method in DJLConversationListToolbarView
+            if ([_conversationListViewController isSearchEnabled]) {
+                return NO;
+            }
             NSString * inboxFolderPath = MCO_TO_OBJC([_conversationListViewController unifiedAccount]->inboxFolderPath());
             if ([inboxFolderPath isEqualToString:[_conversationListViewController folderPath]]) {
                 return YES;
@@ -2937,7 +2947,6 @@ public:
 
 - (void) DJLCleanupWindowControllerCancel:(DJLCleanupWindowController *)controller
 {
-    [_cleanupWindowController close];
     _cleanupWindowController = nil;
 }
 

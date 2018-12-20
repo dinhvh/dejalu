@@ -3,6 +3,8 @@
 
 #import "DJLCleanupWindowController.h"
 
+#import <MailCore/MailCore.h>
+
 #import "FBKVOController.h"
 #import "DJLDarkMode.h"
 #import "DJLColoredView.h"
@@ -16,15 +18,61 @@
 #import "DJLDeletedOverlayView.h"
 #import "DJLHUDWindow.h"
 
+using namespace mailcore;
+using namespace hermes;
+
 @interface DJLCleanupWindowController () <NSWindowDelegate, NSTableViewDataSource, NSTableViewDelegate, DJLConversationCellViewDelegate>
 
+- (void) _storageView:(UnifiedMailStorageView *)view
+  changedWithDeletion:(NSArray *)deleted
+                moves:(NSArray *)moved
+             addition:(NSArray *)added
+         modification:(NSArray *)modified;
+- (void) _notifyFetchSummaryDoneWithError:(hermes::ErrorCode)error;
+- (void) _connected;
+
 @end
+
+class DJLCleanupWindowControllerCallback : public Object, public UnifiedMailStorageViewObserver, public UnifiedAccountObserver {
+public:
+    DJLCleanupWindowControllerCallback(DJLCleanupWindowController * controller) {
+        mController = controller;
+    }
+
+    virtual ~DJLCleanupWindowControllerCallback() {}
+
+    virtual void mailStorageViewChanged(UnifiedMailStorageView * view,
+                                        mailcore::Array * deleted,
+                                        mailcore::Array * moved,
+                                        mailcore::Array * added,
+                                        mailcore::Array * modified)
+    {
+        [mController _storageView:view
+              changedWithDeletion:MCO_TO_OBJC(deleted)
+                            moves:MCO_TO_OBJC(moved)
+                         addition:MCO_TO_OBJC(added)
+                     modification:MCO_TO_OBJC(modified)];
+    }
+
+    virtual void accountFetchSummaryDone(UnifiedAccount * account, unsigned int accountIndex, hermes::ErrorCode error, int64_t messageRowID)
+    {
+        [mController _notifyFetchSummaryDoneWithError:error];
+    }
+
+    virtual void accountConnected(UnifiedAccount * account, unsigned int accountIndex)
+    {
+        [mController _connected];
+    }
+
+private:
+    __weak DJLCleanupWindowController * mController;
+};
 
 @implementation DJLCleanupWindowController {
     FBKVOController * _kvoController;
     DJLTableView * _tableView;
     DJLScrollView * _scrollView;
-    NSArray * _conversations;
+    NSMutableArray * _conversations;
     NSButton * _archiveButton;
     NSButton * _deleteButton;
     NSButton * _cancelButton;
@@ -33,6 +81,11 @@
     DJLGradientSeparatorLineView * _bottomSeparatorView;
     NSMutableIndexSet * _checkedMessages;
     NSMutableDictionary * _convIDMap;
+    DJLCleanupWindowControllerCallback * _callback;
+    UnifiedMailStorageView * _unifiedStorageView;
+    UnifiedAccount * _unifiedAccount;
+    BOOL _disableIdle;
+    BOOL _cancelled;
 }
 
 - (id) init
@@ -57,9 +110,12 @@
 
     self = [super initWithWindow:window];
 
+    _callback = new DJLCleanupWindowControllerCallback(self);
+
     [window setDelegate:self];
 
     [self _setup];
+    _cancelled = YES;
 
     _kvoController = [FBKVOController controllerWithObserver:self];
     __weak typeof(self) weakSelf = self;
@@ -75,6 +131,39 @@
 - (void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    _unifiedStorageView->removeObserver(_callback);
+    _unifiedAccount->removeObserver(_callback);
+    MC_SAFE_RELEASE(_callback);
+    MC_SAFE_RELEASE(_unifiedStorageView);
+    if (_disableIdle) {
+        _disableIdle = NO;
+        _unifiedAccount->enableSync();
+    }
+    MC_SAFE_RELEASE(_unifiedAccount);
+}
+
+- (void) setUnifiedAccount:(hermes::UnifiedAccount *)unifiedAccount
+{
+    MC_SAFE_RELEASE(_unifiedAccount);
+    _unifiedAccount = unifiedAccount;
+    MC_SAFE_RETAIN(_unifiedAccount);
+}
+
+- (hermes::UnifiedAccount *) unifiedAccount
+{
+    return _unifiedAccount;
+}
+
+- (void) setUnifiedStorageView:(UnifiedMailStorageView *)unifiedStorageView
+{
+    MC_SAFE_RELEASE(_unifiedStorageView);
+    _unifiedStorageView = unifiedStorageView;
+    MC_SAFE_RETAIN(_unifiedStorageView);
+}
+
+- (UnifiedMailStorageView *) unifiedStorageView
+{
+    return _unifiedStorageView;
 }
 
 - (void) _applyDarkMode
@@ -271,6 +360,10 @@
     } else {
         [_textField setStringValue:[NSString stringWithFormat:@"%i email notifications found.\nPlease unselect the emails you'd like to keep\nthen use Archive or Delete.", (int)[[self conversations] count]]];
     }
+
+    [self _applyButtonStatus];
+    _unifiedAccount->addObserver(_callback);
+    _unifiedStorageView->addObserver(_callback);
 }
 
 - (NSArray *) conversations
@@ -298,6 +391,9 @@
 - (void)windowWillClose:(NSNotification *)notification
 {
     [NSApp stopModal];
+    if (_cancelled) {
+        [[self delegate] DJLCleanupWindowControllerCancel:self];
+    }
 }
 
 - (void) DJLConversationCellViewStarClicked:(DJLConversationCellView *)view
@@ -325,6 +421,15 @@
         [_checkedMessages addIndex:idx];
         [view setChecked:YES];
     }
+
+    [self _applyButtonStatus];
+}
+
+- (void) _applyButtonStatus
+{
+    BOOL enabled = [_checkedMessages count] > 0;
+    [_deleteButton setEnabled:enabled];
+    [_archiveButton setEnabled:enabled];
 }
 
 - (void) _scrolled
@@ -349,6 +454,7 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_MSEC * 500), dispatch_get_main_queue(), ^{
         [DJLHUDWindow windowWithView:view];
     });
+    _cancelled = NO;
     [[self delegate] DJLCleanupWindowControllerArchive:self];
 }
 
@@ -359,18 +465,153 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_MSEC * 500), dispatch_get_main_queue(), ^{
         [DJLHUDWindow windowWithView:view];
     });
+    _cancelled = NO;
     [[self delegate] DJLCleanupWindowControllerDelete:self];
 }
 
 - (void) _cancel:(id)sender
 {
-    [[self delegate] DJLCleanupWindowControllerCancel:self];
+    [self close];
 }
 
 - (BOOL) DJLWindowEscKeyPressed:(DJLWindow *)window
 {
     [self _cancel:nil];
     return YES;
+}
+
+- (void) _storageView:(UnifiedMailStorageView *)view
+  changedWithDeletion:(NSArray *)deleted
+                moves:(NSArray *)moved
+             addition:(NSArray *)added
+         modification:(NSArray *)modified
+{
+    if (_unifiedStorageView != view) {
+        return;
+    }
+
+    NSMutableDictionary * modifiedConversations = [[NSMutableDictionary alloc] init];
+    for(NSNumber * nbIndex in modified) {
+        unsigned int idx = [nbIndex intValue];
+        HashMap * info = _unifiedStorageView->conversationsInfoAtIndex(idx);
+        NSDictionary * convInfo = MCO_TO_OBJC(info);
+        NSNumber * nbConvID = convInfo[@"id"];
+        NSNumber * nbAccount = convInfo[@"account"];
+        NSString * identifier = [NSString stringWithFormat:@"%@-%@", nbAccount, nbConvID];
+        [modifiedConversations setObject:convInfo forKey:identifier];
+    }
+    for(unsigned int i = 0 ; i < [_conversations count] ; i ++) {
+        NSDictionary * conversation = _conversations[i];
+        NSNumber * nbConvID = [conversation objectForKey:@"id"];
+        NSNumber * nbAccount = [conversation objectForKey:@"account"];
+        NSString * identifier = [NSString stringWithFormat:@"%@-%@", nbAccount, nbConvID];
+        NSDictionary * convInfo = modifiedConversations[identifier];
+        if (convInfo != nil) {
+            [_conversations replaceObjectAtIndex:i withObject:convInfo];
+            DJLConversationCellContentView * row = [_tableView viewAtColumn:0 row:i makeIfNecessary:NO];
+            if (row != nil) {
+                [row setConversation:convInfo];
+                [row update];
+            }
+        }
+    }
+
+    [self _loadVisibleCells];
+}
+
+- (void) _loadVisibleCells
+{
+    BOOL needsLoadVisibleCells = [self _needsLoadVisibleCells];
+    //fprintf(stderr, "needs load cell: %i %i\n", needsLoadVisibleCells, _disableIdle);
+    if (needsLoadVisibleCells) {
+        if (!_disableIdle) {
+            _disableIdle = YES;
+            _unifiedAccount->disableSync();
+        }
+    }
+    else {
+        if (_disableIdle) {
+            _disableIdle = NO;
+            _unifiedAccount->enableSync();
+        }
+    }
+
+    [self _loadVisibleCellsAfterDelay];
+}
+
+- (BOOL) _needsLoadVisibleCells
+{
+    NSRange range = [_tableView rowsInRect:[_tableView visibleRect]];
+    if (range.length == 0)
+        return NO;
+
+    for(unsigned int i = (unsigned int) range.location ; i < range.location + range.length ; i ++) {
+        unsigned int row = i;
+        NSDictionary * info = _conversations[row];
+        unsigned int accountIndex = [(NSNumber *) [info objectForKey:@"account"] unsignedIntValue];
+        NSArray * messages = [info objectForKey:@"messages"];
+        for(NSDictionary * message in messages) {
+            if ([message objectForKey:@"snippet"] == nil) {
+                int64_t messageRowID = [(NSNumber *) [message objectForKey:@"id"] longLongValue];
+                Account * account = (Account *) _unifiedAccount->accounts()->objectAtIndex(accountIndex);
+                if (account->canFetchMessageSummary(messageRowID)) {
+                    return YES;
+                }
+            }
+        }
+    }
+    return NO;
+}
+
+- (void) _loadVisibleCellsAfterDelay
+{
+    //NSLog(@"try to fetch");
+    NSRange range = [_tableView rowsInRect:[_tableView visibleRect]];
+    if (range.length == 0)
+        return;
+
+    NSMutableIndexSet * accountQueried = [[NSMutableIndexSet alloc] init];
+    BOOL fetched = NO;
+    for(unsigned int i = (unsigned int) range.location ; i < range.location + range.length ; i ++) {
+        unsigned int row = i;
+        NSDictionary * info = _conversations[row];
+        unsigned int accountIndex = [(NSNumber *) [info objectForKey:@"account"] unsignedIntValue];
+        if ([accountQueried containsIndex:accountIndex]) {
+            continue;
+        }
+        NSArray * messages = [info objectForKey:@"messages"];
+        for(NSDictionary * message in messages) {
+            if ([message objectForKey:@"snippet"] == nil) {
+                int64_t messageRowID = [(NSNumber *) [message objectForKey:@"id"] longLongValue];
+                int64_t folderID = [(NSNumber *) [message objectForKey:@"folder"] longLongValue];
+                Account * account = (Account *) _unifiedAccount->accounts()->objectAtIndex(accountIndex);
+                if (account->canFetchMessageSummary(messageRowID)) {
+                    [accountQueried addIndex:accountIndex];
+                    account->fetchMessageSummary(folderID, messageRowID, false);
+                    fetched = YES;
+                    break;
+                }
+            }
+        }
+    }
+}
+
+- (void) _notifyFetchSummaryDoneWithError:(hermes::ErrorCode)error
+{
+    if (error == hermes::ErrorFetch) {
+        [self _loadVisibleCells];
+    }
+    else {
+        if (_disableIdle) {
+            _disableIdle = NO;
+            _unifiedAccount->enableSync();
+        }
+    }
+}
+
+- (void) _connected
+{
+    [self _loadVisibleCells];
 }
 
 @end

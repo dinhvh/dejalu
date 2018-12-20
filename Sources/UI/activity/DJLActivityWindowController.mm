@@ -36,7 +36,7 @@ public:
     }
 
 private:
-    DJLActivityWindowController * mController;
+    __weak DJLActivityWindowController * mController;
 };
 
 @implementation DJLActivityWindowController {

@@ -79,7 +79,7 @@ DJLConversationCellViewDelegate, DJLSearchFieldDelegate, DJLLabelsViewController
 
 @end
 
-class DJLConversationListViewControllerCallback : public Object, public UnifiedMailStorageViewObserver, public AccountObserver, public UnifiedAccountObserver {
+class DJLConversationListViewControllerCallback : public Object, public UnifiedMailStorageViewObserver, public UnifiedAccountObserver {
 public:
     DJLConversationListViewControllerCallback(DJLConversationListViewController * controller) {
         mController = controller;
@@ -111,13 +111,13 @@ public:
         [mController _syncDoneWithFolderPath:MCO_TO_OBJC(folderPath) accountIndex:accountIndex error:error];
     }
 
-    virtual void accountConnected(Account * account)
+    virtual void accountConnected(UnifiedAccount * account, unsigned int accountIndex)
     {
         [mController _connected];
     }
 
 private:
-    DJLConversationListViewController * mController;
+    __weak DJLConversationListViewController * mController;
 };
 
 @implementation DJLConversationListViewController {
@@ -228,7 +228,8 @@ private:
     [_scrollView setScrollerStyle:NSScrollerStyleOverlay];
 }
 
-- (void) _setup {
+- (void) _setup
+{
     NSRect frame = [[self view] bounds];
     _scrollView = [[DJLScrollView alloc] initWithFrame:frame];
     [_scrollView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
@@ -458,6 +459,11 @@ private:
 - (UnifiedMailStorageView *) currentUnifiedStorageView
 {
     return [self _currentUnifiedStorageView];
+}
+
+- (BOOL) isSearchEnabled
+{
+    return _unifiedSearchStorageView != NULL;
 }
 
 - (CGFloat) vibrancy
@@ -1154,6 +1160,8 @@ private:
     [self _cancelSearch];
     [self _reloadSearchData];
     [[_tableView window] makeFirstResponder:_tableView];
+
+    [[self delegate] DJLConversationListViewControllerSearchStateChanged:self];
 }
 
 #define SEARCH_HEIGHT 22
@@ -1210,6 +1218,8 @@ private:
     [[[self view] window] makeFirstResponder:_searchField];
     [_searchSeparatorView setAlphaValue:_separatorAlphaValue];
     [[self delegate] DJLConversationListViewController:self separatorAlphaValue:0.0];
+
+    [[self delegate] DJLConversationListViewControllerSearchStateChanged:self];
 }
 
 - (void) _applyDarkMode

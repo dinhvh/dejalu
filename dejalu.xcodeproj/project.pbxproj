@@ -12,7 +12,7 @@
 		BDC2261921C8978F002E8E77 /* DJLArchivedOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC2261821C8978F002E8E77 /* DJLArchivedOverlayView.m */; };
 		BDC2261D21C89B2E002E8E77 /* DJLDeletedOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = BDC2261B21C89B2D002E8E77 /* DJLDeletedOverlayView.m */; };
 		BDD110DB21B74E61005CAEA7 /* DJLDarkMode.m in Sources */ = {isa = PBXBuildFile; fileRef = BDD110DA21B74E61005CAEA7 /* DJLDarkMode.m */; };
-		BDD110FB21C4EBFB005CAEA7 /* DJLCleanupWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDD110FA21C4EBFB005CAEA7 /* DJLCleanupWindowController.m */; };
+		BDD110FB21C4EBFB005CAEA7 /* DJLCleanupWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDD110FA21C4EBFB005CAEA7 /* DJLCleanupWindowController.mm */; };
 		BDD1111821C78158005CAEA7 /* DJLConversationCellView.mm in Sources */ = {isa = PBXBuildFile; fileRef = C68ACA471FCBE51700C9097D /* DJLConversationCellView.mm */; };
 		C602E3441C6B247100BF728E /* GoogleAnalyticsTracker.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C602E33C1C6B21D900BF728E /* GoogleAnalyticsTracker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C602E3451C6B264000BF728E /* GoogleAnalyticsTracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C602E33C1C6B21D900BF728E /* GoogleAnalyticsTracker.framework */; };
@@ -1230,7 +1230,7 @@
 		BDD110DA21B74E61005CAEA7 /* DJLDarkMode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DJLDarkMode.m; sourceTree = "<group>"; };
 		BDD110DC21B74E74005CAEA7 /* DJLDarkMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DJLDarkMode.h; sourceTree = "<group>"; };
 		BDD110F921C4EBFB005CAEA7 /* DJLCleanupWindowController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DJLCleanupWindowController.h; sourceTree = "<group>"; };
-		BDD110FA21C4EBFB005CAEA7 /* DJLCleanupWindowController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DJLCleanupWindowController.m; sourceTree = "<group>"; };
+		BDD110FA21C4EBFB005CAEA7 /* DJLCleanupWindowController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DJLCleanupWindowController.mm; sourceTree = "<group>"; };
 		C602E3361C6B21D900BF728E /* GoogleAnalyticsTracker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GoogleAnalyticsTracker.xcodeproj; path = "Google-Analytics-for-OS-X/GoogleAnalyticsTracker.xcodeproj"; sourceTree = "<group>"; };
 		C60B45311E1736FE006D5115 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = SparkleSandbox/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		C61E770C18053A78009CF7C1 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -3275,7 +3275,7 @@
 				C68ACA541FCBE51700C9097D /* DJLRefreshOverlayView.h */,
 				C68ACA551FCBE51700C9097D /* DJLRefreshOverlayView.m */,
 				BDD110F921C4EBFB005CAEA7 /* DJLCleanupWindowController.h */,
-				BDD110FA21C4EBFB005CAEA7 /* DJLCleanupWindowController.m */,
+				BDD110FA21C4EBFB005CAEA7 /* DJLCleanupWindowController.mm */,
 			);
 			path = conversationlist;
 			sourceTree = "<group>";
@@ -5477,7 +5477,7 @@
 				C68ACAED1FCBE51700C9097D /* DJLAddAccountWindowController.mm in Sources */,
 				C68AC9781FCB71FA00C9097D /* HMMailDBAddMessagesOperation.cpp in Sources */,
 				C68ACAD51FCBE51700C9097D /* DJLConversationLoadMoreCellView.m in Sources */,
-				BDD110FB21C4EBFB005CAEA7 /* DJLCleanupWindowController.m in Sources */,
+				BDD110FB21C4EBFB005CAEA7 /* DJLCleanupWindowController.mm in Sources */,
 				C68AC9C11FCB71FB00C9097D /* HMIMAPFolderSyncStep.cpp in Sources */,
 				C68AC9991FCB71FB00C9097D /* HMMailDBRemoveCopyMessagesOperation.cpp in Sources */,
 				C68ACADC1FCBE51700C9097D /* DJLConversationWindowController.mm in Sources */,

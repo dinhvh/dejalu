@@ -3,9 +3,14 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "Hermes.h"
+
 @protocol DJLCleanupWindowControllerDelegate;
 
 @interface DJLCleanupWindowController : NSWindowController
+
+@property (nonatomic, assign) hermes::UnifiedAccount * unifiedAccount;
+@property (nonatomic, assign) hermes::UnifiedMailStorageView * unifiedStorageView;
 
 @property (nonatomic, retain) NSArray * conversations;
 

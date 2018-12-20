@@ -33,6 +33,8 @@
 - (IBAction) showLabelsAndArchivePanel:(id)sender;
 - (void) toggleSearch;
 
+- (BOOL) isSearchEnabled;
+
 //- (void) archiveSelection;
 //- (void) trashSelection;
 //- (void) toggleReadSelection;
@@ -93,5 +95,6 @@
 - (void) DJLConversationListViewControllerExpandDetails:(DJLConversationListViewController *)controller;
 - (void) DJLConversationListViewControllerCollapseDetails:(DJLConversationListViewController *)controller;
 - (void) DJLConversationListViewControllerCancelSearch:(DJLConversationListViewController *)controller;
+- (void) DJLConversationListViewControllerSearchStateChanged:(DJLConversationListViewController *)controller;
 
 @end
