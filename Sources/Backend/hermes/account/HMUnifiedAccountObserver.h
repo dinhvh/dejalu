@@ -29,6 +29,8 @@ namespace hermes {
 
         virtual void accountFoldersChanged(UnifiedAccount * account, unsigned int accountIndex, hermes::ErrorCode error) {}
 
+        virtual void accountConnected(UnifiedAccount * account, unsigned int accountIndex) {}
+
     };
 }
 

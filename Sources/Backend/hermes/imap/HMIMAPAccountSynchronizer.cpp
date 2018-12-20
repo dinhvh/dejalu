@@ -734,14 +734,14 @@ void IMAPAccountSynchronizer::failPendingRequests(hermes::ErrorCode error)
     }
 }
 
-//void IMAPAccountSynchronizer::disconnect()
-//{
-//    //MCAssert(mSession != NULL);
-//
-//    closeConnection();
-//
-//    //mFoldersSynchronizers->removeAllObjects();
-//}
+void IMAPAccountSynchronizer::disconnect()
+{
+    //MCAssert(mSession != NULL);
+
+    closeConnection();
+
+    //mFoldersSynchronizers->removeAllObjects();
+}
 
 void IMAPAccountSynchronizer::connect()
 {

@@ -8,14 +8,14 @@
 #include <libetpan/libetpan.h>
 
 #include "HMAccountManagerObserver.h"
-#include "HMAccountObserver.h"
+#include "HMUnifiedAccountObserver.h"
 
 namespace hermes {
 
     class UnifiedAccountManagerObserver;
     class UnifiedAccount;
 
-    class UnifiedAccountManager : public mailcore::Object, public AccountManagerObserver, public AccountObserver {
+    class UnifiedAccountManager : public mailcore::Object, public AccountManagerObserver {
 
     public:
         static UnifiedAccountManager * sharedManager();
@@ -30,9 +30,6 @@ namespace hermes {
 
     public: // AccountManager observer
         virtual void accountManagerChanged(AccountManager * manager);
-
-    public: // Account observer
-        virtual void accountGotFolders(Account * account);
 
     private:
         UnifiedAccountManager();

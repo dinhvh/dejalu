@@ -79,15 +79,6 @@ void UnifiedAccountManager::accountManagerChanged(AccountManager * manager)
 
 void UnifiedAccountManager::setupAccounts()
 {
-    {
-        mc_foreacharray(UnifiedAccount, unifiedAccount, mAccounts) {
-            if (unifiedAccount->accounts()->count() == 1) {
-                Account * account = (Account *) unifiedAccount->accounts()->objectAtIndex(0);
-                account->removeObserver(this);
-            }
-        }
-    }
-
     HashMap * accountHash = new HashMap();
     mAccounts->removeAllObjects();
 
@@ -109,33 +100,8 @@ void UnifiedAccountManager::setupAccounts()
     }
     MC_SAFE_RELEASE(accounts);
 
-    {
-        mc_foreacharray(UnifiedAccount, unifiedAccount, mAccounts) {
-            if (unifiedAccount->accounts()->count() == 1) {
-                Account * account = (Account *) unifiedAccount->accounts()->objectAtIndex(0);
-                account->addObserver(this);
-            }
-        }
-    }
-
     for(unsigned int i = 0 ; i < carray_count(mObservers) ; i ++) {
         UnifiedAccountManagerObserver * observer = (UnifiedAccountManagerObserver *) carray_get(mObservers, i);
         observer->unifiedAccountManagerChanged(this);
     }
-}
-
-void UnifiedAccountManager::accountGotFolders(Account * account)
-{
-#if 0
-    Array * accounts = new Array();
-    mc_foreacharray(Account, currentAccount, AccountManager::sharedManager()->accounts()) {
-        if (currentAccount->folders() != NULL) {
-            accounts->addObject(currentAccount);
-        }
-    }
-    MC_SAFE_RELEASE(_unifiedAccount);
-    _unifiedAccount = new UnifiedAccount();
-    _unifiedAccount->setAccounts(accounts);
-    MC_SAFE_RELEASE(accounts);
-#endif
 }

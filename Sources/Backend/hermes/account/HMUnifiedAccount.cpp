@@ -873,3 +873,12 @@ void UnifiedAccount::accountSyncDone(Account * account, hermes::ErrorCode error,
         }
     }
 }
+
+void UnifiedAccount::accountConnected(Account * account)
+{
+    int accountIndex = mAccounts->indexOfObject(account);
+    for(unsigned int i = 0 ; i < carray_count(mObservers) ; i ++) {
+        UnifiedAccountObserver * observer = (UnifiedAccountObserver *) carray_get(mObservers, i);
+        observer->accountConnected(this, accountIndex);
+    }
+}

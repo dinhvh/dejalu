@@ -91,6 +91,7 @@ namespace hermes {
         virtual void accountMessageSaved(Account * account, int64_t folderID, mailcore::String * messageID);
 
         virtual void accountSyncDone(Account * account, hermes::ErrorCode error, mailcore::String * folderPath);
+        virtual void accountConnected(Account * account);
 
     private:
         mailcore::Array * mAccounts;
