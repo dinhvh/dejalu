@@ -1779,8 +1779,19 @@ public:
     _cleanupWindowController = [[DJLCleanupWindowController alloc] init];
     [_cleanupWindowController setUnifiedAccount:[_conversationListViewController unifiedAccount]];
     [_cleanupWindowController setUnifiedStorageView:[_conversationListViewController currentUnifiedStorageView]];
-    [_cleanupWindowController setConversations:[_conversationListViewController allConversationsInfos]];
     [_cleanupWindowController setDelegate:self];
+
+    NSArray * conversationsInfos = [_conversationListViewController allConversationsInfos];
+    NSMutableArray * recentConversationsInfos = [[NSMutableArray alloc] init];
+    time_t current_time = time(NULL);
+    for(NSDictionary * conversation in conversationsInfos) {
+        time_t date = [(NSNumber *) [conversation objectForKey:@"timestamp"] longLongValue];
+        if (current_time - date > 30 * 86400) {
+            continue;
+        }
+        [recentConversationsInfos addObject:conversation];
+    }
+    [_cleanupWindowController setConversations:recentConversationsInfos];
 
     if ([[_cleanupWindowController conversations] count] == 0) {
         _cleanupWindowController = nil;
