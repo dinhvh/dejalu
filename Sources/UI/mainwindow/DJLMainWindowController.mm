@@ -1430,7 +1430,10 @@ public:
 
 - (void) _notifyAuthenticationError:(hermes::ErrorCode)error account:(Account *)account
 {
-    // Always show authentication error.
+    if ([self _hasErrorForAccount:account]) {
+        return;
+    }
+
     [self _setErrorCode:error
                   title:[NSString stringWithFormat:@"Authentication error (%@)", MCO_TO_OBJC(account->accountInfo()->email())]
             description:@"DejaLu could not authenticate against the server. Please check that the password is correct."
