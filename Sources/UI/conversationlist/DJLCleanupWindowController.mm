@@ -356,9 +356,9 @@ private:
     [_checkedMessages addIndexesInRange:NSMakeRange(0, [notifications count])];
     _conversations = notifications;
     if ([[self conversations] count] == 1) {
-        [_textField setStringValue:[NSString stringWithFormat:@"1 email notification found.\nPlease unselect the emails you'd like to keep\nthen use Archive or Delete."]];
+        [_textField setStringValue:[NSString stringWithFormat:@"1 email notification found in the last 30 days.\nPlease unselect the emails you'd like to keep\nthen use Archive or Delete."]];
     } else {
-        [_textField setStringValue:[NSString stringWithFormat:@"%i email notifications found.\nPlease unselect the emails you'd like to keep\nthen use Archive or Delete.", (int)[[self conversations] count]]];
+        [_textField setStringValue:[NSString stringWithFormat:@"%i email notifications found in the last 30 days.\nPlease unselect the emails you'd like to keep\nthen use Archive or Delete.", (int)[[self conversations] count]]];
     }
 
     [self _applyButtonStatus];

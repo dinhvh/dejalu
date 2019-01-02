@@ -1798,7 +1798,7 @@ public:
 
         NSAlert * alert = [[NSAlert alloc] init];
         [alert setMessageText:@"Clean up notifications"];
-        [alert setInformativeText:@"No notifications were found."];
+        [alert setInformativeText:@"No notifications were found in the last 30 days."];
         [alert addButtonWithTitle:@"OK"];
         [alert runModal];
 
