@@ -2674,6 +2674,9 @@ public:
             if ([_conversationListViewController isSearchEnabled]) {
                 return NO;
             }
+            if ([_conversationListViewController unifiedAccount] == nil) {
+                return NO;
+            }
             NSString * inboxFolderPath = MCO_TO_OBJC([_conversationListViewController unifiedAccount]->inboxFolderPath());
             if ([inboxFolderPath isEqualToString:[_conversationListViewController folderPath]]) {
                 return YES;
