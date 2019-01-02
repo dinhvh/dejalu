@@ -1638,6 +1638,9 @@ static NSDictionary * GetImageInfo(NSData * data, BOOL allowResize)
 - (BOOL) _hasAttachment
 {
     HashMap * info = _storageView->conversationsInfoForConversationID(_convID);
+    if (info == NULL) {
+        return NO;
+    }
     Value * value = (Value *) info->objectForKey(MCSTR("attachments-count"));
     return value->intValue() > 0;
 }

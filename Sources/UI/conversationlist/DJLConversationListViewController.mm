@@ -2231,9 +2231,9 @@ private:
 
     DJLLabelsViewController * labelsViewController = [[DJLLabelsViewController alloc] init];
     [labelsViewController setArchiveEnabled:archive];
-    LOG("%s", MCUTF8([self uniqueAccountForSelection]));
-    LOG("%s", MCUTF8([self uniqueAccountForSelection]->accountInfo()));
-    LOG("%s", MCUTF8([self uniqueAccountForSelection]->accountInfo()->providerIdentifier()));
+//    LOG("%s", MCUTF8([self uniqueAccountForSelection]));
+//    LOG("%s", MCUTF8([self uniqueAccountForSelection]->accountInfo()));
+//    LOG("%s", MCUTF8([self uniqueAccountForSelection]->accountInfo()->providerIdentifier()));
     if (![self uniqueAccountForSelection]->accountInfo()->providerIdentifier()->isEqual(MCSTR("gmail"))) {
         [labelsViewController setArchiveEnabled:YES];
     }
