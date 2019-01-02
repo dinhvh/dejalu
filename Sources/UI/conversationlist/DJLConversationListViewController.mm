@@ -1301,6 +1301,7 @@ private:
     if (_unifiedAccount == NULL) {
         [_tableView reloadData];
         [self _clearPlaceholder];
+        [[self delegate] DJLConversationListViewControllerSearchStateChanged:self];
         return;
     }
 
@@ -1316,6 +1317,7 @@ private:
     [_tableView reloadData];
     [self _clearPlaceholder];
     [self _setRowsIDsSelection:selection fallback:firstIndex];
+    [[self delegate] DJLConversationListViewControllerSearchStateChanged:self];
 }
 
 #pragma mark -
