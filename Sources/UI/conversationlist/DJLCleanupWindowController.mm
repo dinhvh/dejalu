@@ -131,13 +131,17 @@ private:
 - (void) dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    _unifiedStorageView->removeObserver(_callback);
-    _unifiedAccount->removeObserver(_callback);
+    if (_unifiedStorageView != NULL) {
+        _unifiedStorageView->removeObserver(_callback);
+        _unifiedAccount->removeObserver(_callback);
+    }
     MC_SAFE_RELEASE(_callback);
     MC_SAFE_RELEASE(_unifiedStorageView);
     if (_disableIdle) {
         _disableIdle = NO;
-        _unifiedAccount->enableSync();
+        if (_unifiedAccount != NULL) {
+            _unifiedAccount->enableSync();
+        }
     }
     MC_SAFE_RELEASE(_unifiedAccount);
 }
@@ -362,8 +366,12 @@ private:
     }
 
     [self _applyButtonStatus];
-    _unifiedAccount->addObserver(_callback);
-    _unifiedStorageView->addObserver(_callback);
+    if (_unifiedAccount != NULL) {
+        _unifiedAccount->addObserver(_callback);
+    }
+    if (_unifiedStorageView != NULL) {
+        _unifiedStorageView->addObserver(_callback);
+    }
 }
 
 - (NSArray *) conversations
