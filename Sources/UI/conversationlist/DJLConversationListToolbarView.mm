@@ -360,16 +360,17 @@ using namespace mailcore;
 - (void) _updateFolderSize
 {
     [_mailboxButton sizeToFit];
+    [_cleanupButton sizeToFit];
+
     NSRect frame = [_mailboxButton frame];
-    if ([_mailboxButton frame].size.width > [self bounds].size.width - 70 - _leftMargin - 20) {
-        frame.size.width = [self bounds].size.width - 70 - _leftMargin - 20;
+    if ([_mailboxButton frame].size.width > [self bounds].size.width - 70 - _leftMargin - 20 - [_cleanupButton frame].size.width) {
+        frame.size.width = [self bounds].size.width - 70 - _leftMargin - 20 - [_cleanupButton frame].size.width;
     }
     frame.origin.x = _leftMargin;
     frame.origin.y = ([self bounds].size.height - [_mailboxButton frame].size.height) / 2;
     frame = NSIntegralRect(frame);
     [_mailboxButton setFrame:frame];
 
-    [_cleanupButton sizeToFit];
     frame = [_cleanupButton frame];
     frame.origin.x = NSMaxX([_mailboxButton frame]);
     [_cleanupButton setFrame:frame];
