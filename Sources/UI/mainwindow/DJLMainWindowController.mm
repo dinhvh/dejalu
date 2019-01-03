@@ -1238,6 +1238,9 @@ public:
 
 - (void) _accountSyncDone:(hermes::ErrorCode)error folderPath:(NSString *)folderPath account:(Account *)account
 {
+    if (error != hermes::ErrorCode::ErrorNone) {
+        return;
+    }
     [self _clearCurrentErrorForAccount:account];
 }
 
