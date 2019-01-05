@@ -464,6 +464,7 @@ void IMAPAccountSynchronizer::retrieveOAuth2Token()
     mRetrieveAuth2TokenTries ++;
     LOG_ERROR("%s: getting oauth2 token", MCUTF8(mAccountInfo->email()));
     //OAuth2GetTokenForEmail(accountInfo()->email(), &oauth2GetTokenCallback, (void *) this);
+    retain();
     OAuth2GetToken(accountInfo()->OAuth2RefreshToken(), mAccountInfo->providerIdentifier(), &oauth2GetTokenCallback, (void *) this);
 }
 
@@ -475,16 +476,19 @@ void IMAPAccountSynchronizer::oauth2GetTokenCallback(hermes::ErrorCode code, mai
     if ((code == ErrorConnection) && (sync->mRetrieveAuth2TokenTries <= 1)) {
         LOG_ERROR("%s: retry getting oauth2 token", MCUTF8(sync->mAccountInfo->email()));
         sync->retrieveOAuth2Token();
+        release();
         return;
     }
     else if (code == ErrorAuthentication) {
         sync->mSettingUpSession = false;
         sync->delegate()->accountSynchronizerNotifyAuthenticationError(sync, code);
+        release();
         return;
     }
 
     MCAssert(sync != NULL);
     sync->setupSessionDone(code, oauth2Token);
+    release();
 }
 
 void IMAPAccountSynchronizer::setupSessionDone(hermes::ErrorCode code, mailcore::String * oauth2Token)
@@ -771,7 +775,6 @@ void IMAPAccountSynchronizer::notifyChangedNetwork()
 
 void IMAPAccountSynchronizer::connectSetupSessionDone(hermes::ErrorCode code)
 {
-    // Do nothing.
     mDelegate->accountSynchronizerConnected(this);
 }
 
