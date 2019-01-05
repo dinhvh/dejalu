@@ -44,9 +44,9 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>213</string>
+	<string>214</string>
 	<key>GitRevision</key>
-	<string>707a66bf2975c960adcfd221ed0d2f72ecdaa285</string>
+	<string>39cf9d164df28b9aa5405d4c79f4768382b50261</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
 	<key>MailLinkSupported</key>
@@ -62,6 +62,8 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSHumanReadableCopyright</key>
+	<string>This is a dogfood build</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
@@ -75,7 +77,7 @@
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>https://d.dejalu.me/dejalu-eKTEtTljm4/sparkle.xml</string>
+	<string>https://d.dejalu.me/dejalu-F18wrB3UKS/sparkle.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 	<key>SUScheduledCheckInterval</key>
