@@ -44,9 +44,9 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>215</string>
+	<string>216</string>
 	<key>GitRevision</key>
-	<string>c764689796d79aa7b1ee03e47b2f8dfaf4a663dd</string>
+	<string>eef870e7fb8a2b68012b307b2a1146bb8d3e6037</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
 	<key>MailLinkSupported</key>
