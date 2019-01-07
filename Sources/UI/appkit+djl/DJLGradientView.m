@@ -43,8 +43,6 @@
     //_endColor = [NSColor redColor];
     NSGradient * gradient = [[NSGradient alloc] initWithStartingColor:_startColor endingColor:_endColor];
     [gradient drawInRect:[self bounds] angle:_angle];
-    
-    [NSColor redColor];
 }
 
 @end
