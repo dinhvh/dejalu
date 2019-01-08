@@ -579,10 +579,10 @@ void Account::closeViewForSearch(MailStorageView * view)
     mSync->storage()->closeViewForSearch(view);
 }
 
-void Account::openViewForFolder(int64_t folderID)
+void Account::openViewForFolder(int64_t folderID, time_t ageLimit)
 {
     openFolderPath(pathForFolderID(folderID));
-    mSync->storage()->openViewForFolder(folderID, standardFolders(), currentEmailSet());
+    mSync->storage()->openViewForFolder(folderID, standardFolders(), currentEmailSet(), ageLimit);
     MailStorageView * view = viewForFolder(folderID);
     if (view->openedCount() == 1) {
         view->setInboxFolderID(folderIDForPath(inboxFolderPath()));

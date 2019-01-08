@@ -48,7 +48,7 @@ MailStorageView::MailStorageView()
     mLoadingConversations = false;
     mUpdateSearchResultScheduled = false;
     mStartTime = 0;
-    mToday2am = 0;
+//    mToday2am = 0;
     mStandardFolders = NULL;
 }
 
@@ -236,6 +236,16 @@ void MailStorageView::setStandardFolders(mailcore::HashMap * standardFolders)
     MC_SAFE_REPLACE_RETAIN(HashMap, mStandardFolders, standardFolders);
 }
 
+time_t MailStorageView::ageLimit()
+{
+    return mAgeLimit;
+}
+
+void MailStorageView::setAgeLimit(time_t ageLimit)
+{
+    mAgeLimit = ageLimit;
+}
+
 void MailStorageView::addObserver(MailStorageViewObserver * observer)
 {
     LOGSTACK("add observer %p", observer);
@@ -298,13 +308,13 @@ void MailStorageView::fetchConversations()
     }
 
     mStartTime = hermes::currentTime();
-    struct tm timeinfo;
-    time_t currentTime = time(NULL);
-    gmtime_r(&currentTime, &timeinfo);
-    timeinfo.tm_hour = 2;
-    timeinfo.tm_min = 0;
-    timeinfo.tm_sec = 0;
-    mToday2am = mktime(&timeinfo);
+//    struct tm timeinfo;
+//    time_t currentTime = time(NULL);
+//    gmtime_r(&currentTime, &timeinfo);
+//    timeinfo.tm_hour = 2;
+//    timeinfo.tm_min = 0;
+//    timeinfo.tm_sec = 0;
+//    mToday2am = mktime(&timeinfo);
     mLoadingConversations = true;
     retain();
     if (mKeywords != NULL) {
@@ -519,6 +529,14 @@ void MailStorageView::loadInfoFinished()
         skip = true;
     }
 #endif
+    if (mAgeLimit != 0) {
+        if (info->objectForKey(MCSTR("timestamp")) != NULL) {
+            time_t convTimestamp = (time_t) ((Value *) info->objectForKey(MCSTR("timestamp")))->longLongValue();
+            if (mStartTime - convTimestamp > mAgeLimit) {
+                skip = true;
+            }
+        }
+    }
 
     if (!skip) {
         // The number of messages can be zero if a message has been found in trash.

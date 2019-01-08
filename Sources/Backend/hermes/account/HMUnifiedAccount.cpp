@@ -635,7 +635,7 @@ void UnifiedAccount::setViews(UnifiedMailStorageView * unifiedStorageView, int64
     MC_SAFE_RELEASE(views);
 }
 
-void UnifiedAccount::openViewForFolder(int64_t folderID)
+void UnifiedAccount::openViewForFolder(int64_t folderID, time_t ageLimit)
 {
     Value * vCount = (Value *) mFolderIDOpenCount->objectForKey(Value::valueWithLongLongValue(folderID));
     int count = 0;
@@ -643,30 +643,30 @@ void UnifiedAccount::openViewForFolder(int64_t folderID)
         count = vCount->intValue();
     }
     count ++;
-    {
-        Account * account = (Account *) mAccounts->objectAtIndex(0);
-        //fprintf(stderr, "open %s %s %i -> %i\n", MCUTF8(account->accountInfo()->email()), MCUTF8(mAccounts), (int) folderID, count);
-    }
+//    {
+//        Account * account = (Account *) mAccounts->objectAtIndex(0);
+//        //fprintf(stderr, "open %s %s %i -> %i\n", MCUTF8(account->accountInfo()->email()), MCUTF8(mAccounts), (int) folderID, count);
+//    }
     mFolderIDOpenCount->setObjectForKey(Value::valueWithLongLongValue(folderID), Value::valueWithIntValue(count));
 
     if (count == 1) {
         if (mAccounts->count() == 1) {
-            singleAccount()->openViewForFolder(folderID);
+            singleAccount()->openViewForFolder(folderID, ageLimit);
         }
         else {
             mc_foreacharrayIndex(accountIndex, Account, account, mAccounts) {
                 int64_t accountFolderID = folderIDForAccount(account, folderID);
                 if (accountFolderID != -1) {
-                    account->openViewForFolder(accountFolderID);
+                    account->openViewForFolder(accountFolderID, ageLimit);
                 }
                 else {
-                    Set * openedFolders = (Set *) mPendingOpenViewsCount->objectForKey(account->accountInfo()->email());
+                    HashMap * openedFolders = (HashMap *) mPendingOpenViewsCount->objectForKey(account->accountInfo()->email());
                     if (openedFolders == NULL) {
-                        openedFolders = Set::set();
+                        openedFolders = HashMap::hashMap();
                         mPendingOpenViewsCount->setObjectForKey(account->accountInfo()->email(), openedFolders);
                     }
                     Value * vFolderID = Value::valueWithLongLongValue(folderID);
-                    openedFolders->addObject(vFolderID);
+                    openedFolders->setObjectForKey(vFolderID, Value::valueWithLongValue(ageLimit));
                 }
             }
         }
@@ -680,15 +680,17 @@ void UnifiedAccount::openViewForFolder(int64_t folderID)
 
 void UnifiedAccount::openPendingFolders(Account * account)
 {
-    Set * openedFolders = (Set *) mPendingOpenViewsCount->objectForKey(account->accountInfo()->email());
+    HashMap * openedFolders = (HashMap *) mPendingOpenViewsCount->objectForKey(account->accountInfo()->email());
     if (openedFolders == NULL) {
         return;
     }
 
-    mc_foreacharray(Value, vFolderID, openedFolders->allObjects()) {
+//    mc_foreacharray(Value, vFolderID, openedFolders->allObjects()) {
+    mc_foreachhashmapKeyAndValue(Value, vFolderID, Value, vAgeLimit, openedFolders) {
         int64_t folderID = vFolderID->longLongValue();
+        time_t ageLimit = vAgeLimit->longValue();
         int64_t accountFolderID = folderIDForAccount(account, folderID);
-        account->openViewForFolder(accountFolderID);
+        account->openViewForFolder(accountFolderID, ageLimit);
         UnifiedMailStorageView * unifiedStorageView = (UnifiedMailStorageView *) mStorageViews->objectForKey(vFolderID);
         setViews(unifiedStorageView, folderID);
     }

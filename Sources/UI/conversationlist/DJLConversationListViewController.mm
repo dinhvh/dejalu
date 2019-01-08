@@ -1527,7 +1527,16 @@ private:
         return;
     }
 
-    _unifiedAccount->openViewForFolder(folderID);
+    // 30 days.
+    time_t ageLimit;
+    BOOL quickSync = [[NSUserDefaults standardUserDefaults] boolForKey:@"DJLQuickSync"];
+    BOOL isInbox = [_folderPath isEqualToString:MCO_TO_OBJC(_unifiedAccount->inboxFolderPath())];
+    if (quickSync && isInbox) {
+        ageLimit  = 30 * 86400;
+    } else {
+        ageLimit = 0;
+    }
+    _unifiedAccount->openViewForFolder(folderID, ageLimit);
     _unifiedStorageView = _unifiedAccount->viewForFolder(folderID);
     MC_SAFE_RETAIN(_unifiedStorageView);
     _unifiedStorageView->addObserver(_callback);

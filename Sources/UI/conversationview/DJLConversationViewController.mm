@@ -208,7 +208,7 @@ public:
     MC_SAFE_REPLACE_RETAIN(MailStorageView, _storageView, storageView);
     if (_storageView != NULL) {
         if (_storageView->folderID() != -1) {
-            _account->openViewForFolder(_storageView->folderID());
+            _account->openViewForFolder(_storageView->folderID(), 0);
         }
         _storageView->addObserver(_callback);
         BOOL draftEnabled = _storageView->draftsFolderID() == _storageView->folderID();

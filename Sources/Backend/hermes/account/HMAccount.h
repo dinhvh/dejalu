@@ -149,7 +149,7 @@ namespace hermes {
         // storage view
         virtual MailStorageView * openViewForSearchKeywords(mailcore::Array * keywords);
         virtual void closeViewForSearch(MailStorageView * view);
-        virtual void openViewForFolder(int64_t folderID);
+        virtual void openViewForFolder(int64_t folderID, time_t ageLimit);
         virtual MailStorageView * viewForFolder(int64_t folderID);
         virtual void closeViewForFolder(int64_t folderID);
 

@@ -200,7 +200,7 @@ void MailStorage::closeViewForCounters(MailStorageView * view)
     removeStorageView(view);
 }
 
-void MailStorage::openViewForFolder(int64_t folderID, mailcore::HashMap * standardFolders, Set * emailSet)
+void MailStorage::openViewForFolder(int64_t folderID, mailcore::HashMap * standardFolders, Set * emailSet, time_t ageLimit)
 {
     MailStorageView * view = viewForFolder(folderID);
     if (view == NULL) {
@@ -209,6 +209,7 @@ void MailStorage::openViewForFolder(int64_t folderID, mailcore::HashMap * standa
         view->setFolderID(folderID);
         view->setEmailSet(emailSet);
         view->setStandardFolders(standardFolders);
+        view->setAgeLimit(ageLimit);
         addStorageView(view);
         mViews->setObjectForKey(Value::valueWithLongLongValue(folderID), view);
         view->release();

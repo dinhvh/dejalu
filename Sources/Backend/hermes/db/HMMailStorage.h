@@ -57,7 +57,7 @@ namespace hermes {
 //        virtual mailcore::IMAPNamespace * defaultNamespace();
         virtual mailcore::Array * componentsForFolderPath(mailcore::String * path);
 
-        virtual void openViewForFolder(int64_t folderID, mailcore::HashMap * standardFolders, mailcore::Set * emailSet);
+        virtual void openViewForFolder(int64_t folderID, mailcore::HashMap * standardFolders, mailcore::Set * emailSet, time_t ageLimit);
         virtual MailStorageView * viewForFolder(int64_t folderID);
         virtual void closeViewForFolder(int64_t folderID);
         virtual MailStorageView * openViewForSearchKeywords(mailcore::Array * keywords, mailcore::HashMap * standardFolders, mailcore::Set * emailSet);

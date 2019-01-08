@@ -1652,7 +1652,7 @@ public:
     if (_urlMessageIDCount == 0) {
         if (_urlMessageIDFound != -1) {
             int64_t folderID = _urlMessageAccount->folderIDForPath(_urlMessageAccount->inboxFolderPath());
-            _urlMessageAccount->openViewForFolder(folderID);
+            _urlMessageAccount->openViewForFolder(folderID, 0);
             MailStorageView * storageView = _urlMessageAccount->viewForFolder(folderID);
 
             DJLConversationWindowController * controller = [[DJLConversationWindowController alloc] init];

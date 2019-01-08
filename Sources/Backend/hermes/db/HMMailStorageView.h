@@ -63,7 +63,10 @@ namespace hermes {
         
         virtual mailcore::Set * emailSet();
         virtual void setEmailSet(mailcore::Set * emailSet);
-        
+
+        virtual time_t ageLimit();
+        virtual void setAgeLimit(time_t ageLimit);
+
         virtual void addObserver(MailStorageViewObserver * delegate);
         virtual void removeObserver(MailStorageViewObserver * delegate);
         
@@ -117,7 +120,8 @@ namespace hermes {
 
         bool mUpdateSearchResultScheduled;
         double mStartTime;
-        time_t mToday2am;
+//        time_t mToday2am;
+        time_t mAgeLimit;
 
         mailcore::HashMap * mStandardFolders;
 
